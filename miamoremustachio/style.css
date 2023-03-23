@@ -1,0 +1,237 @@
+body {
+    background-color: azure;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 90vh;
+    font-family: 'Nunito', sans-serif;
+}
+
+
+.buttons {
+    display: flex;
+    align-items: center;
+    background: none;
+    border: none;
+    width: 30px;
+    height: 30px;
+    margin-right: 5px;
+    cursor: pointer;
+}
+
+.in-favorites {
+    font-variation-settings: 'FILL' 1;
+    color: tomato;
+}
+
+
+.default-text-container {
+    padding: 15px 15px 0px;
+    font-size: 17px;
+    text-align: center;
+}
+
+.default-picture-container, .now-picture-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    max-height: 100px;
+    flex: 1;
+}
+
+.default-picture {
+    font-variation-settings: 'FILL' 1;
+    color: steelblue;
+}
+
+span.size-85 {
+    font-size: 75px;
+}
+
+
+.main-container {
+    background-color: white;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin-top: 90px;
+    width: 50%;
+    min-width: 350px;
+    max-width: 500px;
+}
+
+.search {
+    display: flex;
+    align-items: center;
+    flex-basis: 100%;
+    border: 2px solid black;
+    border-radius: 7px 7px 0 0;
+    border-bottom: none;
+}
+
+.search-field {
+    display: block;
+    flex: 1;
+    background: none;
+    border: none;
+    outline: none;
+    height: 30px;
+    padding-left: 10px;
+}
+
+.weather {
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    overflow: hidden;
+    flex: 1;
+    min-width: 200px;
+    max-width: 250px;
+    border: 2px solid black;
+    border-right: none;
+    border-bottom-left-radius: 7px;
+}
+
+.weather-info {
+    display: flex;
+    flex-direction: column;
+    height: 200px;
+    overflow: hidden;
+    overflow-y: auto;
+}
+
+.now-temperature {
+    padding-top: 10px;
+    padding-left: 15px;
+    font-size: 40px;
+}
+
+.now-picture {
+    max-width: 140px;
+    height: auto;
+}
+
+.now-city {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-right: 15px;
+    margin-bottom: 10px;
+}
+
+.now-city-name {
+    flex: 1;
+    padding-left: 15px;
+    font-size: 20px;
+}
+
+.details-place {
+    padding-top: 10px;
+    padding-left: 10px;
+    font-size: 20px;
+}
+
+.details-list {
+    margin-top: 0px;
+    margin-bottom: 5px;
+    padding-top: 10px;
+    padding-left: 15px;
+}
+
+.details-list li {
+    list-style-type: none;
+    margin: 5px 5px 5px 0px;
+}
+
+.weather-tabs {
+    display: flex;
+    flex-direction: row;
+    border-top: 1px solid black;
+    height: 30px;
+}
+
+.now-tab, .details-tab {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: calc(100% / 3);
+    border-right: 1px solid black;
+}
+
+.forecast-tab {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+}
+
+.now-tab:hover, .details-tab:hover, .forecast-tab:hover {
+    cursor: pointer;
+    background-color: lightgrey;
+}
+
+.tab-selected {
+    color: white;
+    background-color: black;
+}
+
+.favorites {
+    box-sizing: border-box;
+    overflow: hidden;
+    flex: 1;
+    max-width: 250px;
+    border: 2px solid black;
+    border-bottom-right-radius: 7px;
+}
+
+.favorites-header {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid black;
+    height: 30px;
+    padding-left: 10px;
+    font-weight: bold;
+}
+
+.favorites-empty-message {
+    margin: 15px;
+    text-align: center;
+}
+
+.favorites-list {
+    max-height: 180px;
+    overflow-y: auto;
+    margin-top: 0px;
+    margin-bottom: 5px;
+    padding-top: 10px;
+    padding-left: 15px;
+}
+
+.favorites-list-item {
+    list-style-type: none;
+    line-height: 22px;
+    cursor: pointer;
+}
+
+.favorites-list-item:hover {
+    background-color: aliceblue;
+}
+
+.signature {
+    margin-top: 90px;
+    margin-bottom: 10px;
+    padding-bottom: 30px;
+    font-size: 17px;
+}
+
+/* For errors: */
+.error-text {
+    padding: 10px 15px 10px;
+    font-size: 20px;
+}
+
+.error-message {
+    padding: 30px 15px 10px;
+    font-size: 15px;
+}
