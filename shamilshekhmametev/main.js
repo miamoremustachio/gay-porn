@@ -26,6 +26,7 @@ function calc(a, b, operation){
     //     return a - b;
     // }
     // else return;
+    //тест4
 }
 
 console.log(calc(1, 2, 'add'))

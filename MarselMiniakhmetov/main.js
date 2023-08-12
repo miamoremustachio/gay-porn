@@ -1,5 +1,12 @@
-function calc(operator, a, b) {
-    switch (operator) {
+function checkAge(age){
+    if (age < 18){
+        console.log('you are not allowed')
+    }
+    else console.log('you are welcome')
+}
+
+function calc(a, b, operation){
+    switch (operation) {
         case 'add':
             return a + b;
         case 'multi':
@@ -7,13 +14,6 @@ function calc(operator, a, b) {
         case 'subtract':
             return a - b;
         default:
-            return 'Нет такой функции!';
+            return;
     }
-  }
-  
-  console.log(calc('add', 1, 2));
-  console.log(calc('multi', 1, 2));
-  console.log(calc('subtract', 3, 2));
-  console.log(calc('ERROR', NaN, NaN))
 
-  // добавил изменений для эксперимента
