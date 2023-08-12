@@ -1,12 +1,5 @@
-function checkAge(age){
-    if (age < 18){
-        console.log('you are not allowed')
-    }
-    else console.log('you are welcome')
-}
-
-function calc(a, b, operation){
-    switch (operation) {
+function calc(operator, a, b) {
+    switch (operator) {
         case 'add':
             return a + b;
         case 'multi':
@@ -14,23 +7,14 @@ function calc(a, b, operation){
         case 'subtract':
             return a - b;
         default:
-            return;
+            return 'Нет такой функции!';
     }
-    // if (operation == 'add'){
-    //     return a + b;
-    // }
-    // else if (operation == 'multi'){
-    //     return a * b;
-    // }
-    // else if (operation == 'subtract'){
-    //     return a - b;
-    // }
-    // else return;
-    //тест4
 }
 
-console.log(calc(1, 2, 'add'))
-console.log(calc(1, 2, 'multi'))
-console.log(calc(3, 2, 'subtract'))
-console.log(calc(3, 2, 'subtracjt') == undefined)
-console.log(calc(3, 2, 'subtracjt') == NaN);
+console.log(calc('add', 1, 2));
+console.log(calc('multi', 1, 2));
+console.log(calc('subtract', 3, 2));
+console.log(calc('ERROR', NaN, NaN))
+
+// добавил изменений для эксперимента
+// доп изменения
