@@ -17,3 +17,4 @@ function calc(operator, a, b) {
   console.log(calc('ERROR', NaN, NaN))
 
   // добавил изменений для эксперимента
+  // доп изменения
