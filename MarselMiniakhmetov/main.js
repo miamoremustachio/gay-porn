@@ -15,3 +15,5 @@ function calc(operator, a, b) {
   console.log(calc('multi', 1, 2));
   console.log(calc('subtract', 3, 2));
   console.log(calc('ERROR', NaN, NaN))
+
+  // добавил изменений для эксперимента
