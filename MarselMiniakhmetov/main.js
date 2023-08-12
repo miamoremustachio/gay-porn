@@ -16,21 +16,4 @@ function calc(a, b, operation){
         default:
             return;
     }
-    // if (operation == 'add'){
-    //     return a + b;
-    // }
-    // else if (operation == 'multi'){
-    //     return a * b;
-    // }
-    // else if (operation == 'subtract'){
-    //     return a - b;
-    // }
-    // else return;
-    //тест4
-}
 
-console.log(calc(1, 2, 'add'))
-console.log(calc(1, 2, 'multi'))
-console.log(calc(3, 2, 'subtract'))
-console.log(calc(3, 2, 'subtracjt') == undefined)
-console.log(calc(3, 2, 'subtracjt') == NaN);
