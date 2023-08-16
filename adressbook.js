@@ -8,11 +8,17 @@ const phoneBook = {
       this.list[name] = number; // добавили number в свойство [name] свойства list
     },
     delete(name) {
-        this.list.delete[name];
+        delete this.list[name];
     }
   };
   
   phoneBook.add("Sarah Johnson", 123123123);
-  console.log(phoneBook.list['Sarah Johnson']); // 123123123
-  phoneBook.delete("Sarah Johnson");
-  console.log(phoneBook.list['Sarah Johnson']);
+//   console.log(phoneBook.list['Sarah Johnson']); // 123123123
+//   phoneBook.delete("Sarah Johnson");
+//   console.log(phoneBook.list['Sarah Johnson']);
+
+// Выведите все имена и номера из книги в таком формате {имя} - {номер} (John - 123456789)
+
+for (const name in phoneBook.list) {
+    console.log(name + ' - ' + phoneBook.list[name])
+}
