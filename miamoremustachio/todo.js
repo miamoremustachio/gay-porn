@@ -7,7 +7,8 @@ const STATUS = {
 
 //another snappy nameshpace for error messamges:
 const ERROR = {
-    TASK_EXIST: "The task you want to add is already exist.\nYou can change its status by using the 'changeStatus' method",
+    TASK_EXIST: "The task you want to add is already exist;\nYou can change its status by using the 'changeStatus' method.",
+    TASK_NOT_FOUND: "The task you're looking for wasn't found in list. Check the correctness of spelling and try again.",
     INVALID_STATUS: "Invalid status format: only 'to do', 'in progress' and 'done' are allowed.",
 };
 
@@ -16,10 +17,20 @@ function returnError(error) {
     switch (error) {
         case ERROR.TASK_EXIST:
             return console.error(ERROR.TASK_EXIST);
+        case ERROR.TASK_NOT_FOUND:
+            return console.error(ERROR.TASK_NOT_FOUND);
         case ERROR.INVALID_STATUS:
             return console.error(ERROR.INVALID_STATUS);
         // continue later...
     };
+}
+
+
+function findInvalid(status) {
+    if (status != STATUS.TODO
+     && status != STATUS.IN_PROGRESS
+     && status != STATUS.DONE)
+        { return true };
 }
 
 
@@ -33,22 +44,38 @@ const toDo = {
         'seek help from the pantheon of Greek gods': STATUS.IN_PROGRESS,
         'accept the inevitable': STATUS.IN_PROGRESS,
     },
-    add(task, status) {
+    add(task) {
         if (task in this.list) {
             returnError(ERROR.TASK_EXIST);
-        } else if (status != STATUS.TODO
-                && status != STATUS.IN_PROGRESS
-                && status != STATUS.DONE) {
+        } else {
+            this.list[task] = STATUS.TODO;
+        };
+    },
+    change(task, status) {
+        if (!(task in this.list)) {
+            returnError(ERROR.TASK_NOT_FOUND);
+        } else if (findInvalid(status)) {
             returnError(ERROR.INVALID_STATUS);
         } else {
             this.list[task] = status;
+        };
+    },
+    delete(task) {
+        if (!(task in this.list)) {
+            returnError(ERROR.TASK_NOT_FOUND);
+        } else {
+            delete this.list[task];
         };
     },
 };
 
 // testing:
 console.log(toDo.list);
-toDo.add('to foose the foo', 'to do');       // added successfully
-toDo.add('to bare the bar', 'todo');        // error
-toDo.add('accept the inevitable', 'done'); // error!
+toDo.add('just keep going like a real stoic chad'); // most of Greek gods would definitely approve it.
+toDo.add('accept the inevitable'); // [error]
+toDo.change('drink valeriana tincture', 'done'); // status changed successfully!
+toDo.change('seek help from the pantheon of Greek gods', "but I don't speak ancient Greek!"); // [error]
+toDo.change('*fictional task*', 'done'); // [error]
+toDo.delete('regret your decision at least 256 times'); // that's too specific.
+toDo.delete('discuss the problem with your cat'); // [error]
 console.log(toDo.list);
