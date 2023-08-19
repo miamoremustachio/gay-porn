@@ -21,16 +21,27 @@ function returnError(error) {
             return console.error(ERROR.TASK_NOT_FOUND);
         case ERROR.INVALID_STATUS:
             return console.error(ERROR.INVALID_STATUS);
-        // continue later...
     };
 }
-
 
 function findInvalid(status) {
     if (status != STATUS.TODO
      && status != STATUS.IN_PROGRESS
      && status != STATUS.DONE)
         { return true };
+}
+
+function showTasksBy(status) {
+    let statusExist;
+
+    for (const task in toDo.list) {
+        if (status === toDo.list[task]) { 
+            console.log('\t' + task);
+            statusExist = true;
+        };
+    };
+
+    if (!statusExist) { console.log('\t-'); };
 }
 
 
@@ -67,10 +78,17 @@ const toDo = {
             delete this.list[task];
         };
     },
+    showAll() {
+        console.log('To do:');
+            showTasksBy(STATUS.TODO);
+        console.log('In progress:');
+            showTasksBy(STATUS.IN_PROGRESS);
+        console.log('Done:');
+            showTasksBy(STATUS.DONE);
+    }
 };
 
 // testing:
-console.log(toDo.list);
 toDo.add('just keep going like a real stoic chad'); // most of Greek gods would definitely approve it.
 toDo.add('accept the inevitable'); // [error]
 toDo.change('drink valeriana tincture', 'done'); // status changed successfully!
@@ -78,4 +96,4 @@ toDo.change('seek help from the pantheon of Greek gods', "but I don't speak anci
 toDo.change('*fictional task*', 'done'); // [error]
 toDo.delete('regret your decision at least 256 times'); // that's too specific.
 toDo.delete('discuss the problem with your cat'); // [error]
-console.log(toDo.list);
+toDo.showAll(); // admire the result.
