@@ -2,13 +2,13 @@
 const randomExample = Math.random(); // returns random number between 0 and 1
 console.log(randomExample); // ?
 
-const minExample = Math.min(true, 5); // returns minimal number
-console.log(minExample); // 1
+const minExample = Math.min(true, false, '3'); // returns minimal number
+console.log(minExample); // 0
 
-const maxExample = Math.max(1, '5'); // returns maximum number
-console.log(maxExample); // 5
+const maxExample = Math.max('0xff', 2, 5, 5); // returns maximum number
+console.log(maxExample); // 255
 
-const exponentiationExample = Math.pow('hehe', null); // returns the number raised to the power
+const exponentiationExample = Math.pow('pizza', null); // returns the number raised to the power
 console.log(exponentiationExample); // 1                (equivalent to ** operator)
 
 
@@ -61,13 +61,17 @@ console.log( Number.isFinite('42') ); // false
 // → parseInt ←
 console.log( parseInt('1.2.3') ); // 1
 console.log( parseInt('0001') ); // 1
+// specify the base with second parameter:
+console.log( parseInt('A5', 36) ); // 365
 
 // 〜 parseFloat 〜
 console.log( parseFloat('1.2.3')); // 1.2
 console.log( parseFloat('1,2,3') ); // 1
 
 
-// short form for zeros:
+// different forms of zeros:
+console.log(1_000_000); // 1000000 (for sweet teeth)
 console.log( 1e3 ); // 1000
 console.log( 1.2e3 ); // 1200
 console.log( 1e000 ); // 1
+console.log( 1e-3 ); // 0.001
