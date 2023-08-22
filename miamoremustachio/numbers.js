@@ -21,7 +21,7 @@ console.log( Math.floor(2.9) ); // 2
 console.log( Math.ceil(2.1) ); // 3
 console.log( Math.ceil(2.9) ); // 3
 
-// ◯ circle ◯ 
+// ◯ round ◯
 console.log( Math.round(2.5) ); // 3
 console.log( Math.round(2.4) ); // 2
 // BUT:
