@@ -8,23 +8,27 @@ const ERROR = {
 const toDoList = ['pay bills', 'wash the dishes', 'enslave all the inhabitants of the galaxy'];
 
 
-function checkTaskValidity(task) {
-    if (typeof task != 'string') {
-        return console.error(ERROR.INVALID_TASK);
-    } else if (toDoList.includes(task)) {
-        return console.error(ERROR.TASK_EXIST);
-    } else { 
-        return true;
-    };
+function isTaskValid(task) {
+    return (typeof task != 'string') ? true : false;
 }
 
-function checkPositionValidity(pos) {
+function isTaskInList(task) {
+    return toDoList.includes(task) ? true : false;
+}
+
+function isPositionValid(pos) {
     return (Number.isInteger(pos) && 0 < pos && pos <= toDoList.length) ? true : false;
 }
 
 
 function addTask(task, position = 'end') {
-    if (!checkTaskValidity(task)) { return };
+    if (!isTaskValid(task)) { 
+        return console.error(ERROR.INVALID_TASK);
+    };
+    
+    if (!isTaskInList(task)) { 
+        return console.error(ERROR.TASK_EXIST);
+    };
 
     switch (position) {
         case 'end':
@@ -48,7 +52,7 @@ function deleteTask(taskPos = 'end') {
             return;
     };
 
-    if (checkPositionValidity(taskPos)) {
+    if (isPositionValid(taskPos)) {
         toDoList.splice(--taskPos, 1);
     } else if (toDoList.includes(taskPos)) {
         toDoList.splice(toDoList.indexOf(taskPos), 1);
