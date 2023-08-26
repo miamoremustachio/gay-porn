@@ -9,7 +9,7 @@ const toDoList = ['pay bills', 'wash the dishes', 'enslave all the inhabitants o
 
 
 function isTaskValid(task) {
-    return (typeof task != 'string') ? true : false;
+    return (typeof task === 'string') ? true : false;
 }
 
 function isTaskInList(task) {
@@ -26,7 +26,7 @@ function addTask(task, position = 'end') {
         return console.error(ERROR.INVALID_TASK);
     };
     
-    if (!isTaskInList(task)) { 
+    if (isTaskInList(task)) { 
         return console.error(ERROR.TASK_EXIST);
     };
 
@@ -77,9 +77,9 @@ addTask('smthing', 'smwhere'); // [error: invalid position]
 showList();
 
 deleteTask(); // Delete the last task (by default)
-deleteTask('start', 'pay bills'); // Delete the first task (second argument doesn't matter!)
+deleteTask('start', 'pay bills'); // Delete the first task (second argument doesn't matter)
 deleteTask('pay bills'); // Delete task by name
-deleteTask(1); // Delete task by number
+deleteTask(1); // Delete task by number (not by index!)
 deleteTask(42); // [error: task not found]
 deleteTask('enlist the support of cats'); // [error: task not found]
 showList();
