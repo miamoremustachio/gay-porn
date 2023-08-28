@@ -58,10 +58,10 @@ function getTaskObject(task, status, priority) {
     return { 'task': `${task}`, 'status': `${status}`, 'priority': `${priority}` }
 }
 
-function validationIsFailed(validationFunction, ass) {
-    if (validationFunction(ass)) { return false };
+function validationIsFailed(checkingFunction, checkingValue) {
+    if (checkingFunction(checkingValue)) { return false };
 
-    switch (validationFunction) {
+    switch (checkingFunction) {
         case isTaskValid:
             console.error(ERROR.INVALID_TASK);
             break;
