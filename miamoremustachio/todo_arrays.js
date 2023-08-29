@@ -63,6 +63,10 @@ function getTaskObject(task, status, priority) {
     return taskObject;
 }
 
+function findTaskByName(taskName) {
+    return toDo.list.find((taskObject) => taskObject.task === taskName);
+}
+
 function validationIsFailed(checkingFunction, checkingValue) {
     if (checkingFunction(checkingValue)) { return false };
 
@@ -119,7 +123,7 @@ const toDo = {
         || validationIsFailed(isStatusValid, status))
         { return };
 
-        const foundedTask = toDo.list.find((taskObject) => taskObject.task === task);
+        const foundedTask = findTaskByName(task);
         foundedTask.status = status;
     },
     changePriority(task, priority) {
@@ -127,24 +131,24 @@ const toDo = {
         || validationIsFailed(isPriorityValid, priority))
         { return };
 
-        const foundedTask = toDo.list.find((taskObject) => taskObject.task === task);
+        const foundedTask = findTaskByName(task);
         foundedTask.priority = priority;
     },
     delete(taskPos = 'end') {
         switch (taskPos) {
             case 'end':
-                toDo.list.pop();
+                this.list.pop();
                 return;
             case 'start':
-                toDo.list.shift();
+                this.list.shift();
                 return;
         };
 
         if (isPositionValid(taskPos)) {
-            toDo.list.splice(--taskPos, 1);
+            this.list.splice(--taskPos, 1);
 
         } else if (isTaskExist(taskPos)) {
-            toDo.list.splice(toDo.list.indexOf(taskPos), 1);
+            this.list.splice(this.list.indexOf(taskPos), 1);
 
         } else {
             return console.error(ERROR.TASK_NOT_FOUND);
