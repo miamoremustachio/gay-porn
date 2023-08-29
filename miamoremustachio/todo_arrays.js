@@ -91,7 +91,7 @@ function validationIsFailed(checkingFunction, checkingValue) {
     return true;
 }
 
-function showAllTaskWith(status) {
+function showAllTasksWith(status) {
     const sortedList = toDo.list.filter(taskObject => taskObject.status === status);
 
     if (!sortedList.length) { return console.log('-') };
@@ -156,10 +156,10 @@ const toDo = {
     },
     showList() {
         console.log('To do:');
-            showAllTaskWith(STATUS.TODO);
+            showAllTasksWith(STATUS.TODO);
         console.log('In progress:');
-            showAllTaskWith(STATUS.IN_PROGRESS);
+            showAllTasksWith(STATUS.IN_PROGRESS);
         console.log('Done:');
-            showAllTaskWith(STATUS.DONE);
+            showAllTasksWith(STATUS.DONE);
     }
 };
