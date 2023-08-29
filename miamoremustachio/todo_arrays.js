@@ -55,7 +55,12 @@ const isTaskUnique = (taskName) => {
 const isTaskExist = (taskName) => { return (!isTaskUnique(taskName)) };
 
 function getTaskObject(task, status, priority) {
-    return { 'task': `${task}`, 'status': `${status}`, 'priority': `${priority}` }
+    const taskObject = {};
+    taskObject['task'] = task;
+    taskObject['status'] = status;
+    taskObject['priority'] = priority;
+
+    return taskObject;
 }
 
 function validationIsFailed(checkingFunction, checkingValue) {
