@@ -41,7 +41,7 @@ const isPriorityValid = (priority) => {
 };
 
 const isPositionValid = (pos) => {
-    return (Number.isInteger(pos) && 0 < pos && pos < toDo.list.length) ? true : false;
+    return (Number.isInteger(pos) && 0 < pos && pos <= toDo.list.length) ? true : false;
 }
 
 const isTaskUnique = (taskName) => {
@@ -163,3 +163,44 @@ const toDo = {
             showAllTasksWith(STATUS.DONE);
     }
 };
+
+// ˭̡̞(◞˃ᆺ˂)◞ ₎₎=͟͟͞͞˳˚॰°ₒ৹๐  ~~~TESTING!~~~  ⋆｡°✩ ₊.°.⋆•˚₊⋆.
+toDo.add('foo');
+// ✓ success
+toDo.add('foo');
+// ✗ error [task exist]
+toDo.add();
+// ✗ error [invalid task]
+toDo.add('bar', 'mitzvah');
+// ✗ error [invalid status]
+toDo.add('bar', STATUS.DONE, 'OLEG');
+// ✗ error [invalid priority]
+toDo.add('bar', STATUS.DONE, PRIORITY.HIGH);
+// ✓ success
+toDo.showList();
+
+toDo.changeStatus('find Grigory');
+// ✗ error [task not found]
+toDo.changeStatus('foo', 'bar');
+// ✗ error [invalid status]
+toDo.changeStatus('foo', STATUS.IN_PROGRESS);
+// ✓ success
+toDo.showList();
+
+toDo.changePriority();
+// ✗ error [task not found]
+toDo.changePriority('foo', 'bar');
+// ✗ error [invalid priority]
+toDo.changePriority('foo', PRIORITY.HIGH);
+// ✓ success
+toDo.showList();
+
+toDo.delete();
+// ✓ successfully delete the last task
+toDo.delete('start');
+toDo.delete(1);
+// ✓ successfully delete the first task
+//   (with two different ways)
+toDo.delete('foo');
+// ✓ successfully delete the task by its name
+toDo.showList();
