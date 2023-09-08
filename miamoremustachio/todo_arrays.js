@@ -9,15 +9,25 @@ const PRIORITY = {
     HIGH: 'high'
 };
 
+const TASK_LENGTH = {
+    MIN: 3,
+    MAX: 30
+}
+
 const ERROR = {
-    INVALID_TASK: "Invalid task format: only strings are allowed.",
+    INVALID_TASK: `Invalid task format: only strings between ${TASK_LENGTH.MIN} and ${TASK_LENGTH.MAX} characters are allowed.`,
     INVALID_STATUS: `Incorrect status: you can use only '${STATUS.TODO}', '${STATUS.IN_PROGRESS}' and '${STATUS.DONE}'.`,
     INVALID_PRIORITY: `Incorrect priority: you can use only '${PRIORITY.LOW}' or '${PRIORITY.HIGH}'.`,
     TASK_EXIST: "Task you want to add is already in list.",
     TASK_NOT_FOUND: "Task wasn't found in list.",
 };
 
-const isTaskValid = (task) => typeof task === 'string' ? true : false;
+const isTaskValid = (task) => {
+    if (typeof task === 'string'
+        && task.length >= TASK_LENGTH.MIN
+        && task.length <= TASK_LENGTH.MAX)
+        { return true };
+}
 
 const isStatusValid = (status) => {
     switch (status) {
@@ -25,8 +35,6 @@ const isStatusValid = (status) => {
         case STATUS.IN_PROGRESS:
         case STATUS.DONE:
             return true;
-        default:
-            return false;
     };
 };
 
@@ -35,14 +43,12 @@ const isPriorityValid = (priority) => {
         case PRIORITY.LOW:
         case PRIORITY.HIGH:
             return true;
-        default:
-            return false;
     };
 };
 
 const isPositionValid = (pos) => {
     if (Number.isInteger(pos) && 0 < pos && pos <= toDo.list.length) { 
-        return true
+        return true;
     };
 }
 
@@ -52,7 +58,9 @@ const isTaskExist = (taskName) => {
     };
 };
 
-const isTaskUnique = (taskName) => { return (!isTaskExist(taskName)) };
+const isTaskUnique = (taskName) => {
+    return (!isTaskExist(taskName));
+};
 
 function getTaskObject(task, status, priority) {
     const taskObject = {};
@@ -67,30 +75,23 @@ function findTaskByName(taskName) {
     return toDo.list.find((taskObject) => taskObject.task === taskName);
 }
 
-function validationIsFailed(checkingFunction, checkingValue) {
+function checkValidity(checkingFunction, checkingValue) {
     const validationResultIsOk = checkingFunction(checkingValue);
 
     if (validationResultIsOk) { return false };
 
     switch (checkingFunction) {
         case isTaskValid:
-            console.error(ERROR.INVALID_TASK);
-            break;
+            throw new Error(ERROR.INVALID_TASK);
         case isStatusValid:
-            console.error(ERROR.INVALID_STATUS);
-            break;
+            throw new Error(ERROR.INVALID_STATUS);
         case isPriorityValid:
-            console.error(ERROR.INVALID_PRIORITY);
-            break;
+            throw new Error(ERROR.INVALID_PRIORITY);
         case isTaskUnique:
-            console.error(ERROR.TASK_EXIST);
-            break;
+            throw new Error(ERROR.TASK_EXIST);
         case isTaskExist:
-            console.error(ERROR.TASK_NOT_FOUND);
-            break;
+            throw new Error(ERROR.TASK_NOT_FOUND);
     };
-
-    return true;
 }
 
 function showAllTasksWith(status) {
@@ -111,27 +112,36 @@ const toDo = {
         { task: 'get rid of 150,346 bookmarks in Chrome', status: STATUS.TODO, priority: PRIORITY.HIGH },
     ],
     add(task, status = STATUS.TODO, priority = PRIORITY.LOW) {
-        if (validationIsFailed(isTaskValid, task)
-        || validationIsFailed(isStatusValid, status)
-        || validationIsFailed(isPriorityValid, priority)
-        || validationIsFailed(isTaskUnique, task)) 
-        { return };
+        try {
+            checkValidity(isTaskValid, task);
+            checkValidity(isStatusValid, status);
+            checkValidity(isPriorityValid, priority);
+            checkValidity(isTaskUnique, task);
+        } catch (error) {
+            console.error(error.message);
+        };
 
         const taskObject = getTaskObject(task, status, priority);
         this.list.push(taskObject);
     },
     changeStatus(task, status) {
-        if (validationIsFailed(isTaskExist, task)
-        || validationIsFailed(isStatusValid, status))
-        { return };
-
+        try { 
+            checkValidity(isTaskExist, task);
+            checkValidity(isStatusValid, status);
+        } catch (error) {
+            return console.error(error.message);
+        };
+        
         const foundedTask = findTaskByName(task);
         foundedTask.status = status;
     },
     changePriority(task, priority) {
-        if (validationIsFailed(isTaskExist, task)
-        || validationIsFailed(isPriorityValid, priority))
-        { return };
+        try { 
+            checkValidity(isTaskExist, task);
+            checkValidity(isPriorityValid, priority);
+        } catch (error) {
+            return console.error(error.message);
+        };
 
         const foundedTask = findTaskByName(task);
         foundedTask.priority = priority;
@@ -146,14 +156,19 @@ const toDo = {
                 return;
         };
 
-        if (isPositionValid(taskPos)) {
-            this.list.splice(--taskPos, 1);
+        try {
+            if (isPositionValid(taskPos)) {
+                this.list.splice(--taskPos, 1);
 
-        } else if (isTaskExist(taskPos)) {
-            this.list.splice(this.list.indexOf(taskPos), 1);
+            } else if (isTaskExist(taskPos)) {
+                const taskIndex = this.list.indexOf(taskPos);
+                this.list.splice(taskIndex, 1);
 
-        } else {
-            return console.error(ERROR.TASK_NOT_FOUND);
+            } else {
+                throw new Error(ERROR.TASK_NOT_FOUND);
+            };
+        } catch (error) {
+            console.error(error.message);
         };
     },
     showList() {
@@ -165,44 +180,3 @@ const toDo = {
             showAllTasksWith(STATUS.DONE);
     }
 };
-
-// ˭̡̞(◞˃ᆺ˂)◞ ₎₎=͟͟͞͞˳˚॰°ₒ৹⋆｡°.˚✩•₊⋆  ~~~TESTING!~~~  ⋆｡°✩ ₊.°.⋆•˚₊⋆.
-toDo.add('foo');
-// ✓ success
-toDo.add('foo');
-// ✗ error [task exist]
-toDo.add();
-// ✗ error [invalid task]
-toDo.add('bar', 'mitzvah');
-// ✗ error [invalid status]
-toDo.add('bar', STATUS.DONE, 'OLEG');
-// ✗ error [invalid priority]
-toDo.add('bar', STATUS.DONE, PRIORITY.HIGH);
-// ✓ success
-toDo.showList();
-
-toDo.changeStatus('find Grigory');
-// ✗ error [task not found]
-toDo.changeStatus('foo', 'bar');
-// ✗ error [invalid status]
-toDo.changeStatus('foo', STATUS.IN_PROGRESS);
-// ✓ success
-toDo.showList();
-
-toDo.changePriority();
-// ✗ error [task not found]
-toDo.changePriority('foo', 'bar');
-// ✗ error [invalid priority]
-toDo.changePriority('foo', PRIORITY.HIGH);
-// ✓ success
-toDo.showList();
-
-toDo.delete();
-// ✓ successfully delete the last task
-toDo.delete('start');
-toDo.delete(1);
-// ✓ successfully delete the first task
-//   (with two different ways)
-toDo.delete('foo');
-// ✓ successfully delete the task by its name
-toDo.showList();
