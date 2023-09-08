@@ -41,18 +41,18 @@ const isPriorityValid = (priority) => {
 };
 
 const isPositionValid = (pos) => {
-    return (Number.isInteger(pos) && 0 < pos && pos <= toDo.list.length) ? true : false;
+    if (Number.isInteger(pos) && 0 < pos && pos <= toDo.list.length) { 
+        return true
+    };
 }
 
-const isTaskUnique = (taskName) => {
+const isTaskExist = (taskName) => {
     if (toDo.list.find(taskObject => taskObject.task === taskName)) {
-        return false;
-    } else {
         return true;
     };
 };
 
-const isTaskExist = (taskName) => { return (!isTaskUnique(taskName)) };
+const isTaskUnique = (taskName) => { return (!isTaskExist(taskName)) };
 
 function getTaskObject(task, status, priority) {
     const taskObject = {};
@@ -68,7 +68,9 @@ function findTaskByName(taskName) {
 }
 
 function validationIsFailed(checkingFunction, checkingValue) {
-    if (checkingFunction(checkingValue)) { return false };
+    const validationResultIsOk = checkingFunction(checkingValue);
+
+    if (validationResultIsOk) { return false };
 
     switch (checkingFunction) {
         case isTaskValid:
