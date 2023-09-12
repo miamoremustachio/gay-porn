@@ -9,23 +9,17 @@ const PRIORITY = {
     HIGH: 'high'
 };
 
-const TASK_LENGTH = {
-    MIN: 3,
-    MAX: 30
-}
-
 const ERROR = {
-    INVALID_TASK: `Invalid task format: only strings between ${TASK_LENGTH.MIN} and ${TASK_LENGTH.MAX} characters are allowed.`,
+    INVALID_TASK: `Invalid task format: only strings are allowed.`,
     INVALID_STATUS: `Incorrect status: you can use only '${STATUS.TODO}', '${STATUS.IN_PROGRESS}' and '${STATUS.DONE}'.`,
     INVALID_PRIORITY: `Incorrect priority: you can use only '${PRIORITY.LOW}' or '${PRIORITY.HIGH}'.`,
     TASK_EXIST: "Task you want to add is already in list.",
     TASK_NOT_FOUND: "Task wasn't found in list.",
+    EMPTY_TASK_LIST: "Please, write at least one task to add it to the list.",
 };
 
 const isTaskValid = (task) => {
-    if (typeof task === 'string'
-        && task.length >= TASK_LENGTH.MIN
-        && task.length <= TASK_LENGTH.MAX)
+    if (typeof task === 'string')
         { return true };
 }
 
@@ -62,7 +56,11 @@ const isTaskUnique = (taskName) => {
     return (!isTaskExist(taskName));
 };
 
-function getTaskObject(task, status, priority) {
+const isArrayNotEmpty = (arr) => {
+    if (arr.length) { return true };
+};
+
+function getTaskObject(task, status = STATUS.TODO, priority = PRIORITY.LOW) {
     const taskObject = {};
     taskObject['task'] = task;
     taskObject['status'] = status;
@@ -91,6 +89,8 @@ function checkValidity(checkingFunction, checkingValue) {
             throw new Error(ERROR.TASK_EXIST);
         case isTaskExist:
             throw new Error(ERROR.TASK_NOT_FOUND);
+        case isArrayNotEmpty:
+            throw new Error(ERROR.EMPTY_TASK_LIST);
     };
 }
 
@@ -123,6 +123,20 @@ const toDo = {
 
         const taskObject = getTaskObject(task, status, priority);
         this.list.push(taskObject);
+    },
+    addMultipleTasks(...tasks) { // Rest parameters
+        try {
+            checkValidity(isArrayNotEmpty, tasks);
+            tasks.forEach(task => {
+                checkValidity(isTaskValid, task);
+                checkValidity(isTaskUnique, task);
+            });
+        } catch (error) {
+            return console.error(error.message);
+        };
+
+        const taskObjects = tasks.map(task => getTaskObject(task));
+        this.list.push(...taskObjects); // Spread
     },
     changeStatus(task, status) {
         try { 
@@ -182,26 +196,9 @@ const toDo = {
 };
 
 // testing:
-toDo.add(); // [invalid task]
-toDo.add('foo', 'bar'); // [incorrect status]
-toDo.add('foo', STATUS.TODO, 123); // [incorrect priority]
-toDo.add('foo'); // YAY!
-toDo.add('foo'); // [task exist]
 toDo.showList();
-
-toDo.changeStatus(); // [task not found]
-toDo.changeStatus('foo', undefined); // [incorrect status]
-toDo.changeStatus('foo', STATUS.DONE); // YAY!!
+toDo.addMultipleTasks(); // [empty task list]
+toDo.addMultipleTasks(42); // [invalid task]
+toDo.addMultipleTasks('foo', 'bar'); // ✓
+toDo.addMultipleTasks('foo', 'bar'); // [task exists]
 toDo.showList();
-
-toDo.changePriority(null); // [task not found]
-toDo.changePriority('foo', NaN); // [incorrect priority]
-toDo.changePriority('foo', PRIORITY.HIGH); // YAY!!!
-toDo.showList();
-
-toDo.delete(); // delete last task
-toDo.delete('start'); // delete first task
-toDo.delete(1); // delete first task again
-toDo.delete('bar'); // [task not found]
-toDo.delete('get rid of 150,346 bookmarks in Chrome');
-toDo.showList(); // e m p t y . . .
