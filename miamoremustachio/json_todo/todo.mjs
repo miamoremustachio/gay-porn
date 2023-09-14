@@ -1,3 +1,5 @@
+import data from './tasks.json' assert {type: "json"};
+
 const STATUS = {
     TODO: 'to do',
     IN_PROGRESS: 'in progress',
@@ -106,11 +108,7 @@ function showAllTasksWith(status) {
 
 
 const toDo = {
-    list: [
-        { task: 'become super-schmuper devemloper', status: STATUS.IN_PROGRESS, priority: PRIORITY.LOW },
-        { task: 'watch documentary about hedgehogs', status: STATUS.TODO, priority: PRIORITY.LOW },
-        { task: 'get rid of 150,346 bookmarks in Chrome', status: STATUS.TODO, priority: PRIORITY.HIGH },
-    ],
+    list: data.tasks,
     add(task, status = STATUS.TODO, priority = PRIORITY.LOW) {
         try {
             checkValidity(isTaskValid, task);
@@ -161,7 +159,7 @@ const toDo = {
                 this.list.splice(--taskPos, 1);
 
             } else if (isTaskExist(taskPos)) {
-                const taskIndex = this.list.indexOf(taskPos);
+                const taskIndex = this.list.findIndex(task => task.task === taskPos);
                 this.list.splice(taskIndex, 1);
 
             } else {
@@ -201,7 +199,7 @@ toDo.showList();
 
 toDo.delete(); // delete last task
 toDo.delete('start'); // delete first task
-toDo.delete(1); // delete first task again
+toDo.delete(2); // delete second task
 toDo.delete('bar'); // [task not found]
-toDo.delete('get rid of 150,346 bookmarks in Chrome');
-toDo.showList(); // e m p t y . . .
+toDo.delete('watch documentary about hedgehogs');
+toDo.showList();
