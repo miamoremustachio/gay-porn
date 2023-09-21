@@ -20,8 +20,13 @@ function showList(taskObject) {
     };
 }
 
+function showError(error) {
+    console.log(`${error.name}: ${error.message}`);
+}
+
 module.exports = {
     isNumberValid,
     requestTask,
     showList,
+    showError,
 };

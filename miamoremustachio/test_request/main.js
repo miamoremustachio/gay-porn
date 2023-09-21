@@ -2,12 +2,13 @@ const {
     isNumberValid,
     requestTask,
     showList,
+    showError,
 } = require('./modules');
 
 function getToDoList(amountOfTasks) {
     try {
         if (!isNumberValid(amountOfTasks)) {
-            throw new Error('Error: task number is invalid.');
+            throw new Error('Invalid argument.');
         };
 
         const promises = [];
@@ -19,9 +20,14 @@ function getToDoList(amountOfTasks) {
         Promise.all(promises)
             .then(values => { showList(values) });
 
-    } catch(error) {
-        console.error(error.message);
+    } catch(err) {
+        showError(err);
     };
 }
 
-getToDoList(10);
+// testing:
+getToDoList(); // [invalid argument]
+getToDoList(0); // [invalid argument]
+getToDoList(-1); // [invalid argument]
+getToDoList('Oleg'); // [invalid argument]
+getToDoList(10); // YAY!
