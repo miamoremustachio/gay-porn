@@ -1,3 +1,7 @@
+function isNumberValid(number) {
+    return (isFinite(number) && number > 0) ? true : false;
+}
+
 function requestTask(taskNumber) {
     return fetch(`https://jsonplaceholder.typicode.com/todos/${taskNumber}`)
         .then(response => {
@@ -7,12 +11,18 @@ function requestTask(taskNumber) {
 
             return response.json();
         })
-        .then(data => data);
 }
 
-function showToDoList(amountOfTasks) {
+function showList(taskObject) {
+    for (const task of taskObject) {
+        const checkmark = (task.completed) ? '✓' : '◯';
+        console.log(`${task.id}. ${task.title} ${checkmark}`);
+    };
+}
+
+function getToDoList(amountOfTasks) {
     try {
-        if (!isFinite(amountOfTasks) || amountOfTasks <= 0) {
+        if (!isNumberValid(amountOfTasks)) {
             throw new Error('Error: task number is invalid.');
         };
 
@@ -23,16 +33,11 @@ function showToDoList(amountOfTasks) {
         };
 
         Promise.all(promises)
-            .then(values => {
-                for (const task of values) {
-                    const checkmark = (task.completed) ? '✓' : '◯';
-                    console.log(`${task.id}. ${task.title} ${checkmark}`);
-                };
-            });
+            .then(values => { showList(values) });
 
     } catch(error) {
         console.error(error.message);
     };
 }
 
-showToDoList(10);
+getToDoList(10);
