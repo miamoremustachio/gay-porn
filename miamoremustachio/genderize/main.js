@@ -1,42 +1,37 @@
 const {
     API,
-    ERROR,
     getResponseError,
     getNameError,
-    isNameValid,
+    getCapitalizedName,
     readline,
 } = require('./modules');
 
-readline.question("What is your name? ", name => {
-    try {
-        request(name);
-    } catch(error) {
-        console.error(error.message);
-    };
-})
 
 function request(name) {
-    if (!isNameValid(name)) {
-        throw new Error(ERROR.INVALID_NAME);
-    };
-
     const url = `${API}?name=${name}`;
+    
+    return fetch(url)
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(getResponseError(response));
+        };
 
-    fetch(url)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(getResponseError(response));
-            };
-
-            return response.json();
-        })
-        .then(data => {
-            if (!data.count) {
-                throw new Error(getNameError(data.name));
-            };
-
-            const probability = `${data.probability * 100}`;
-            console.log(`The name ${data.name} is ${data.gender} with a probability of ${probability}%`);
-        })
-        .catch(error => console.error(error.message))
+        return response.json();
+    })
 }
+    
+readline.question("What is your name? ", name => {
+    request(name)
+    .then(data => {
+        const name = getCapitalizedName(data.name);
+        const gender = data.gender;
+        const probability = (data.probability * 100);
+
+        if (!gender) {
+            throw new Error(getNameError(name));
+        };
+        
+        console.log(`The name ${name} is ${gender} with a probability of ${probability}%`);
+    })
+    .catch(error => console.error(error.message));
+});
