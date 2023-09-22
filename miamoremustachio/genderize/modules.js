@@ -1,5 +1,7 @@
 const API = 'https://api.genderize.io';
 
+const EXIT_COMMAND = 'exit';
+
 function getResponseError(response) {
     return `${response.status}: ${response.statusText}`;
 }
@@ -19,6 +21,7 @@ const readline = require('readline').createInterface({
 
 module.exports = {
     API,
+    EXIT_COMMAND,
     getResponseError,
     getNameError,
     getCapitalizedName,
