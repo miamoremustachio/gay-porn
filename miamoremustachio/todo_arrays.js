@@ -161,7 +161,7 @@ const toDo = {
                 this.list.splice(--taskPos, 1);
 
             } else if (isTaskExist(taskPos)) {
-                const taskIndex = this.list.indexOf(taskPos);
+                const taskIndex = this.list.findIndex(task => task.task === taskPos);
                 this.list.splice(taskIndex, 1);
 
             } else {
