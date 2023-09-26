@@ -16,47 +16,51 @@ const {
 } = require('./modules/checking_functions.js');
 
 const {
-    getTaskObject,
     findTaskByName,
     showAllTasksWith
 } = require('./modules/additional_functions.js');
 
+function Task(title, status, priority) {
+    this.task = title;
+    this.status = status;
+    this.priority = priority;
+}
 
 const toDo = {
     list: TASKS,
-    add(task, status = STATUS.TODO, priority = PRIORITY.LOW) {
+    add(title, status = STATUS.TODO, priority = PRIORITY.LOW) {
         try {
-            checkValidity(isTaskValid, task);
+            checkValidity(isTaskValid, title);
             checkValidity(isStatusValid, status);
             checkValidity(isPriorityValid, priority);
-            checkValidity(isTaskUnique, task);
+            checkValidity(isTaskUnique, title);
         } catch (error) {
             return console.error(error.message);
         };
 
-        const taskObject = getTaskObject(task, status, priority);
+        const taskObject = new Task(title, status, priority);
         this.list.push(taskObject);
     },
-    changeStatus(task, status) {
+    changeStatus(title, status) {
         try { 
-            checkValidity(isTaskExist, task);
+            checkValidity(isTaskExist, title);
             checkValidity(isStatusValid, status);
         } catch (error) {
             return console.error(error.message);
         };
         
-        const foundedTask = findTaskByName(task);
+        const foundedTask = findTaskByName(title);
         foundedTask.status = status;
     },
-    changePriority(task, priority) {
+    changePriority(title, priority) {
         try { 
-            checkValidity(isTaskExist, task);
+            checkValidity(isTaskExist, title);
             checkValidity(isPriorityValid, priority);
         } catch (error) {
             return console.error(error.message);
         };
 
-        const foundedTask = findTaskByName(task);
+        const foundedTask = findTaskByName(title);
         foundedTask.priority = priority;
     },
     delete(taskPos = 'end') {
@@ -74,7 +78,7 @@ const toDo = {
                 this.list.splice(--taskPos, 1);
 
             } else if (isTaskExist(taskPos)) {
-                const taskIndex = this.list.findIndex(task => task.task === taskPos);
+                const taskIndex = this.list.findIndex(task => task.title === taskPos);
                 this.list.splice(taskIndex, 1);
 
             } else {

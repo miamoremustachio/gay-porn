@@ -2,15 +2,6 @@ const {
     TASKS
 } = require('./constants.js');
 
-function getTaskObject(task, status, priority) {
-    const taskObject = {};
-    taskObject['task'] = task;
-    taskObject['status'] = status;
-    taskObject['priority'] = priority;
-
-    return taskObject;
-}
-
 function findTaskByName(taskName) {
     return TASKS.find((taskObject) => taskObject.task === taskName);
 }
@@ -26,7 +17,6 @@ function showAllTasksWith(status) {
 }
 
 module.exports = {
-    getTaskObject,
     findTaskByName,
     showAllTasksWith
 };
