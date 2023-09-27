@@ -1,12 +1,11 @@
 const {
-    TASKS,
     STATUS,
     PRIORITY,
     ERROR
 } = require('./modules/constants.js');
 
 const {
-    isTaskValid,
+    isTitleValid,
     isStatusValid,
     isPriorityValid,
     isPositionValid,
@@ -16,7 +15,8 @@ const {
 } = require('./modules/checking_functions.js');
 
 const {
-    findTaskByName,
+    findTaskBy,
+    findTaskIndex,
     showAllTasksWith
 } = require('./modules/additional_functions.js');
 
@@ -27,13 +27,18 @@ function Task(title, status, priority) {
 }
 
 const toDo = {
-    list: TASKS,
-    add(title, status = STATUS.TODO, priority = PRIORITY.LOW) {
+    list: [
+        { task: 'become super-schmuper devemloper', status: STATUS.IN_PROGRESS, priority: PRIORITY.LOW },
+        { task: 'watch documentary about hedgehogs', status: STATUS.TODO, priority: PRIORITY.LOW },
+        { task: 'get rid of 150,346 bookmarks in Chrome', status: STATUS.TODO, priority: PRIORITY.HIGH },
+    ],
+    add(title, status = STATUS.TODO, priority = PRIORITY.LOW)
+        {
         try {
-            checkValidity(isTaskValid, title);
+            checkValidity(isTitleValid, title);
             checkValidity(isStatusValid, status);
             checkValidity(isPriorityValid, priority);
-            checkValidity(isTaskUnique, title);
+            checkValidity(isTaskUnique, title, this.list);
         } catch (error) {
             return console.error(error.message);
         };
@@ -42,25 +47,25 @@ const toDo = {
         this.list.push(taskObject);
     },
     changeStatus(title, status) {
-        try { 
-            checkValidity(isTaskExist, title);
+        try {
+            checkValidity(isTaskExist, title, this.list);
             checkValidity(isStatusValid, status);
         } catch (error) {
             return console.error(error.message);
         };
         
-        const foundedTask = findTaskByName(title);
+        const foundedTask = findTaskBy(title, this.list);
         foundedTask.status = status;
     },
     changePriority(title, priority) {
         try { 
-            checkValidity(isTaskExist, title);
+            checkValidity(isTaskExist, title, this.list);
             checkValidity(isPriorityValid, priority);
         } catch (error) {
             return console.error(error.message);
         };
 
-        const foundedTask = findTaskByName(title);
+        const foundedTask = findTaskBy(title, this.list);
         foundedTask.priority = priority;
     },
     delete(taskPos = 'end') {
@@ -74,11 +79,11 @@ const toDo = {
         };
 
         try {
-            if (isPositionValid(taskPos)) {
+            if (isPositionValid(taskPos, this.list)) {
                 this.list.splice(--taskPos, 1);
 
-            } else if (isTaskExist(taskPos)) {
-                const taskIndex = this.list.findIndex(task => task.title === taskPos);
+            } else if (isTaskExist(taskPos, this.list)) {
+                const taskIndex = findTaskIndex(taskPos, this.list);
                 this.list.splice(taskIndex, 1);
 
             } else {
@@ -90,11 +95,11 @@ const toDo = {
     },
     showList() {
         console.log('To do:');
-            showAllTasksWith(STATUS.TODO);
+            showAllTasksWith(STATUS.TODO, this.list);
         console.log('In progress:');
-            showAllTasksWith(STATUS.IN_PROGRESS);
+            showAllTasksWith(STATUS.IN_PROGRESS, this.list);
         console.log('Done:');
-            showAllTasksWith(STATUS.DONE);
+            showAllTasksWith(STATUS.DONE, this.list);
     }
 };
 

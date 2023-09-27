@@ -22,16 +22,9 @@ const ERROR = {
     TASK_NOT_FOUND: "Task wasn't found in list.",
 };
 
-const TASKS = [
-    { task: 'become super-schmuper devemloper', status: STATUS.IN_PROGRESS, priority: PRIORITY.LOW },
-    { task: 'watch documentary about hedgehogs', status: STATUS.TODO, priority: PRIORITY.LOW },
-    { task: 'get rid of 150,346 bookmarks in Chrome', status: STATUS.TODO, priority: PRIORITY.HIGH },
-]
-
 module.exports = {
     STATUS,
     PRIORITY,
     TASK_LENGTH,
-    ERROR,
-    TASKS
+    ERROR
 };

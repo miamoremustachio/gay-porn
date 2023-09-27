@@ -3,14 +3,16 @@ const {
     PRIORITY,
     TASK_LENGTH,
     ERROR,
-    TASKS
 } = require('./constants.js');
 
-const isTaskValid = (task) => {
+const isTitleValid = (task) => {
     if (typeof task === 'string'
         && task.length >= TASK_LENGTH.MIN
-        && task.length <= TASK_LENGTH.MAX)
-        { return true };
+        && task.length <= TASK_LENGTH.MAX) {
+        return true;
+    } else {
+        return false;
+    };
 }
 
 const isStatusValid = (status) => {
@@ -19,41 +21,41 @@ const isStatusValid = (status) => {
         case STATUS.IN_PROGRESS:
         case STATUS.DONE:
             return true;
+        default:
+            return false;
     };
-};
+}
 
 const isPriorityValid = (priority) => {
     switch (priority) {
         case PRIORITY.LOW:
         case PRIORITY.HIGH:
             return true;
-    };
-};
-
-const isPositionValid = (pos) => {
-    if (Number.isInteger(pos) && 0 < pos && pos <= TASKS.length) { 
-        return true;
+        default:
+            return false;
     };
 }
 
-const isTaskExist = (taskName) => {
-    if (TASKS.find(taskObject => taskObject.task === taskName)) {
-        return true;
-    };
-};
+const isPositionValid = (pos, taskList) => {
+    return (Number.isInteger(pos) && 0 < pos && pos <= taskList.length) ? true : false;
+}
 
-const isTaskUnique = (taskName) => {
-    return (!isTaskExist(taskName));
-};
+const isTaskExist = (title, taskList) => {
+    return (taskList.find(taskObject => taskObject.task === title)) ? true : false;
+}
+
+const isTaskUnique = (title, taskList) => {
+    return (!isTaskExist(title, taskList));
+}
 
 
-function checkValidity(checkingFunction, checkingValue) {
-    const validationResultIsOk = checkingFunction(checkingValue);
+function checkValidity(checkingFunction, checkingValue, list) {
+    const validationResultIsOk = checkingFunction(checkingValue, list);
 
-    if (validationResultIsOk) { return false };
+    if (validationResultIsOk) { return };
 
     switch (checkingFunction) {
-        case isTaskValid:
+        case isTitleValid:
             throw new Error(ERROR.INVALID_TASK);
         case isStatusValid:
             throw new Error(ERROR.INVALID_STATUS);
@@ -67,7 +69,7 @@ function checkValidity(checkingFunction, checkingValue) {
 }
 
 module.exports = {
-    isTaskValid,
+    isTitleValid,
     isStatusValid,
     isPriorityValid,
     isPositionValid,

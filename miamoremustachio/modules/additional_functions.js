@@ -1,13 +1,13 @@
-const {
-    TASKS
-} = require('./constants.js');
-
-function findTaskByName(taskName) {
-    return TASKS.find((taskObject) => taskObject.task === taskName);
+function findTaskBy(title, taskList) {
+    return taskList.find(taskObject => taskObject.task === title);
 }
 
-function showAllTasksWith(status) {
-    const sortedList = TASKS.filter(taskObject => taskObject.status === status);
+function findTaskIndex(title, taskList) {
+    return taskList.findIndex(taskObject => taskObject.task === title);
+}
+
+function showAllTasksWith(status, taskList) {
+    const sortedList = taskList.filter(taskObject => taskObject.status === status);
 
     if (!sortedList.length) { return console.log('-') };
 
@@ -17,6 +17,7 @@ function showAllTasksWith(status) {
 }
 
 module.exports = {
-    findTaskByName,
+    findTaskBy,
+    findTaskIndex,
     showAllTasksWith
 };
