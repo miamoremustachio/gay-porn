@@ -5,10 +5,10 @@ const {
     ERROR,
 } = require('./constants.js');
 
-const isTitleValid = (task) => {
-    if (typeof task === 'string'
-        && task.length >= TASK_LENGTH.MIN
-        && task.length <= TASK_LENGTH.MAX) {
+const isTitleValid = (title) => {
+    if (typeof title === 'string'
+        && title.length >= TASK_LENGTH.MIN
+        && title.length <= TASK_LENGTH.MAX) {
         return true;
     } else {
         return false;
@@ -36,18 +36,17 @@ const isPriorityValid = (priority) => {
     };
 }
 
-const isPositionValid = (pos, taskList) => {
-    return (Number.isInteger(pos) && 0 < pos && pos <= taskList.length) ? true : false;
-}
-
 const isTaskExist = (title, taskList) => {
-    return (taskList.find(taskObject => taskObject.task === title)) ? true : false;
+    return (taskList.find(task => task.title === title)) ? true : false;
 }
 
 const isTaskUnique = (title, taskList) => {
     return (!isTaskExist(title, taskList));
 }
 
+const isPosition = (arg, taskList) => {
+    return (Number.isInteger(arg) && 0 < arg && arg <= taskList.length) ? true : false;
+}
 
 function checkValidity(checkingFunction, checkingValue, list) {
     const validationResultIsOk = checkingFunction(checkingValue, list);
@@ -72,8 +71,8 @@ module.exports = {
     isTitleValid,
     isStatusValid,
     isPriorityValid,
-    isPositionValid,
     isTaskExist,
     isTaskUnique,
+    isPosition,
     checkValidity
 };

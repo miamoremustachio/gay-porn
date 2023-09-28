@@ -8,43 +8,47 @@ const {
     isTitleValid,
     isStatusValid,
     isPriorityValid,
-    isPositionValid,
+    isPosition,
     isTaskExist,
     isTaskUnique,
     checkValidity
 } = require('./modules/checking_functions.js');
 
 const {
-    findTaskBy,
-    findTaskIndex,
+    findTask,
     showAllTasksWith
 } = require('./modules/additional_functions.js');
 
-function Task(title, status, priority) {
-    this.task = title;
-    this.status = status;
-    this.priority = priority;
+function Task(title) {
+    this.title = title;
+    this.status = STATUS.TODO;
+    this.priority = PRIORITY.LOW;
+    this.setStatus = function(status) { this.status = status };
+    this.setPriority = function(priority) { this.priority = priority };
 }
 
 const toDo = {
     list: [
-        { task: 'become super-schmuper devemloper', status: STATUS.IN_PROGRESS, priority: PRIORITY.LOW },
-        { task: 'watch documentary about hedgehogs', status: STATUS.TODO, priority: PRIORITY.LOW },
-        { task: 'get rid of 150,346 bookmarks in Chrome', status: STATUS.TODO, priority: PRIORITY.HIGH },
+        new Task('watch documentary about hedgehogs'),
+        new Task('become super-schmuper devemloper'),
+        new Task('get rid of 150,346 bookmarks in Chrome'),
     ],
-    add(title, status = STATUS.TODO, priority = PRIORITY.LOW)
-        {
+    add(title, status, priority) {
         try {
             checkValidity(isTitleValid, title);
-            checkValidity(isStatusValid, status);
-            checkValidity(isPriorityValid, priority);
             checkValidity(isTaskUnique, title, this.list);
+            if (status) { checkValidity(isStatusValid, status) };
+            if (priority) { checkValidity(isPriorityValid, priority) };
         } catch (error) {
             return console.error(error.message);
         };
 
-        const taskObject = new Task(title, status, priority);
-        this.list.push(taskObject);
+        const task = new Task(title);
+
+        if (status) { task.setStatus(status) };
+        if (priority) { task.setPriority(priority) };
+
+        this.list.push(task);
     },
     changeStatus(title, status) {
         try {
@@ -54,8 +58,8 @@ const toDo = {
             return console.error(error.message);
         };
         
-        const foundedTask = findTaskBy(title, this.list);
-        foundedTask.status = status;
+        const task = findTask(title, this.list);
+        task.setStatus(status);
     },
     changePriority(title, priority) {
         try { 
@@ -65,8 +69,8 @@ const toDo = {
             return console.error(error.message);
         };
 
-        const foundedTask = findTaskBy(title, this.list);
-        foundedTask.priority = priority;
+        const task = findTask(title, this.list);
+        task.setPriority(priority);
     },
     delete(taskPos = 'end') {
         switch (taskPos) {
@@ -79,12 +83,13 @@ const toDo = {
         };
 
         try {
-            if (isPositionValid(taskPos, this.list)) {
-                this.list.splice(--taskPos, 1);
+            if (isPosition(taskPos, this.list)) {
+                const taskIndex = --taskPos;
+                this.list.splice(taskIndex, 1);
 
             } else if (isTaskExist(taskPos, this.list)) {
-                const taskIndex = findTaskIndex(taskPos, this.list);
-                this.list.splice(taskIndex, 1);
+                const sortedList = this.list.filter(task => task.title !== taskPos);
+                this.list = sortedList;
 
             } else {
                 throw new Error(ERROR.TASK_NOT_FOUND);
@@ -110,7 +115,6 @@ toDo.add('foo', STATUS.TODO, 123); // [incorrect priority]
 toDo.add('foo'); // YAY!
 toDo.add('foo'); // [task exist]
 toDo.showList();
-
 
 toDo.changeStatus(); // [task not found]
 toDo.changeStatus('foo', undefined); // [incorrect status]
