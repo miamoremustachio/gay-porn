@@ -15,16 +15,17 @@ const TASK_LENGTH = {
 };
 
 const ERROR = {
-    INVALID_TASK: `Invalid task format: only strings between ${TASK_LENGTH.MIN} and ${TASK_LENGTH.MAX} characters are allowed.`,
-    INVALID_STATUS: `Incorrect status: you can use only '${STATUS.TODO}', '${STATUS.IN_PROGRESS}' and '${STATUS.DONE}'.`,
-    INVALID_PRIORITY: `Incorrect priority: you can use only '${PRIORITY.LOW}' or '${PRIORITY.HIGH}'.`,
-    TASK_EXIST: "Task you want to add is already in list.",
-    TASK_NOT_FOUND: "Task wasn't found in list.",
+    INVALID_TASK: `✗ Invalid task format: only strings between ${TASK_LENGTH.MIN} and ${TASK_LENGTH.MAX} characters are allowed.`,
+    INVALID_STATUS: `✗ Incorrect status: you can use only '${STATUS.TODO}', '${STATUS.IN_PROGRESS}' and '${STATUS.DONE}'.`,
+    INVALID_PRIORITY: `✗ Incorrect priority: you can use only '${PRIORITY.LOW}' or '${PRIORITY.HIGH}'.`,
+    TASK_EXIST: "✗ Task you want to add is already in list.",
+    TASK_NOT_FOUND: "✗ Task wasn't found in list.",
+    LOGGER_NOT_ENDED: "✗ Results couldn't be displayed because Logger wasn't ended correctly.",
 };
 
 module.exports = {
     STATUS,
     PRIORITY,
     TASK_LENGTH,
-    ERROR
+    ERROR,
 };

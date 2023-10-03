@@ -1,7 +1,7 @@
 const {
     STATUS,
     PRIORITY,
-    ERROR
+    ERROR,
 } = require('./modules/constants.js');
 
 const {
@@ -11,21 +11,19 @@ const {
     isPosition,
     isTaskExist,
     isTaskUnique,
-    checkValidity
+    checkValidity,
 } = require('./modules/checking_functions.js');
 
 const {
+    Task,
+    Logger,
     findTask,
-    showAllTasksWith
+    showAddMessage,
+    showChangeStatusMessage,
+    showChangePriorityMessage,
+    showDeleteMessage,
+    showAllTasksWith,
 } = require('./modules/additional_functions.js');
-
-function Task(title) {
-    this.title = title;
-    this.status = STATUS.TODO;
-    this.priority = PRIORITY.LOW;
-    this.setStatus = function(status) { this.status = status };
-    this.setPriority = function(priority) { this.priority = priority };
-}
 
 const toDo = {
     list: [
@@ -49,8 +47,9 @@ const toDo = {
         if (priority) { task.setPriority(priority) };
 
         this.list.push(task);
+        showAddMessage(task);
     },
-    changeStatus(title, status) {
+    changeStatus(title, status = STATUS.DONE) {
         try {
             checkValidity(isTaskExist, title, this.list);
             checkValidity(isStatusValid, status);
@@ -60,9 +59,10 @@ const toDo = {
         
         const task = findTask(title, this.list);
         task.setStatus(status);
+        showChangeStatusMessage(task);
     },
-    changePriority(title, priority) {
-        try { 
+    changePriority(title, priority = PRIORITY.HIGH) {
+        try {
             checkValidity(isTaskExist, title, this.list);
             checkValidity(isPriorityValid, priority);
         } catch (error) {
@@ -71,20 +71,21 @@ const toDo = {
 
         const task = findTask(title, this.list);
         task.setPriority(priority);
+        showChangePriorityMessage(task);
     },
     delete(taskPos = 'end') {
         switch (taskPos) {
             case 'end':
                 this.list.pop();
-                return;
+                return console.log(`Last task has successfully deleted.`);
             case 'start':
                 this.list.shift();
-                return;
+                return console.log(`First task has successfully deleted.`);
         };
 
         try {
             if (isPosition(taskPos, this.list)) {
-                const taskIndex = --taskPos;
+                const taskIndex = taskPos - 1;
                 this.list.splice(taskIndex, 1);
 
             } else if (isTaskExist(taskPos, this.list)) {
@@ -95,8 +96,10 @@ const toDo = {
                 throw new Error(ERROR.TASK_NOT_FOUND);
             };
         } catch (error) {
-            console.error(error.message);
+            return console.error(error.message);
         };
+
+        showDeleteMessage(taskPos);
     },
     showList() {
         console.log('To do:');
@@ -109,26 +112,39 @@ const toDo = {
 };
 
 //testing:
-toDo.add(); // [invalid task]
-toDo.add('foo', 'bar'); // [incorrect status]
-toDo.add('foo', STATUS.TODO, 123); // [incorrect priority]
-toDo.add('foo'); // YAY!
-toDo.add('foo'); // [task exist]
-toDo.showList();
+const taskAddingLogger = new Logger();
+const statusChangingLogger = new Logger();
+const priorityChangingLogger = new Logger();
+const taskDeletingLogger = new Logger();
 
-toDo.changeStatus(); // [task not found]
-toDo.changeStatus('foo', undefined); // [incorrect status]
-toDo.changeStatus('foo', STATUS.DONE); // YAY!!
-toDo.showList();
+while (taskAddingLogger.resultsHistory.length != 5) {
+    taskAddingLogger.start();
+    for (let i = 0; i < 1000; i++) {
+        const randomId = Math.random().toFixed(7);
+        toDo.add(`task ${i} (id: ${randomId})`);
+    };
+    taskAddingLogger.end();
 
-toDo.changePriority(null); // [task not found]
-toDo.changePriority('foo', NaN); // [incorrect priority]
-toDo.changePriority('foo', PRIORITY.HIGH); // YAY!!!
-toDo.showList();
+    statusChangingLogger.start();
+    for (const task of toDo.list) {
+        toDo.changeStatus(task.title);
+    }
+    statusChangingLogger.end();
 
-toDo.delete(); // delete last task
-toDo.delete('start'); // delete first task
-toDo.delete(1); // delete first task again
-toDo.delete('bar'); // [task not found]
-toDo.delete('get rid of 150,346 bookmarks in Chrome');
-toDo.showList(); // e m p t y . . .
+    priorityChangingLogger.start();
+    for (const task of toDo.list) {
+        toDo.changePriority(task.title);
+    }
+    priorityChangingLogger.end();
+
+    taskDeletingLogger.start();
+    for (const task of toDo.list) {
+        toDo.delete(task.title);
+    }
+    taskDeletingLogger.end();
+}
+
+taskAddingLogger.showResults(); // 286, 144, 117, 120, 116 ms (average: 156.6 ms)
+statusChangingLogger.showResults(); // 382, 209, 250, 204, 207 ms (average: 250.4 ms)
+priorityChangingLogger.showResults(); // 128, 111, 107, 104, 111 ms (average: 112.2 ms)
+taskDeletingLogger.showResults(); // 119, 113, 119, 110, 105 ms (average: 113.2 ms)
