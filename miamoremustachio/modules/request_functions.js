@@ -1,9 +1,14 @@
+const { API_HOST, GEOCODING_PATH, WEATHER_PATH } = require('./constants.js');
 const { API_KEY } = require('./api_key.js');
 
 function geocodingRequest(cityName) {
-    const geocodingApi = 'http://api.openweathermap.org/geo/1.0/direct';
     const locationsLimit = '1';
-    const geocodingEndpoint = `${geocodingApi}?q=${cityName}&limit=${locationsLimit}&appid=${API_KEY}`;
+
+    const geocodingEndpoint = new URL(API_HOST + GEOCODING_PATH);
+    const params = geocodingEndpoint.searchParams;
+    params.append('q', cityName);
+    params.append('limit', locationsLimit);
+    params.append('appid', API_KEY);
 
     return fetch(geocodingEndpoint)
         .then(response => {
@@ -25,11 +30,15 @@ function geocodingRequest(cityName) {
 function weatherRequest(data) {
     const latitude = data[0].lat;
     const longitude = data[0].lon;
-
-    const weatherApi = 'http://api.openweathermap.org/data/2.5/weather';
     const units = 'metric';
-    const weatherEndpoint = `${weatherApi}?lat=${latitude}&lon=${longitude}&appid=${API_KEY}&units=${units}`;
-    
+
+    const weatherEndpoint = new URL(API_HOST + WEATHER_PATH);
+    const params = weatherEndpoint.searchParams;
+    params.append('lat', latitude);
+    params.append('lon', longitude);
+    params.append('appid', API_KEY);
+    params.append('units', units);
+
     return fetch(weatherEndpoint)
         .then(response => {
             if (response.ok) {
