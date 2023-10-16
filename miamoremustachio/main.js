@@ -13,11 +13,11 @@ const server = http.createServer().listen(3000);
 server.on('request', (req, res) => {
     if (req.url === '/') {
         return res.end(HELLO_MESSAGE + START_MESSAGE);
-    };
+    }
 
     if (req.url === '/favicon.ico') {
         return res.end();
-    };
+    }
 
     const cityName = req.url.slice(1);
     

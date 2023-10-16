@@ -1,0 +1,44 @@
+{
+    "env": {
+        "commonjs": true,
+        "es2021": true,
+        "node": true
+    },
+    "extends": "eslint:recommended",
+    "parserOptions": {
+        "ecmaVersion": "latest"
+    },
+    "rules": {
+        "prefer-const": [
+            "error"
+        ],
+        "new-cap": [
+            "error"
+        ],
+        "eqeqeq": [
+            "error"
+        ],
+        "dot-notation": [
+            "error"
+        ],
+        "default-param-last": [
+            "error"
+        ],
+        "max-depth": [
+            "error",
+            { "max": 4 }
+        ],
+        "max-params": [
+            "error",
+            { "max": 4 }
+        ],
+        "indent": [
+            "error",
+            4
+        ],
+        "semi": [
+            "error",
+            "always"
+        ]
+    }
+}

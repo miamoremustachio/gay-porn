@@ -11,15 +11,15 @@ function geocodingRequest(cityName) {
                 return response.json();
             } else {
                 throw new Error(`${response.status}: ${response.statusText}`);
-            };
+            }
         })
         .then(data => {
             if (!data.length) {
                 throw new Error(`Sorry, the place "${cityName}" wasn't found in database :(`);
-            };
+            }
 
             return data;
-        })
+        });
 }
 
 function weatherRequest(data) {
@@ -36,8 +36,8 @@ function weatherRequest(data) {
                 return response.json();
             } else {
                 throw new Error(`${response.status}: ${response.statusText}`);
-            };
-    })
+            }
+        });
 }
 
 module.exports = { geocodingRequest, weatherRequest };
