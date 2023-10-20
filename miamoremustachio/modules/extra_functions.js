@@ -23,10 +23,10 @@ function getFormattedConditions(data) {
     const citySunset = addMinutes(localSunset, totalOffset);
     const sunset = format(citySunset, 'p'); // 12:00 AM
 
-    return `Weather conditions in ${cityName} (${countryCode}): ${conditions};`
-    + ` current time: ${time};`
-    + ` sunrise: ${sunrise},`
-    + ` sunset: ${sunset}.`;
+    return `Weather conditions in ${cityName} (${countryCode}): ${conditions}.`
+    + `\nCurrent time: ${time}.`
+    + `\nSunrise: ${sunrise},`
+    + `\nSunset: ${sunset}.`;
 }
 
 module.exports = { getFormattedConditions };
