@@ -1,50 +1,47 @@
 const {
-    API,
     EXIT_COMMAND,
-    getResponseError,
+} = require('./modules/constants.js');
+
+const {
     getNameError,
     getCapitalizedName,
-    readline,
-} = require('./modules');
+    request,
+} = require('./modules/functions.js');
+
+const { 
+    stdin: input,
+    stdout: output,
+} = require('node:process');
+
+const readline = require('node:readline/promises')
+    .createInterface({ input, output });
 
 
-function request(name) {
-    const url = `${API}?name=${name}`;
-    
-    return fetch(url)
-    .then(response => {
-        if (!response.ok) {
-            throw new Error(getResponseError(response));
-        };
+async function askName() {
+    const inputName = await readline.question("What is your name? ");
 
-        return response.json();
-    })
-}
+    if (inputName === EXIT_COMMAND) {
+        return readline.close();
+    }
 
-function askName() {
-    readline.question("What is your name? ", name => {
-        if (name === EXIT_COMMAND) {
-            return readline.close();
-        };
+    try {
+        const data = await request(inputName);
+        const name = getCapitalizedName(data.name);
+        const gender = data.gender;
+        const probability = (Math.trunc(data.probability * 100));
 
-        request(name)
-        .then(data => {
-            const name = getCapitalizedName(data.name);
-            const gender = data.gender;
-            const probability = (Math.trunc(data.probability * 100));
+        if (!gender) {
+            throw new Error(getNameError(name));
+        }
+        
+        console.log(`The name ${name} is ${gender} with a probability of ${probability}%`);
 
-            if (!gender) {
-                throw new Error(getNameError(name));
-            };
-            
-            console.log(`The name ${name} is ${gender} with a probability of ${probability}%`);
-        })
-        .catch(error => console.error(error.message))
-        .finally(() => {
-            console.log(`* (type <${EXIT_COMMAND}> to exit)`);
-            askName();
-        });
-    });
+    } catch(error) {
+        console.error(error.message);
+    }
+
+    console.log(`* (type <${EXIT_COMMAND}> to exit)`);
+    askName();
 }
 
 askName();
