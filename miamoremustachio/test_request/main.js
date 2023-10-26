@@ -1,24 +1,26 @@
 const {
+    fillArrayWithPromises,
+} = require('./modules/requests.js');
+
+const {
     isNumberValid,
-    requestTask,
     showList,
     showError,
-} = require('./modules');
+} = require('./modules/extra.js');
 
-function getToDoList(amountOfTasks) {
+async function getToDoList(amountOfTasks) {
     try {
         if (!isNumberValid(amountOfTasks)) {
             throw new Error('Invalid argument.');
-        };
+        }
 
         const promises = [];
 
-        for (let i = 1; i <= amountOfTasks; i++) {
-            promises.push(requestTask(i));
-        };
+        fillArrayWithPromises(promises, amountOfTasks);
 
-        Promise.all(promises)
-            .then(values => { showList(values) });
+        const tasks = await Promise.all(promises);
+
+        showList(tasks);
 
     } catch(err) {
         showError(err);
