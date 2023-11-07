@@ -24,6 +24,7 @@ const ERROR_MESSAGES = {
   INVALID_PRIORITY: `Invalid priority (use "${LOW}" or "${HIGH}")`,
   INVALID_NUMBER: "Invalid task number (only finite numbers are allowed)",
   INCORRECT_TITLE_LENGTH: `Incorrect task's length (only titles between ${MIN_LENGTH} and ${MAX_LENGTH} characters are allowed).`,
+  MISSING_ARGUMENTS: "Function arguments is missing.",
   TASK_EXISTS: "Task you want to add is already in list.",
   TASK_NOT_FOUND: "Task wasn't found in list.",
 };

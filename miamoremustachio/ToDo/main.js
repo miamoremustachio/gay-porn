@@ -1,6 +1,7 @@
 const {
   STATUSES,
   PRIORITIES,
+  ERROR_MESSAGES,
   INFO_MESSAGES,
 } = require('./modules/constants.js');
 
@@ -12,12 +13,12 @@ const {
   findTask,
 } = require('./modules/checking.js');
 
-const {
-  showErrorMessage,
-} = require('./modules/showing.js');
+const { showErrorMessage } = require('./modules/showing.js');
+const { isDefined } = require('./modules/predicates.js');
 
 const { TO_DO, IN_PROGRESS, DONE } = STATUSES;
 const { LOW, HIGH } = PRIORITIES;
+const { MISSING_ARGUMENTS } = ERROR_MESSAGES;
 const {
   SUCCESSFULLY_ADDED,
   SUCCESSFULLY_CHANGED_STATUS,
@@ -102,19 +103,27 @@ const toDo = {
   },
   delete({ title, number }) {
     try {
-      if (title) {
+      const titleIsDefined = isDefined(title);
+      const numberIsDefined = isDefined(number);
+
+      if (titleIsDefined) {
         findTask(title, this.list);
 
-        this.list = this.list.filter(task => task.title !== title);
-       
-      } else {
+        this.list = this.list.filter(task => task.title !== title); 
+      }
+      
+      if (numberIsDefined) {
         checkTaskNumber(number, this.list);
 
-        const index = number - 1;
-        const firstHalf = this.list.slice(0, index);
-        const secondHalf = this.list.slice(index + 1);
+        const taskIndex = number - 1;
+        const firstHalf = this.list.slice(0, taskIndex);
+        const secondHalf = this.list.slice(taskIndex + 1);
 
         this.list = [...firstHalf, ...secondHalf];
+      }
+      
+      else {
+        throw new Error(MISSING_ARGUMENTS);
       }
 
       console.log('✓', SUCCESSFULLY_DELETED);
