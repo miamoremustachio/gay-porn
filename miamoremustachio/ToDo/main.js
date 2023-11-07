@@ -1,11 +1,11 @@
 const {
   STATUSES,
   PRIORITIES,
-  ERROR_MESSAGES,
   INFO_MESSAGES,
 } = require('./modules/constants.js');
 
 const {
+  checkArguments,
   checkTitle,
   checkStatus,
   checkPriority,
@@ -18,7 +18,6 @@ const { isDefined } = require('./modules/predicates.js');
 
 const { TO_DO, IN_PROGRESS, DONE } = STATUSES;
 const { LOW, HIGH } = PRIORITIES;
-const { MISSING_ARGUMENTS } = ERROR_MESSAGES;
 const {
   SUCCESSFULLY_ADDED,
   SUCCESSFULLY_CHANGED_STATUS,
@@ -50,7 +49,7 @@ const toDo = {
       priority: LOW,
     },
   ],
-  add(title, status, priority) {
+  add({ title, status, priority }) {
     try {
       checkTitle(title, this.list);
 
@@ -77,6 +76,8 @@ const toDo = {
   },
   edit({ title, status, priority }) {
     try {
+      checkArguments(arguments);
+
       const task = findTask(title, this.list);
 
       if (status) {
@@ -93,9 +94,7 @@ const toDo = {
         console.log('✓', SUCCESSFULLY_CHANGED_PRIORITY);
       }
 
-      if (status || priority) {
-        console.log('\t', task);
-      }
+      console.log('\t', task);
 
     } catch(error) {
       showErrorMessage(error);
@@ -103,6 +102,8 @@ const toDo = {
   },
   delete({ title, number }) {
     try {
+      checkArguments(arguments);
+
       const titleIsDefined = isDefined(title);
       const numberIsDefined = isDefined(number);
 
@@ -110,9 +111,8 @@ const toDo = {
         findTask(title, this.list);
 
         this.list = this.list.filter(task => task.title !== title); 
-      }
-      
-      if (numberIsDefined) {
+
+      } else if (numberIsDefined) {
         checkTaskNumber(number, this.list);
 
         const taskIndex = number - 1;
@@ -120,10 +120,6 @@ const toDo = {
         const secondHalf = this.list.slice(taskIndex + 1);
 
         this.list = [...firstHalf, ...secondHalf];
-      }
-      
-      else {
-        throw new Error(MISSING_ARGUMENTS);
       }
 
       console.log('✓', SUCCESSFULLY_DELETED);

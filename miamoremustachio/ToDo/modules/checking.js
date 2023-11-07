@@ -16,9 +16,19 @@ const {
   INVALID_PRIORITY,
   INVALID_NUMBER,
   INCORRECT_TITLE_LENGTH,
+  MISSING_ARGUMENTS,
   TASK_EXISTS,
   TASK_NOT_FOUND,
 } = ERROR_MESSAGES;
+
+function checkArguments(arguments) {
+  const argumentsObject = arguments[0];
+  const argumentsAmount = Object.entries(argumentsObject).length;
+
+  if (!argumentsAmount) {
+    throw new Error(MISSING_ARGUMENTS);
+  }
+}
 
 function checkTitle(title, toDoList) {
   if (typeof title !== 'string') {
@@ -70,6 +80,7 @@ function findTask(title, toDoList) {
 }
 
 module.exports = {
+  checkArguments,
   checkTitle,
   checkStatus,
   checkPriority,
