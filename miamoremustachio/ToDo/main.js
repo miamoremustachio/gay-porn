@@ -19,22 +19,23 @@ app.get('/', (req, res) => {
   res.send(START_MESSAGE);
 });
 
-app.get('/tasks', (req, res) => {
-  res.json(toDo.list);
-});
+app.route('/tasks')
+  .get((req, res) => {
+    res.json(toDo.list);
+  })
 
-app.post('/tasks', (req, res) => {
-  try {
-    const task = req.body;
+  .post((req, res) => {
+    try {
+      const task = req.body;
 
-    toDo.add(task);
-    res.send(SUCCESSFULLY_ADDED);
+      toDo.add(task);
+      res.send(SUCCESSFULLY_ADDED);
 
-    console.log(toDo.list);
-  } catch(error) {
-    res.status(400).send(error.message);
-  }
-});
+      console.log(toDo.list);
+    } catch(error) {
+      res.status(400).send(error.message);
+    }
+  });
 
 app.listen(PORT, () => {
   console.log(`Server is listening on port ${PORT}`);
