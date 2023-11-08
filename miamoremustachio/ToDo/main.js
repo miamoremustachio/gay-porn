@@ -31,7 +31,6 @@ app.route('/tasks')
       toDo.add(task);
       res.send(SUCCESSFULLY_ADDED);
 
-      console.log(toDo.list);
     } catch(error) {
       res.status(400).send(error.message);
     }

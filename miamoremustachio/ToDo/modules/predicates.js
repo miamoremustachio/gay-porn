@@ -3,11 +3,6 @@ function isTaskExists(title, toDoList) {
   return taskFound ? true : false;
 }
 
-function isDefined(value) {
-  return (typeof value !== 'undefined') ? true : false;
-}
-
 module.exports = {
   isTaskExists,
-  isDefined,
 };
