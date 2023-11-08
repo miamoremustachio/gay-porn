@@ -129,3 +129,39 @@ const toDo = {
     }
   }
 }
+
+// testing:
+console.log(toDo.list);
+{
+  toDo.add({}); // ✗ invalid title
+  toDo.add({ status: DONE }); // ✗ invalid title
+  toDo.add({ title: 42 }); // ✗ invalid title
+  toDo.add({ title: 'foo', status: 'bar' }); // ✗ invalid status
+
+  toDo.add({ title: 'foo'}); // ✓ success
+  toDo.add({ title: 'bar', status: DONE, priority: HIGH }); // ✓ success
+
+  toDo.add({ title: 'foo'}); // ✗ task exist
+}
+console.log(toDo.list);
+{
+  toDo.edit({}); // ✗ missing arguments
+  toDo.edit({ status: DONE }); // ✗ task not found
+  toDo.edit({ title: 'sus' }); // ✗ task not found
+
+  toDo.edit({ title: 'foo' }); // ~ (just showing task without changes; need refactoring)
+  toDo.edit({ title: 'foo', status: DONE, priority: HIGH }); // ✓ success
+}
+console.log(toDo.list);
+{
+  toDo.delete({}); // ✗ missing arguments
+  toDo.delete({ title: 'oleg' }); // ✗ task not found
+  toDo.delete({ number: 'olga' }); // ✗ invalid number
+  toDo.delete({ title: 0 }); // ✗ task not found
+  toDo.delete({ number: 0 }); // ✗ task not found
+  
+  toDo.delete({ title: 'foo' }); // ✓ success
+  toDo.delete({ number: true }); // ✓ success (need refactoring, bc type conversion sucks)
+  toDo.delete({ number: 3 }); // ✓ success
+}
+console.log(toDo.list);
