@@ -1,131 +1,41 @@
 const {
-  STATUSES,
-  PRIORITIES,
+  PORT,
   INFO_MESSAGES,
 } = require('./modules/constants.js');
 
-const {
-  checkArguments,
-  checkTitle,
-  checkStatus,
-  checkPriority,
-  checkTaskNumber,
-  findTask,
-} = require('./modules/checking.js');
+const { toDo } = require('./todo.js');
+const express = require('express');
 
-const { showErrorMessage } = require('./modules/showing.js');
-const { isDefined } = require('./modules/predicates.js');
-
-const { TO_DO, IN_PROGRESS, DONE } = STATUSES;
-const { LOW, HIGH } = PRIORITIES;
 const {
+  START_MESSAGE,
   SUCCESSFULLY_ADDED,
-  SUCCESSFULLY_CHANGED_STATUS,
-  SUCCESSFULLY_CHANGED_PRIORITY,
-  SUCCESSFULLY_DELETED,
 } = INFO_MESSAGES;
 
-function Task(title) {
-  this.title = title;
-  this.status = TO_DO;
-  this.priority = LOW;
-}
+const app = express();
 
-const toDo = {
-  list: [
-    {
-      title: "defeat all the frickin' ants",
-      status: DONE,
-      priority: HIGH,
-    },
-    {
-      title: "get ready for a battle with mongooses",
-      status: TO_DO,
-      priority: HIGH,
-    },
-    {
-      title: "become super backender-shmackender",
-      status: IN_PROGRESS,
-      priority: LOW,
-    },
-  ],
-  add({ title, status, priority }) {
-    try {
-      checkTitle(title, this.list);
+app.use(express.json());
 
-      const task = new Task(title);
+app.get('/', (req, res) => {
+  res.send(START_MESSAGE);
+});
 
-      if (status) {
-        checkStatus(status);
-        task.status = status;
-      }
+app.get('/tasks', (req, res) => {
+  res.json(toDo.list);
+});
 
-      if (priority) {
-        checkPriority(priority);
-        task.priority = priority;
-      }
-      
-      toDo.list = [...toDo.list, task];
-      
-      console.log('✓', SUCCESSFULLY_ADDED);
-      console.log('\t', task);
-        
-    } catch(error) {
-      showErrorMessage(error);
-    }
-  },
-  edit({ title, status, priority }) {
-    try {
-      checkArguments(arguments);
+app.post('/tasks', (req, res) => {
+  try {
+    const task = req.body;
 
-      const task = findTask(title, this.list);
+    toDo.add(task);
+    res.send(SUCCESSFULLY_ADDED);
 
-      if (status) {
-        checkStatus(status);
-        task.status = status;
-
-        console.log('✓', SUCCESSFULLY_CHANGED_STATUS);
-      }
-
-      if (priority) {
-        checkPriority(priority);
-        task.priority = priority;
-
-        console.log('✓', SUCCESSFULLY_CHANGED_PRIORITY);
-      }
-
-      console.log('\t', task);
-
-    } catch(error) {
-      showErrorMessage(error);
-    }
-  },
-  delete({ title, number }) {
-    try {
-      checkArguments(arguments);
-
-      const titleIsDefined = isDefined(title);
-      const numberIsDefined = isDefined(number);
-
-      if (titleIsDefined) {
-        findTask(title, this.list);
-
-        this.list = this.list.filter(task => task.title !== title); 
-
-      } else if (numberIsDefined) {
-        checkTaskNumber(number, this.list);
-
-        const taskIndex = number - 1;
-        const firstHalf = this.list.slice(0, taskIndex);
-        const secondHalf = this.list.slice(taskIndex + 1);
-
-        this.list = [...firstHalf, ...secondHalf];
-      }
-
-      console.log('✓', SUCCESSFULLY_DELETED);
-      
-    } catch(error) {
-      showErrorMessage(error);
-    }
+    console.log(toDo.list);
+  } catch(error) {
+    res.status(400).send(error.message);
   }
-}
+});
+
+app.listen(PORT, () => {
+  console.log(`Server is listening on port ${PORT}`);
+});
