@@ -1,29 +1,17 @@
 const {
   STATUSES,
   PRIORITIES,
-  INFO_MESSAGES,
 } = require('./modules/constants.js');
 
 const {
-  checkArguments,
   checkTitle,
   checkStatus,
   checkPriority,
-  checkTaskNumber,
   findTask,
 } = require('./modules/checking.js');
 
-const { showErrorMessage } = require('./modules/showing.js');
-const { isDefined } = require('./modules/predicates.js');
-
 const { TO_DO, IN_PROGRESS, DONE } = STATUSES;
 const { LOW, HIGH } = PRIORITIES;
-const {
-  SUCCESSFULLY_ADDED,
-  SUCCESSFULLY_CHANGED_STATUS,
-  SUCCESSFULLY_CHANGED_PRIORITY,
-  SUCCESSFULLY_DELETED,
-} = INFO_MESSAGES;
 
 function Task(title) {
   this.title = title;
@@ -87,6 +75,4 @@ const toDo = {
   }
 }
 
-module.exports = {
-  toDo,
-};
+module.exports = { toDo };
