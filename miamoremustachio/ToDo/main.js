@@ -9,6 +9,8 @@ const express = require('express');
 const {
   START_MESSAGE,
   SUCCESSFULLY_ADDED,
+  SUCCESSFULLY_UPDATED,
+  SUCCESSFULLY_DELETED,
 } = INFO_MESSAGES;
 
 const app = express();
@@ -25,17 +27,44 @@ app.route('/tasks')
   })
 
   .post((req, res) => {
+    const task = req.body;
+    
     try {
-      const task = req.body;
-
       toDo.add(task);
-      res.send(SUCCESSFULLY_ADDED);
+      res.status(201).send(SUCCESSFULLY_ADDED);
 
-      console.log(toDo.list);
     } catch(error) {
       res.status(400).send(error.message);
     }
   });
+
+app.route('/tasks/:title')
+  .put((req, res) => {
+    const title = req.params.title;
+    const status = req.body.status;
+    const priority = req.body.priority;
+    const task = { title, status, priority };
+
+    try {
+      toDo.edit(task);
+      res.send(SUCCESSFULLY_UPDATED);
+
+    } catch(error) {
+      res.status(400).send(error.message);
+    }
+    
+  })
+  .delete((req, res) => {
+    const title = req.params.title;
+
+     try {
+      toDo.delete(title);
+      res.send(SUCCESSFULLY_DELETED);
+
+     } catch(error) {
+      res.status(404).send(error.message);
+     }
+  })
 
 app.listen(PORT, () => {
   console.log(`Server is listening on port ${PORT}`);

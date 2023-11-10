@@ -34,6 +34,7 @@ const ERROR_MESSAGES = {
 const INFO_MESSAGES = {
   START_MESSAGE: "ToDo server is running.",
   SUCCESSFULLY_ADDED: "✓ Task has successfully added.",
+  SUCCESSFULLY_UPDATED: "✓ Task has successfully updated.",
   SUCCESSFULLY_CHANGED_STATUS: "✓ Task status has successfully changed.",
   SUCCESSFULLY_CHANGED_PRIORITY: "✓ Task priority has successfully changed.",
   SUCCESSFULLY_DELETED: "✓ Task has successfully deleted.",

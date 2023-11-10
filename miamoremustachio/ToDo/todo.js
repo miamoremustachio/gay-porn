@@ -50,75 +50,40 @@ const toDo = {
     },
   ],
   add({ title, status, priority }) {
-      checkTitle(title, this.list);
+    checkTitle(title, this.list);
 
-      const task = new Task(title);
+    const task = new Task(title);
 
-      if (status) {
-        checkStatus(status);
-        task.status = status;
-      }
+    if (status) {
+      checkStatus(status);
+      task.status = status;
+    }
 
-      if (priority) {
-        checkPriority(priority);
-        task.priority = priority;
-      }
-      
-      toDo.list = [...toDo.list, task];
+    if (priority) {
+      checkPriority(priority);
+      task.priority = priority;
+    }
+    
+    toDo.list = [...toDo.list, task];
   },
   edit({ title, status, priority }) {
-    try {
-      checkArguments(arguments);
+    const task = findTask(title, this.list);
 
-      const task = findTask(title, this.list);
-
-      if (status) {
-        checkStatus(status);
-        task.status = status;
-
-        console.log('✓', SUCCESSFULLY_CHANGED_STATUS);
-      }
-
-      if (priority) {
-        checkPriority(priority);
-        task.priority = priority;
-
-        console.log('✓', SUCCESSFULLY_CHANGED_PRIORITY);
-      }
-
-      console.log('\t', task);
-
-    } catch(error) {
-      showErrorMessage(error);
+    if (status) {
+      checkStatus(status);
     }
+    
+    if (priority) {
+      checkPriority(priority);
+    }
+    
+    task.status = status || task.status;
+    task.priority = priority || task.priority;
   },
-  delete({ title, number }) {
-    try {
-      checkArguments(arguments);
+  delete(title) {
+    findTask(title, this.list);
 
-      const titleIsDefined = isDefined(title);
-      const numberIsDefined = isDefined(number);
-
-      if (titleIsDefined) {
-        findTask(title, this.list);
-
-        this.list = this.list.filter(task => task.title !== title); 
-
-      } else if (numberIsDefined) {
-        checkTaskNumber(number, this.list);
-
-        const taskIndex = number - 1;
-        const firstHalf = this.list.slice(0, taskIndex);
-        const secondHalf = this.list.slice(taskIndex + 1);
-
-        this.list = [...firstHalf, ...secondHalf];
-      }
-
-      console.log('✓', SUCCESSFULLY_DELETED);
-      
-    } catch(error) {
-      showErrorMessage(error);
-    }
+    this.list = this.list.filter(task => task.title !== title);
   }
 }
 
