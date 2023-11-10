@@ -3,6 +3,7 @@ const {
   INFO_MESSAGES,
 } = require('./modules/constants.js');
 
+const { checkId } = require('./modules/checking.js');
 const { toDo } = require('./todo.js');
 const express = require('express');
 
@@ -38,32 +39,41 @@ app.route('/tasks')
     }
   });
 
-app.route('/tasks/:title')
+app.route('/tasks/:id')
   .put((req, res) => {
-    const title = req.params.title;
-    const status = req.body.status;
-    const priority = req.body.priority;
-    const task = { title, status, priority };
+    const id = req.params.id;
+    
+    try {
+      checkId(id, toDo.list);
+
+    } catch(error) {
+      return res.status(404).send(error.message);
+    }
+
+    const { title, status, priority } = req.body;
+
+    const task = { id, title, status, priority };
 
     try {
       toDo.edit(task);
       res.send(SUCCESSFULLY_UPDATED);
-
+    
     } catch(error) {
       res.status(400).send(error.message);
     }
-    
   })
   .delete((req, res) => {
-    const title = req.params.title;
+    const id = req.params.id;
 
-     try {
-      toDo.delete(title);
-      res.send(SUCCESSFULLY_DELETED);
+    try {
+      checkId(id, toDo.list);
+    
+    } catch(error) {
+      return res.status(404).send(error.message);
+    }
 
-     } catch(error) {
-      res.status(404).send(error.message);
-     }
+    toDo.delete(id);
+    res.send(SUCCESSFULLY_DELETED);
   })
 
 app.listen(PORT, () => {

@@ -13,21 +13,25 @@ const {
   INVALID_STATUS,
   INVALID_PRIORITY,
   INCORRECT_TITLE_LENGTH,
-  TASK_EXISTS,
   TASK_NOT_FOUND,
 } = ERROR_MESSAGES;
 
-function checkTitle(title, toDoList) {
+function checkId(id, toDoList) {
+  const task = isTaskExists(id, toDoList);
+
+  if (!task) {
+    throw new Error(TASK_NOT_FOUND);
+  }
+}
+
+function checkTitle(title) {
   if (typeof title !== 'string') {
     throw new Error(INVALID_TITLE);
+  }
   
-  } else if (title.length < MIN || title.length > MAX) {
+  if (title.length < MIN || title.length > MAX) {
     throw new Error(INCORRECT_TITLE_LENGTH);
-  
-  } else if (isTaskExists(title, toDoList)) {
-    throw new Error(TASK_EXISTS);
-
-  } else return;
+  }
 }
 
 function checkStatus(status) {
@@ -46,19 +50,15 @@ function checkPriority(priority) {
   }
 }
 
-function findTask(title, toDoList) {
-  const taskFound = toDoList.find(task => task.title === title);
-
-  if (!taskFound) {
-    throw new Error(TASK_NOT_FOUND);
-  }
-
-  return taskFound;
+function getTask(id, toDoList) {
+  const task = toDoList.find(task => task.id === id);
+  return task;
 }
 
 module.exports = {
+  checkId,
   checkTitle,
   checkStatus,
   checkPriority,
-  findTask,
+  getTask,
 };

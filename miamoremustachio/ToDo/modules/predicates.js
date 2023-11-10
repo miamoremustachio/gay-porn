@@ -1,5 +1,5 @@
-function isTaskExists(title, toDoList) {
-  const taskFound = toDoList.find(task => task.title === title);
+function isTaskExists(id, toDoList) {
+  const taskFound = toDoList.find(task => task.id === id);
   return taskFound ? true : false;
 }
 
