@@ -3,6 +3,7 @@ const {
   INFO_MESSAGES,
 } = require('./modules/constants.js');
 
+const { getTask } = require('./modules/getting.js');
 const { checkId } = require('./modules/checking.js');
 const { toDo } = require('./todo.js');
 const express = require('express');
@@ -34,7 +35,6 @@ app.route('/tasks')
   .get((req, res) => {
     res.json(toDo.list);
   })
-
   .post((req, res) => {
     const task = req.body;
     
@@ -48,37 +48,39 @@ app.route('/tasks')
   });
 
 app.route('/tasks/:id')
-  .put((req, res) => {
+  .all((req, res, next) => {
     const id = req.params.id;
     
     try {
       checkId(id, toDo.list);
-
     } catch(error) {
       return res.status(404).send(error.message);
     }
 
+    next();
+  })
+  .get((req, res) => {
+    const id = req.params.id;
+
+    const task = getTask(id, toDo.list);
+    res.json(task);
+  })
+  .put((req, res) => {
+    const id = req.params.id;
     const { title, status, priority } = req.body;
 
     const task = { id, title, status, priority };
 
     try {
       toDo.edit(task);
-      res.send(SUCCESSFULLY_UPDATED);
-    
     } catch(error) {
-      res.status(400).send(error.message);
+      return res.status(400).send(error.message);
     }
+
+    res.send(SUCCESSFULLY_UPDATED);
   })
   .delete((req, res) => {
     const id = req.params.id;
-
-    try {
-      checkId(id, toDo.list);
-    
-    } catch(error) {
-      return res.status(404).send(error.message);
-    }
 
     toDo.delete(id);
     res.send(SUCCESSFULLY_DELETED);

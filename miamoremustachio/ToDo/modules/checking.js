@@ -50,15 +50,9 @@ function checkPriority(priority) {
   }
 }
 
-function getTask(id, toDoList) {
-  const task = toDoList.find(task => task.id === id);
-  return task;
-}
-
 module.exports = {
   checkId,
   checkTitle,
   checkStatus,
   checkPriority,
-  getTask,
 };

@@ -7,9 +7,9 @@ const {
   checkTitle,
   checkStatus,
   checkPriority,
-  getTask,
 } = require('./modules/checking.js');
 
+const { getTask } = require('./modules/getting.js');
 const { randomUUID: getId } = require('crypto');
 
 const { TO_DO, IN_PROGRESS, DONE } = STATUSES;
