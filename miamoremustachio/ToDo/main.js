@@ -1,12 +1,15 @@
+const express = require('express');
+
 const {
   PORT,
   INFO_MESSAGES,
 } = require('./modules/constants.js');
 
-const { getTask } = require('./modules/getting.js');
-const { checkId } = require('./modules/checking.js');
+const { connectDB } = require('./modules/database/connection.js');
+const { setHeaders } = require('./modules/CORS.js');
 const { toDo } = require('./todo.js');
-const express = require('express');
+const { checkId } = require('./modules/checking.js');
+const { getAllTasks, getTask } = require('./modules/getting.js');
 
 const {
   START_MESSAGE,
@@ -15,16 +18,9 @@ const {
   SUCCESSFULLY_DELETED,
 } = INFO_MESSAGES;
 
-const setCrossOriginHeaders = (req, res, next) => {
-  res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
-  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-  res.header('Access-Control-Allow-Headers', 'Content-Type');
-  next();
-};
-
 const app = express();
 
-app.use(setCrossOriginHeaders);
+app.use(setHeaders);
 app.use(express.json());
 
 app.get('/', (req, res) => {
@@ -32,8 +28,9 @@ app.get('/', (req, res) => {
 });
 
 app.route('/tasks')
-  .get((req, res) => {
-    res.json(toDo.list);
+  .get(async (req, res) => {
+    const toDoList = await getAllTasks();
+    res.json(toDoList);
   })
   .post((req, res) => {
     const task = req.body;
@@ -41,7 +38,6 @@ app.route('/tasks')
     try {
       toDo.add(task);
       res.status(201).send(SUCCESSFULLY_ADDED);
-
     } catch(error) {
       res.status(400).send(error.message);
     }
@@ -86,6 +82,17 @@ app.route('/tasks/:id')
     res.send(SUCCESSFULLY_DELETED);
   })
 
-app.listen(PORT, () => {
-  console.log(`Server is listening on port ${PORT}`);
-});
+async function start() {
+  try {
+    await connectDB();
+
+    app.listen(PORT, () => {
+      console.log(`Server is listening on port ${PORT}`);
+    });
+
+  } catch(error) {
+    console.log(error.message);
+  }
+}
+
+start();

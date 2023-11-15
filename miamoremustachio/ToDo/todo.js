@@ -10,39 +10,18 @@ const {
 } = require('./modules/checking.js');
 
 const { getTask } = require('./modules/getting.js');
-const { randomUUID: getId } = require('crypto');
+const { tasks: database } = require('./modules/database/collections.js');
 
-const { TO_DO, IN_PROGRESS, DONE } = STATUSES;
-const { LOW, HIGH } = PRIORITIES;
+const { TO_DO } = STATUSES;
+const { LOW } = PRIORITIES;
 
 function Task(title) {
-  this.id = getId();
   this.title = title;
   this.status = TO_DO;
   this.priority = LOW;
 }
 
 const toDo = {
-  list: [
-    {
-      id: "4243bdf5-9b01-4145-98cd-1b79e198b1fd",
-      title: "defeat all the frickin' ants",
-      status: DONE,
-      priority: HIGH,
-    },
-    {
-      id: "e78037d0-f058-4104-934c-6966e476d61a",
-      title: "get ready for a battle with mongooses",
-      status: TO_DO,
-      priority: HIGH,
-    },
-    {
-      id: "98bb63d2-3f3b-4588-978d-8d4baaf86e13",
-      title: "become super backender-shmackender",
-      status: IN_PROGRESS,
-      priority: LOW,
-    },
-  ],
   add({ title, status, priority }) {
     checkTitle(title);
 
@@ -58,7 +37,7 @@ const toDo = {
       task.priority = priority;
     }
     
-    toDo.list = [...toDo.list, task];
+    database.insertOne(task);
   },
   edit({ id, title, status, priority }) {
     const task = getTask(id, this.list);
