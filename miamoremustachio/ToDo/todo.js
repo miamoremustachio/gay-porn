@@ -9,7 +9,6 @@ const {
   checkPriority,
 } = require('./modules/checking.js');
 
-const { getTask } = require('./modules/getting.js');
 const { tasks: database } = require('./modules/database/collections.js');
 
 const { TO_DO } = STATUSES;
@@ -38,28 +37,6 @@ const toDo = {
     }
     
     database.insertOne(task);
-  },
-  edit({ id, title, status, priority }) {
-    const task = getTask(id, this.list);
-
-    if (title) {
-      checkTitle(title);
-    }
-
-    if (status) {
-      checkStatus(status);
-    }
-    
-    if (priority) {
-      checkPriority(priority);
-    }
-    
-    task.title = title || task.title;
-    task.status = status || task.status;
-    task.priority = priority || task.priority;
-  },
-  delete(id) {
-    this.list = this.list.filter(task => task.id !== id);
   }
 }
 

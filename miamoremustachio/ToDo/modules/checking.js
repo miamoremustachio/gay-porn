@@ -5,24 +5,13 @@ const {
   ERROR_MESSAGES,
 } = require('./constants.js');
 
-const { isTaskExists } = require('./predicates.js');
-
 const { MIN, MAX } = TITLE_LENGTH;
 const {
   INVALID_TITLE,
   INVALID_STATUS,
   INVALID_PRIORITY,
   INCORRECT_TITLE_LENGTH,
-  TASK_NOT_FOUND,
 } = ERROR_MESSAGES;
-
-function checkId(id, toDoList) {
-  const task = isTaskExists(id, toDoList);
-
-  if (!task) {
-    throw new Error(TASK_NOT_FOUND);
-  }
-}
 
 function checkTitle(title) {
   if (typeof title !== 'string') {
@@ -51,7 +40,6 @@ function checkPriority(priority) {
 }
 
 module.exports = {
-  checkId,
   checkTitle,
   checkStatus,
   checkPriority,

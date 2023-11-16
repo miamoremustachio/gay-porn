@@ -25,14 +25,11 @@ const ERROR_MESSAGES = {
   INVALID_STATUS: `✗ Invalid status (use "${TO_DO}", "${IN_PROGRESS}" or "${DONE}").`,
   INVALID_PRIORITY: `✗ Invalid priority (use "${LOW}" or "${HIGH}")`,
   INCORRECT_TITLE_LENGTH: `✗ Incorrect task's length (only titles between ${MIN_LENGTH} and ${MAX_LENGTH} characters are allowed).`,
-  TASK_NOT_FOUND: "✗ Task wasn't found in list.",
 };
 
 const INFO_MESSAGES = {
   START_MESSAGE: "ToDo server is running.",
   SUCCESSFULLY_ADDED: "✓ Task has successfully added.",
-  SUCCESSFULLY_UPDATED: "✓ Task has successfully updated.",
-  SUCCESSFULLY_DELETED: "✓ Task has successfully deleted.",
 };
 
 module.exports = {
