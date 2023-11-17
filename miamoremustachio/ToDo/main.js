@@ -8,6 +8,7 @@ const {
 } = require('./modules/constants.js');
 
 const { connectDB } = require('./modules/database/connection.js');
+const { tasks } = require('./modules/database/collections.js');
 const { setHeaders } = require('./modules/CORS.js');
 const { toDo } = require('./todo.js');
 const { checkId } = require('./modules/checking.js');
@@ -31,14 +32,15 @@ app.get('/', (req, res) => {
 
 app.route('/tasks')
   .get(async (req, res) => {
-    const toDoList = await getAllTasks();
+    const toDoList = await getAllTasks(tasks);
+
     res.json(toDoList);
   })
-  .post((req, res) => {
+  .post(async (req, res) => {
     const task = req.body;
     
     try {
-      toDo.add(task);
+      await toDo.add(task);
       res.status(201).send(SUCCESSFULLY_ADDED);
     } catch(error) {
       res.status(400).send(error.message);
@@ -46,41 +48,40 @@ app.route('/tasks')
   });
 
 app.route('/tasks/:id')
-  .all((req, res, next) => {
+  .all(async (req, res, next) => {
     const id = req.params.id;
     
     try {
-      checkId(id, toDo.list);
+      await checkId(tasks, id);
     } catch(error) {
       return res.status(404).send(error.message);
     }
 
     next();
   })
-  .get((req, res) => {
+  .get(async (req, res) => {
     const id = req.params.id;
+    const task = await getTask(tasks, id);
 
-    const task = getTask(id, toDo.list);
     res.json(task);
   })
-  .put((req, res) => {
+  .put(async (req, res) => {
     const id = req.params.id;
-    const { title, status, priority } = req.body;
+    const taskProperties = req.body;
 
-    const task = { id, title, status, priority };
+    const task = {...taskProperties, id };
 
     try {
-      toDo.edit(task);
+      await toDo.edit(task);
+      res.send(SUCCESSFULLY_UPDATED);
     } catch(error) {
-      return res.status(400).send(error.message);
+      res.status(400).send(error.message);
     }
-
-    res.send(SUCCESSFULLY_UPDATED);
   })
-  .delete((req, res) => {
+  .delete(async (req, res) => {
     const id = req.params.id;
 
-    toDo.delete(id);
+    await toDo.delete(id);
     res.send(SUCCESSFULLY_DELETED);
   })
 

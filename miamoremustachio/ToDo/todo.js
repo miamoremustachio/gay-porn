@@ -1,3 +1,5 @@
+const { ObjectId } = require('mongodb');
+
 const {
   STATUSES,
   PRIORITIES,
@@ -9,7 +11,6 @@ const {
   checkPriority,
 } = require('./modules/checking.js');
 
-const { getTask } = require('./modules/getting.js');
 const { tasks: database } = require('./modules/database/collections.js');
 
 const { TO_DO } = STATUSES;
@@ -37,29 +38,33 @@ const toDo = {
       task.priority = priority;
     }
     
-    database.insertOne(task);
+    return database.insertOne(task);
   },
-  edit({ id, title, status, priority }) {
-    const task = getTask(id, this.list);
+  edit({ title, status, priority, id }) {
+    const task = {};
 
     if (title) {
       checkTitle(title);
+      task.title = title;
     }
 
     if (status) {
       checkStatus(status);
+      task.status = status;
     }
     
     if (priority) {
       checkPriority(priority);
+      task.priority = priority;
     }
     
-    task.title = title || task.title;
-    task.status = status || task.status;
-    task.priority = priority || task.priority;
+    return database.updateOne(
+      { _id: new ObjectId(id) },
+      { $set: task }
+    );
   },
   delete(id) {
-    this.list = this.list.filter(task => task.id !== id);
+    return database.deleteOne({ _id: new ObjectId(id) });
   }
 }
 

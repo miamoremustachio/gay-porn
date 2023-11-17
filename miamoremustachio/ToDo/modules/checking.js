@@ -16,8 +16,8 @@ const {
   TASK_NOT_FOUND,
 } = ERROR_MESSAGES;
 
-function checkId(id, toDoList) {
-  const task = isTaskExists(id, toDoList);
+async function checkId(collection, id) {
+  const task = await isTaskExists(collection, id);
 
   if (!task) {
     throw new Error(TASK_NOT_FOUND);

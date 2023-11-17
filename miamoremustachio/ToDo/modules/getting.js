@@ -1,12 +1,12 @@
-const { tasks } = require('./database/collections.js');
+const { ObjectId } = require('mongodb');
 
-function getAllTasks() {
-  const tasksList = tasks.find().toArray();
+function getAllTasks(collection) {
+  const tasksList = collection.find().toArray();
   return tasksList;
 }
 
-function getTask(id, toDoList) {
-  const task = toDoList.find(task => task.id === id);
+async function getTask(collection, id) {
+  const task = await collection.findOne({ _id: new ObjectId(id) });
   return task;
 }
 
