@@ -4,7 +4,7 @@ const express = require('express');
 
 const {
   PORT,
-  INFO_MESSAGES,
+  START_MESSAGE,
 } = require('./modules/constants.js');
 
 const { connectDB } = require('./modules/database/connection.js');
@@ -13,13 +13,6 @@ const { setHeaders } = require('./modules/CORS.js');
 const { toDo } = require('./todo.js');
 const { checkId } = require('./modules/checking.js');
 const { getAllTasks, getTask } = require('./modules/getting.js');
-
-const {
-  START_MESSAGE,
-  SUCCESSFULLY_ADDED,
-  SUCCESSFULLY_UPDATED,
-  SUCCESSFULLY_DELETED,
-} = INFO_MESSAGES;
 
 const app = express();
 
@@ -40,8 +33,8 @@ app.route('/tasks')
     const task = req.body;
     
     try {
-      await toDo.add(task);
-      res.status(201).send(SUCCESSFULLY_ADDED);
+      const result = await toDo.add(task);      
+      res.status(201).send(result);
     } catch(error) {
       res.status(400).send(error.message);
     }
@@ -61,8 +54,8 @@ app.route('/tasks/:id')
   })
   .get(async (req, res) => {
     const id = req.params.id;
-    const task = await getTask(tasks, id);
 
+    const task = await getTask(tasks, id);
     res.json(task);
   })
   .put(async (req, res) => {
@@ -72,8 +65,8 @@ app.route('/tasks/:id')
     const task = {...taskProperties, id };
 
     try {
-      await toDo.edit(task);
-      res.send(SUCCESSFULLY_UPDATED);
+      const result = await toDo.edit(task);
+      res.send(result);
     } catch(error) {
       res.status(400).send(error.message);
     }
@@ -81,8 +74,8 @@ app.route('/tasks/:id')
   .delete(async (req, res) => {
     const id = req.params.id;
 
-    await toDo.delete(id);
-    res.send(SUCCESSFULLY_DELETED);
+    const result = await toDo.delete(id);
+    res.send(result);
   })
 
 async function start() {

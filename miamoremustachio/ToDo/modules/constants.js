@@ -28,12 +28,7 @@ const ERROR_MESSAGES = {
   TASK_NOT_FOUND: "✗ Task wasn't found in list.",
 };
 
-const INFO_MESSAGES = {
-  START_MESSAGE: "ToDo server is running.",
-  SUCCESSFULLY_ADDED: "✓ Task has successfully added.",
-  SUCCESSFULLY_UPDATED: "✓ Task has successfully updated.",
-  SUCCESSFULLY_DELETED: "✓ Task has successfully deleted.",
-};
+const START_MESSAGE = "ToDo server is running.";
 
 module.exports = {
   PORT,
@@ -41,5 +36,5 @@ module.exports = {
   PRIORITIES,
   TITLE_LENGTH,
   ERROR_MESSAGES,
-  INFO_MESSAGES,
+  START_MESSAGE,
 };
