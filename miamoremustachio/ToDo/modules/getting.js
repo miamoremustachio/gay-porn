@@ -5,8 +5,8 @@ function getAllTasks(collection) {
   return tasksList;
 }
 
-async function getTask(collection, id) {
-  const task = await collection.findOne({ _id: new ObjectId(id) });
+function getTask(collection, id) {
+  const task = collection.findOne({ _id: new ObjectId(id) });
   return task;
 }
 

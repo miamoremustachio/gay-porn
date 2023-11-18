@@ -2,17 +2,13 @@ require('dotenv').config();
 
 const express = require('express');
 
-const {
-  PORT,
-  START_MESSAGE,
-} = require('./modules/constants.js');
-
-const { connectDB } = require('./modules/database/connection.js');
-const { tasks } = require('./modules/database/collections.js');
 const { setHeaders } = require('./modules/CORS.js');
+const { PORT, START_MESSAGE } = require('./modules/constants.js');
+const { getAllTasks, getTask } = require('./modules/getting.js');
+const { tasks } = require('./modules/database/collections.js');
 const { toDo } = require('./todo.js');
 const { checkId } = require('./modules/checking.js');
-const { getAllTasks, getTask } = require('./modules/getting.js');
+const { connectDatabase } = require('./modules/database/connection.js');
 
 const app = express();
 
@@ -25,15 +21,15 @@ app.get('/', (req, res) => {
 
 app.route('/tasks')
   .get(async (req, res) => {
-    const toDoList = await getAllTasks(tasks);
+    const tasksList = await getAllTasks(tasks);
 
-    res.json(toDoList);
+    res.json(tasksList);
   })
   .post(async (req, res) => {
     const task = req.body;
     
     try {
-      const result = await toDo.add(task);      
+      const result = await toDo.add(task);
       res.status(201).send(result);
     } catch(error) {
       res.status(400).send(error.message);
@@ -62,7 +58,7 @@ app.route('/tasks/:id')
     const id = req.params.id;
     const taskProperties = req.body;
 
-    const task = {...taskProperties, id };
+    const task = { ...taskProperties, id };
 
     try {
       const result = await toDo.edit(task);
@@ -80,7 +76,7 @@ app.route('/tasks/:id')
 
 async function start() {
   try {
-    await connectDB();
+    await connectDatabase();
 
     app.listen(PORT, () => {
       console.log(`Server is listening on port ${PORT}`);

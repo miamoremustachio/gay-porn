@@ -1,8 +1,8 @@
 const { client } = require('./client.js');
 
-async function connectDB() {
+async function connectDatabase() {
   await client.connect();
-  console.log('Database has successfully connected.');
+  console.log('Database has successfully connected ✓');
 }
 
-module.exports = { connectDB };
+module.exports = { connectDatabase };

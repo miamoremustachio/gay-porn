@@ -20,6 +20,8 @@ const { TO_DO, IN_PROGRESS, DONE } = STATUSES;
 const { LOW, HIGH } = PRIORITIES;
 const { MIN: MIN_LENGTH, MAX: MAX_LENGTH } = TITLE_LENGTH;
 
+const START_MESSAGE = "ToDo server is running.";
+
 const ERROR_MESSAGES = {
   INVALID_TITLE: "✗ Invalid title (only strings are allowed).",
   INVALID_STATUS: `✗ Invalid status (use "${TO_DO}", "${IN_PROGRESS}" or "${DONE}").`,
@@ -28,13 +30,12 @@ const ERROR_MESSAGES = {
   TASK_NOT_FOUND: "✗ Task wasn't found in list.",
 };
 
-const START_MESSAGE = "ToDo server is running.";
 
 module.exports = {
   PORT,
   STATUSES,
   PRIORITIES,
   TITLE_LENGTH,
-  ERROR_MESSAGES,
   START_MESSAGE,
+  ERROR_MESSAGES,
 };

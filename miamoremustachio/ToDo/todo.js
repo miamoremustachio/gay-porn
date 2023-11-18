@@ -5,16 +5,16 @@ const {
   PRIORITIES,
 } = require('./modules/constants.js');
 
+const { TO_DO } = STATUSES;
+const { LOW } = PRIORITIES;
+
 const {
   checkTitle,
   checkStatus,
   checkPriority,
 } = require('./modules/checking.js');
 
-const { tasks: database } = require('./modules/database/collections.js');
-
-const { TO_DO } = STATUSES;
-const { LOW } = PRIORITIES;
+const { tasks: databaseTasks } = require('./modules/database/collections.js');
 
 function Task(title) {
   this.title = title;
@@ -38,7 +38,7 @@ const toDo = {
       task.priority = priority;
     }
     
-    return database.insertOne(task);
+    return databaseTasks.insertOne(task);
   },
   edit({ title, status, priority, id }) {
     const task = {};
@@ -58,13 +58,13 @@ const toDo = {
       task.priority = priority;
     }
     
-    return database.updateOne(
+    return databaseTasks.updateOne(
       { _id: new ObjectId(id) },
       { $set: task }
     );
   },
   delete(id) {
-    return database.deleteOne({ _id: new ObjectId(id) });
+    return databaseTasks.deleteOne({ _id: new ObjectId(id) });
   }
 }
 

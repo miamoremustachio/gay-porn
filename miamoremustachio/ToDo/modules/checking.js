@@ -5,7 +5,7 @@ const {
   ERROR_MESSAGES,
 } = require('./constants.js');
 
-const { isTaskExists } = require('./predicates.js');
+const { getTask } = require('./getting.js');
 
 const { MIN, MAX } = TITLE_LENGTH;
 const {
@@ -17,7 +17,7 @@ const {
 } = ERROR_MESSAGES;
 
 async function checkId(collection, id) {
-  const task = await isTaskExists(collection, id);
+  const task = await getTask(collection, id);
 
   if (!task) {
     throw new Error(TASK_NOT_FOUND);
