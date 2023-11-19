@@ -3,13 +3,11 @@ require('dotenv').config();
 const express = require('express');
 
 const { setHeaders } = require('./modules/middlewares/CORS.js');
-const { START_MESSAGE } = require('./modules/helpers/constants.js');
+const { PORT, START_MESSAGE } = require('./modules/helpers/constants.js');
 const { toDo } = require('./modules/todo.js');
-const { checkId } = require('./modules/helpers/checking.js');
-const { FilteredTask } = require('./modules/helpers/constructors.js');
+const { checkId, checkTitle, checkProperties } = require('./modules/helpers/checking.js');
+const { Task, UpdatedTask } = require('./modules/helpers/constructors.js');
 const { connectDatabase } = require('./modules/database/connection.js');
-
-const PORT = process.env.PORT || 3000;
 
 const app = express();
 
@@ -27,10 +25,15 @@ app.route('/tasks')
     res.json(tasksList);
   })
   .post(async (req, res) => {
-    const task = req.body;
+    const { title, ...restProperties } = req.body;
     
     try {
+      checkTitle(title);
+      checkProperties(restProperties);
+
+      const task = new Task(req.body);
       const result = await toDo.add(task);
+
       res.status(201).send(result);
     } catch(error) {
       res.status(400).send(error.message);
@@ -42,7 +45,7 @@ app.route('/tasks/:id')
     const id = req.params.id;
     
     try {
-      await checkId(id);
+      await checkId(toDo.collection, id);
     } catch(error) {
       return res.status(404).send(error.message);
     }
@@ -57,10 +60,12 @@ app.route('/tasks/:id')
   })
   .put(async (req, res) => {
     const id = req.params.id;
-    const taskProperties = { id, ...req.body };
+    const taskProperties = req.body;
     
     try {
-      const task = new FilteredTask(taskProperties);
+      checkProperties(taskProperties);
+
+      const task = new UpdatedTask({ id, ...taskProperties });
       const result = await toDo.edit(task);
 
       res.send(result);

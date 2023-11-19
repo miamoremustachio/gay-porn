@@ -3,38 +3,29 @@ const {
   PRIORITIES,
 } = require('./constants.js');
 
-const {
-  checkTitle,
-  checkStatus,
-  checkPriority,
-} = require('./checking.js');
-
 const { TO_DO } = STATUSES;
 const { LOW } = PRIORITIES;
 
-function Task(title) {
+function Task({ title, status, priority }) {
   this.title = title;
-  this.status = TO_DO;
-  this.priority = LOW;
+  this.status = status || TO_DO;
+  this.priority = priority || LOW;
 }
 
-function FilteredTask({ id, title, status, priority }) {
+function UpdatedTask({ id, title, status, priority }) {
   this.id = id;
-
+  
   if (title) {
-    checkTitle(title);
     this.title = title;
   }
 
   if (status) {
-    checkStatus(status);
     this.status = status;
   }
   
   if (priority) {
-    checkPriority(priority);
     this.priority = priority;
   }
 }
 
-module.exports = { Task, FilteredTask };
+module.exports = { Task, UpdatedTask };

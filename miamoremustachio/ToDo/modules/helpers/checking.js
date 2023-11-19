@@ -5,10 +5,7 @@ const {
   ERROR_MESSAGES,
 } = require('./constants.js');
 
-// #ToDo: get rid of this shit:
-const { tasks } = require('../database/collections.js')
-const { ObjectId } = require('mongodb');
-//
+const { isDocumentExists } = require('./predicates.js');
 
 const { MIN, MAX } = TITLE_LENGTH;
 const {
@@ -19,9 +16,8 @@ const {
   TASK_NOT_FOUND,
 } = ERROR_MESSAGES;
 
-async function checkId(id) {
-  const task = await tasks.findOne({ _id: new ObjectId(id) });
-
+async function checkId(collection, id) {
+  const task = await isDocumentExists(collection, id);
   if (!task) {
     throw new Error(TASK_NOT_FOUND);
   }
@@ -53,9 +49,22 @@ function checkPriority(priority) {
   }
 }
 
+function checkProperties({ title, status, priority }) {
+  if (title) {
+    checkTitle(title);
+  }
+
+  if (status) {
+    checkStatus(status);
+  }
+
+  if (priority) {
+    checkPriority(priority);
+  }
+}
+
 module.exports = {
   checkId,
   checkTitle,
-  checkStatus,
-  checkPriority,
+  checkProperties,
 };

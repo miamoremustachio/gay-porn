@@ -1,30 +1,10 @@
 const { ObjectId } = require('mongodb');
 
 const { tasks } = require('./database/collections.js');
-const {
-  checkTitle,
-  checkStatus,
-  checkPriority,
-} = require('./helpers/checking.js');
-const { Task } = require('./helpers/constructors.js');
 
 const toDo = {
   collection: tasks,
-  add({ title, status, priority }) {
-    checkTitle(title);
-
-    const task = new Task(title);
-
-    if (status) {
-      checkStatus(status);
-      task.status = status;
-    }
-
-    if (priority) {
-      checkPriority(priority);
-      task.priority = priority;
-    }
-    
+  add(task) {
     return this.collection.insertOne(task);
   },
   get(id) {
