@@ -2,13 +2,15 @@ require('dotenv').config();
 
 const express = require('express');
 
-const { setHeaders } = require('./modules/CORS.js');
-const { PORT, START_MESSAGE } = require('./modules/constants.js');
-const { getAllTasks, getTask } = require('./modules/getting.js');
+const { setHeaders } = require('./modules/middlewares/CORS.js');
+const { START_MESSAGE } = require('./modules/helpers/constants.js');
+const { getAllTasks, getTask } = require('./modules/helpers/getting.js');
 const { tasks } = require('./modules/database/collections.js');
-const { toDo } = require('./todo.js');
-const { checkId } = require('./modules/checking.js');
+const { toDo } = require('./modules/todo.js');
+const { checkId } = require('./modules/helpers/checking.js');
 const { connectDatabase } = require('./modules/database/connection.js');
+
+const PORT = process.env.PORT || 3000;
 
 const app = express();
 

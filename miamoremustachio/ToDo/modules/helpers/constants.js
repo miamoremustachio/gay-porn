@@ -1,5 +1,3 @@
-const PORT = process.env.PORT || 3000;
-
 const STATUSES = {
   TO_DO: "to do",
   IN_PROGRESS: "in progress",
@@ -32,7 +30,6 @@ const ERROR_MESSAGES = {
 
 
 module.exports = {
-  PORT,
   STATUSES,
   PRIORITIES,
   TITLE_LENGTH,

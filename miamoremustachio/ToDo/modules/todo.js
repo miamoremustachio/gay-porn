@@ -3,7 +3,7 @@ const { ObjectId } = require('mongodb');
 const {
   STATUSES,
   PRIORITIES,
-} = require('./modules/constants.js');
+} = require('./helpers/constants.js');
 
 const { TO_DO } = STATUSES;
 const { LOW } = PRIORITIES;
@@ -12,9 +12,9 @@ const {
   checkTitle,
   checkStatus,
   checkPriority,
-} = require('./modules/checking.js');
+} = require('./helpers/checking.js');
 
-const { tasks: databaseTasks } = require('./modules/database/collections.js');
+const { tasks: databaseTasks } = require('./database/collections.js');
 
 function Task(title) {
   this.title = title;
