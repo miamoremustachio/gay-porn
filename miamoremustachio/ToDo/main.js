@@ -4,10 +4,9 @@ const express = require('express');
 
 const { setHeaders } = require('./modules/middlewares/CORS.js');
 const { START_MESSAGE } = require('./modules/helpers/constants.js');
-const { getAllTasks, getTask } = require('./modules/helpers/getting.js');
-const { tasks } = require('./modules/database/collections.js');
 const { toDo } = require('./modules/todo.js');
 const { checkId } = require('./modules/helpers/checking.js');
+const { FilteredTask } = require('./modules/helpers/constructors.js');
 const { connectDatabase } = require('./modules/database/connection.js');
 
 const PORT = process.env.PORT || 3000;
@@ -23,7 +22,7 @@ app.get('/', (req, res) => {
 
 app.route('/tasks')
   .get(async (req, res) => {
-    const tasksList = await getAllTasks(tasks);
+    const tasksList = await toDo.getAll();
 
     res.json(tasksList);
   })
@@ -43,7 +42,7 @@ app.route('/tasks/:id')
     const id = req.params.id;
     
     try {
-      await checkId(tasks, id);
+      await checkId(id);
     } catch(error) {
       return res.status(404).send(error.message);
     }
@@ -52,18 +51,18 @@ app.route('/tasks/:id')
   })
   .get(async (req, res) => {
     const id = req.params.id;
-
-    const task = await getTask(tasks, id);
+    const task = await toDo.get(id);
+    
     res.json(task);
   })
   .put(async (req, res) => {
     const id = req.params.id;
-    const taskProperties = req.body;
-
-    const task = { ...taskProperties, id };
-
+    const taskProperties = { id, ...req.body };
+    
     try {
+      const task = new FilteredTask(taskProperties);
       const result = await toDo.edit(task);
+
       res.send(result);
     } catch(error) {
       res.status(400).send(error.message);
@@ -71,8 +70,8 @@ app.route('/tasks/:id')
   })
   .delete(async (req, res) => {
     const id = req.params.id;
-
     const result = await toDo.delete(id);
+
     res.send(result);
   })
 

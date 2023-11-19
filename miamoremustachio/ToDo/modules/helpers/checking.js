@@ -5,7 +5,10 @@ const {
   ERROR_MESSAGES,
 } = require('./constants.js');
 
-const { getTask } = require('./getting.js');
+// #ToDo: get rid of this shit:
+const { tasks } = require('../database/collections.js')
+const { ObjectId } = require('mongodb');
+//
 
 const { MIN, MAX } = TITLE_LENGTH;
 const {
@@ -16,8 +19,8 @@ const {
   TASK_NOT_FOUND,
 } = ERROR_MESSAGES;
 
-async function checkId(collection, id) {
-  const task = await getTask(collection, id);
+async function checkId(id) {
+  const task = await tasks.findOne({ _id: new ObjectId(id) });
 
   if (!task) {
     throw new Error(TASK_NOT_FOUND);

@@ -1,28 +1,15 @@
 const { ObjectId } = require('mongodb');
 
-const {
-  STATUSES,
-  PRIORITIES,
-} = require('./helpers/constants.js');
-
-const { TO_DO } = STATUSES;
-const { LOW } = PRIORITIES;
-
+const { tasks } = require('./database/collections.js');
 const {
   checkTitle,
   checkStatus,
   checkPriority,
 } = require('./helpers/checking.js');
-
-const { tasks: databaseTasks } = require('./database/collections.js');
-
-function Task(title) {
-  this.title = title;
-  this.status = TO_DO;
-  this.priority = LOW;
-}
+const { Task } = require('./helpers/constructors.js');
 
 const toDo = {
+  collection: tasks,
   add({ title, status, priority }) {
     checkTitle(title);
 
@@ -38,33 +25,24 @@ const toDo = {
       task.priority = priority;
     }
     
-    return databaseTasks.insertOne(task);
+    return this.collection.insertOne(task);
   },
-  edit({ title, status, priority, id }) {
-    const task = {};
+  get(id) {
+    return this.collection.findOne({ _id: new ObjectId(id) });
+  },
+  getAll() {
+    return this.collection.find().toArray();
+  },
+  edit(task) {
+    const { id, ...restProperties } = task;
 
-    if (title) {
-      checkTitle(title);
-      task.title = title;
-    }
-
-    if (status) {
-      checkStatus(status);
-      task.status = status;
-    }
-    
-    if (priority) {
-      checkPriority(priority);
-      task.priority = priority;
-    }
-    
-    return databaseTasks.updateOne(
+    return this.collection.updateOne(
       { _id: new ObjectId(id) },
-      { $set: task }
+      { $set: restProperties }
     );
   },
   delete(id) {
-    return databaseTasks.deleteOne({ _id: new ObjectId(id) });
+    return this.collection.deleteOne({ _id: new ObjectId(id) });
   }
 }
 
