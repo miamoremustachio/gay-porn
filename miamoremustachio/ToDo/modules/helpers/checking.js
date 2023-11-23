@@ -24,6 +24,7 @@ async function checkId(collection, id) {
 }
 
 function checkTitle(title) {
+  // #ToDo: get rid of this type checking
   if (typeof title !== 'string') {
     throw new Error(INVALID_TITLE);
   }

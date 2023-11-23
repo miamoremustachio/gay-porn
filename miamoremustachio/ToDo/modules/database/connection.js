@@ -1,7 +1,9 @@
-const { client } = require('./client.js');
+const mongoose = require('mongoose');
 
 async function connectDatabase() {
-  await client.connect();
+  const url = process.env.DATABASE_URL;
+  
+  await mongoose.connect(url);
   console.log('Database has successfully connected ✓');
 }
 
