@@ -1,6 +1,4 @@
-function UpdatedTask({ id, title, status, priority }) {
-  this.id = id;
-  
+function Query({ title, status, priority }) {  
   if (title) {
     this.title = title;
   }
@@ -14,4 +12,4 @@ function UpdatedTask({ id, title, status, priority }) {
   }
 }
 
-module.exports = { UpdatedTask };
+module.exports = { Query };

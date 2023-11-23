@@ -2,7 +2,6 @@ require('dotenv').config();
 
 const express = require('express');
 
-const { setHeaders } = require('./modules/middlewares/CORS.js');
 const {
   PORT,
   STATUSES,
@@ -11,13 +10,14 @@ const {
 } = require('./modules/helpers/constants.js');
 const { TO_DO } = STATUSES;
 const { LOW } = PRIORITIES;
-// const { toDo } = require('./modules/todo.js');
+const { setHeaders } = require('./modules/middlewares/CORS.js');
+const { checkId } = require('./modules/middlewares/id_checking.js');
+const { Task } = require('./modules/models/task.js');
+const { Query } = require('./modules/helpers/constructors.js');
 const {
   checkTitle,
   checkProperties,
 } = require('./modules/helpers/checking.js');
-// const { UpdatedTask } = require('./modules/helpers/constructors.js');
-const { Task } = require('./modules/models/task.js');
 const { connectDatabase } = require('./modules/database/connection.js');
 
 const app = express();
@@ -31,17 +31,18 @@ app.get('/', (req, res) => {
 
 app.route('/tasks')
   .get(async (req, res) => {
+
     try {
       const tasksList = await Task.find();
   
       res.json(tasksList);
     } catch(error) {
-      res.status(400).send(error.message);
+      res.status(500).send(error.message);
     }
   })
   .post(async (req, res) => {
     const { title, status, priority } = req.body;
-    
+
     try {
       checkTitle(title);
       checkProperties({ status, priority });
@@ -51,53 +52,56 @@ app.route('/tasks')
         status: status || TO_DO,
         priority: priority || LOW,
       });
+
       await task.save();
 
+      // #ToDo: send URL
       res.status(201).send(`Task id: ${task.id}`);
     } catch(error) {
       res.status(400).send(error.message);
     }
   });
 
-// app.route('/tasks/:id')
-//   .all(async (req, res, next) => {
-//     const id = req.params.id;
-    
-//     try {
-//       await checkId(toDo.collection, id);
-//     } catch(error) {
-//       return res.status(404).send(error.message);
-//     }
+app.route('/tasks/:id')
+  .all(checkId)
+  .get(async (req, res) => {
+    const id = req.params.id;
 
-//     next();
-//   })
-  // .get(async (req, res) => {
-  //   const id = req.params.id;
-  //   const task = await toDo.get(id);
-    
-  //   res.json(task);
-  // })
-  // .put(async (req, res) => {
-  //   const id = req.params.id;
-  //   const taskProperties = req.body;
-    
-  //   try {
-  //     checkProperties(taskProperties);
+    try {
+      const task = await Task.findById(id);
 
-  //     const task = new UpdatedTask({ id, ...taskProperties });
-  //     const result = await toDo.edit(task);
+      res.json(task);
+    } catch(error) {
+      res.status(500).send(error.message);
+    }
+  })
+  .put(async (req, res) => {
+    const id = req.params.id;
+    const taskProperties = req.body;
 
-  //     res.send(result);
-  //   } catch(error) {
-  //     res.status(400).send(error.message);
-  //   }
-  // })
-  // .delete(async (req, res) => {
-  //   const id = req.params.id;
-  //   const result = await toDo.delete(id);
+    try {
+      checkProperties(taskProperties);
 
-  //   res.send(result);
-  // })
+      const query = new Query(taskProperties);
+      const options = { returnDocument: "after" };
+      const result = await Task.findByIdAndUpdate(id, query, options);
+
+      res.send(result);
+    } catch(error) {
+      res.status(400).send(error.message);
+    }
+  })
+  .delete(async (req, res) => {
+    const id = req.params.id;
+
+    try {
+      const result = await Task.findByIdAndDelete(id);
+      
+      res.send(result);
+    } catch(error) {
+      res.status(500).send(error.message);
+    }
+  })
 
 async function start() {
   try {
