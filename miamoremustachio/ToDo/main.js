@@ -11,10 +11,12 @@ const {
 } = require('./modules/helpers/constants.js');
 const { TO_DO } = STATUSES;
 const { LOW } = PRIORITIES;
+// const { toDo } = require('./modules/todo.js');
 const {
   checkTitle,
   checkProperties,
 } = require('./modules/helpers/checking.js');
+// const { UpdatedTask } = require('./modules/helpers/constructors.js');
 const { Task } = require('./modules/models/task.js');
 const { connectDatabase } = require('./modules/database/connection.js');
 
@@ -56,6 +58,46 @@ app.route('/tasks')
       res.status(400).send(error.message);
     }
   });
+
+// app.route('/tasks/:id')
+//   .all(async (req, res, next) => {
+//     const id = req.params.id;
+    
+//     try {
+//       await checkId(toDo.collection, id);
+//     } catch(error) {
+//       return res.status(404).send(error.message);
+//     }
+
+//     next();
+//   })
+  // .get(async (req, res) => {
+  //   const id = req.params.id;
+  //   const task = await toDo.get(id);
+    
+  //   res.json(task);
+  // })
+  // .put(async (req, res) => {
+  //   const id = req.params.id;
+  //   const taskProperties = req.body;
+    
+  //   try {
+  //     checkProperties(taskProperties);
+
+  //     const task = new UpdatedTask({ id, ...taskProperties });
+  //     const result = await toDo.edit(task);
+
+  //     res.send(result);
+  //   } catch(error) {
+  //     res.status(400).send(error.message);
+  //   }
+  // })
+  // .delete(async (req, res) => {
+  //   const id = req.params.id;
+  //   const result = await toDo.delete(id);
+
+  //   res.send(result);
+  // })
 
 async function start() {
   try {

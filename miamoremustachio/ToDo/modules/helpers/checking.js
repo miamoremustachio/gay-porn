@@ -5,13 +5,23 @@ const {
   ERROR_MESSAGES,
 } = require('./constants.js');
 
+const { isDocumentExists } = require('./predicates.js');
+
 const { MIN, MAX } = TITLE_LENGTH;
 const {
   INVALID_TITLE,
   INVALID_STATUS,
   INVALID_PRIORITY,
   INCORRECT_TITLE_LENGTH,
+  TASK_NOT_FOUND,
 } = ERROR_MESSAGES;
+
+async function checkId(collection, id) {
+  const task = await isDocumentExists(collection, id);
+  if (!task) {
+    throw new Error(TASK_NOT_FOUND);
+  }
+}
 
 function checkTitle(title) {
   // #ToDo: get rid of this type checking
@@ -55,6 +65,7 @@ function checkProperties({ title, status, priority }) {
 }
 
 module.exports = {
+  checkId,
   checkTitle,
   checkProperties,
 };
