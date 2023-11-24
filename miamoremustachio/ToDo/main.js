@@ -31,7 +31,6 @@ app.get('/', (req, res) => {
 
 app.route('/tasks')
   .get(async (req, res) => {
-
     try {
       const tasksList = await Task.find();
   
@@ -55,8 +54,9 @@ app.route('/tasks')
 
       await task.save();
 
-      // #ToDo: send URL
-      res.status(201).send(`Task id: ${task.id}`);
+      const taskPath = `${req.path}/${task.id}`;
+
+      res.status(201).send(taskPath);
     } catch(error) {
       res.status(400).send(error.message);
     }
@@ -77,12 +77,11 @@ app.route('/tasks/:id')
   })
   .put(async (req, res) => {
     const id = req.params.id;
-    const taskProperties = req.body;
 
     try {
-      checkProperties(taskProperties);
+      checkProperties(req.body);
 
-      const query = new Query(taskProperties);
+      const query = new Query(req.body);
       const options = { returnDocument: "after" };
       const result = await Task.findByIdAndUpdate(id, query, options);
 
