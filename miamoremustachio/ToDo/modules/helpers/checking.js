@@ -7,20 +7,19 @@ const {
 
 const { MIN, MAX } = TITLE_LENGTH;
 const {
+  MISSING_TITLE,
   INVALID_TITLE,
   INVALID_STATUS,
   INVALID_PRIORITY,
-  INCORRECT_TITLE_LENGTH,
 } = ERROR_MESSAGES;
 
 function checkTitle(title) {
-  // #ToDo: get rid of this type checking
-  if (typeof title !== 'string') {
-    throw new Error(INVALID_TITLE);
+  if (!title) {
+    throw new Error(MISSING_TITLE);
   }
   
   if (title.length < MIN || title.length > MAX) {
-    throw new Error(INCORRECT_TITLE_LENGTH);
+    throw new Error(INVALID_TITLE);
   }
 }
 
