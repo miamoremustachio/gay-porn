@@ -31,25 +31,29 @@ app.get('/', (req, res) => {
 
 app.route('/tasks')
   .get(async (req, res) => {
+    const query = req.query;
+    
     try {
-      const tasksList = await Task.find();
+      checkProperties(query);
+      
+      const tasksList = await Task.find(query);
   
       res.json(tasksList);
     } catch(error) {
-      res.status(500).send(error.message);
+      res.status(400).send(error.message);
     }
   })
   .post(async (req, res) => {
-    const { title, status, priority } = req.body;
+    const { title, ...restProperties } = req.body;
 
     try {
       checkTitle(title);
-      checkProperties({ status, priority });
+      checkProperties(restProperties);
 
       const task = new Task({
         title: title,
-        status: status || TO_DO,
-        priority: priority || LOW,
+        status: req.body.status || TO_DO,
+        priority: req.body.priority || LOW,
       });
 
       await task.save();
