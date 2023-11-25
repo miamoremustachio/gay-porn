@@ -55,6 +55,7 @@ app.route('/tasks')
         title: title,
         status: req.body.status || TO_DO,
         priority: req.body.priority || LOW,
+        userId: req.body.userId,
       });
 
       await task.save();
@@ -70,12 +71,18 @@ app.route('/tasks')
 app.route('/tasks/:id')
   .all(checkId)
   .get(async (req, res) => {
-    const id = req.params.id;
+    const taskId = req.params.id;
 
     try {
-      const task = await Task.findById(id);
+      const task = await Task.findById(taskId);
+      const userId = task.userId;
+      const user = await User.findById(userId);
 
-      res.json(task);
+      const taskObject = task.toObject();
+      taskObject.user = user;
+      delete taskObject.userId;
+
+      res.json(taskObject);
     } catch(error) {
       res.status(500).send(error.message);
     }
