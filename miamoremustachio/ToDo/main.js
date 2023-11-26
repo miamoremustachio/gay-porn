@@ -4,12 +4,8 @@ const express = require('express');
 
 const {
   PORT,
-  STATUSES,
-  PRIORITIES,
   START_MESSAGE,
 } = require('./modules/helpers/constants.js');
-const { TO_DO } = STATUSES;
-const { LOW } = PRIORITIES;
 const { setHeaders } = require('./modules/middlewares/CORS.js');
 const { checkId } = require('./modules/middlewares/id_checking.js');
 const { Task } = require('./modules/models/task.js');
@@ -51,12 +47,7 @@ app.route('/tasks')
       checkTitle(title);
       checkProperties(restProperties);
 
-      const task = new Task({
-        title: title,
-        status: req.body.status || TO_DO,
-        priority: req.body.priority || LOW,
-        userId: req.body.userId,
-      });
+      const task = new Task(req.body);
 
       await task.save();
 
