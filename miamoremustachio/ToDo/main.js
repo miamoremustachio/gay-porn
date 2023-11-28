@@ -7,8 +7,8 @@ const {
   START_MESSAGE,
 } = require('./modules/helpers/constants.js');
 const { setHeaders } = require('./modules/middlewares/CORS.js');
-const { findTask } = require('./modules/middlewares/find_task.js');
-const { findUser } = require('./modules/middlewares/find_user.js');
+const { findTask } = require('./modules/middlewares/task_searching.js');
+const { findUser } = require('./modules/middlewares/user_searching.js');
 const { checkUserId } = require('./modules/middlewares/authorization.js');
 const { Task } = require('./modules/models/task.js');
 const { User } = require('./modules/models/user.js');
