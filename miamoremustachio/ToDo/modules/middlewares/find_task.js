@@ -2,7 +2,7 @@ const { Task } = require('../models/task.js');
 const { ERROR_MESSAGES } = require('../helpers/constants.js');
 const { TASK_NOT_FOUND } = ERROR_MESSAGES;
 
-const checkTaskId = async (req, res, next) => {
+const findTask = async (req, res, next) => {
   const taskId = req.params.id;
 
   try {
@@ -12,7 +12,7 @@ const checkTaskId = async (req, res, next) => {
       throw new Error(TASK_NOT_FOUND);
     }
 
-    res.locals.taskUserId = task.userId;
+    res.locals.allowedId = task.userId;
   } catch(error) {
     return res.status(404).send(error.message);
   }
@@ -20,4 +20,4 @@ const checkTaskId = async (req, res, next) => {
   next();
 }
 
-module.exports = { checkTaskId };
+module.exports = { findTask };

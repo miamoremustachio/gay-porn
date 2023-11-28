@@ -7,7 +7,8 @@ const {
   START_MESSAGE,
 } = require('./modules/helpers/constants.js');
 const { setHeaders } = require('./modules/middlewares/CORS.js');
-const { checkTaskId } = require('./modules/middlewares/id_checking.js');
+const { findTask } = require('./modules/middlewares/find_task.js');
+const { findUser } = require('./modules/middlewares/find_user.js');
 const { checkUserId } = require('./modules/middlewares/authorization.js');
 const { Task } = require('./modules/models/task.js');
 const { User } = require('./modules/models/user.js');
@@ -61,7 +62,7 @@ app.route('/tasks')
   });
 
 app.route('/tasks/:id')
-  .all(checkTaskId, checkUserId)
+  .all(findTask, checkUserId)
   .get(async (req, res) => {
     const taskId = req.params.id;
     const userId = req.get('Authorization');
@@ -133,6 +134,7 @@ app.route('/users')
   });
 
 app.route('/users/:id')
+  .all(findUser, checkUserId)
   .get(async (req, res) => {
     const id = req.params.id;
 
