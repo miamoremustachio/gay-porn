@@ -8,6 +8,7 @@ const taskSchema = new mongoose.Schema({
   title: String,
   status: { type: String, default: TO_DO },
   priority: { type: String, default: LOW },
+  deadline: Date,
   userId: { type: 'ObjectId', ref: 'User' },
 });
 
