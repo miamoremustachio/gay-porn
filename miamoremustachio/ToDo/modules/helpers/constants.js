@@ -29,7 +29,7 @@ const ERROR_MESSAGES = {
   INVALID_PRIORITY: `✗ Invalid priority (allowed "priority" values: "${LOW}", "${HIGH}")`,
   TASK_NOT_FOUND: "✗ Task wasn't found in list.",
   USER_NOT_FOUND: "✗ User wasn't found in list.",
-  ACCESS_FORBIDDEN: "✗ Access to the requested task is denied.",
+  ACCESS_FORBIDDEN: "✗ Access to the requested resourse is denied.",
 };
 
 
