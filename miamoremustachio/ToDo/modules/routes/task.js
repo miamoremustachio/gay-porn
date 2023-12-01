@@ -1,7 +1,7 @@
 const express = require('express');
 
-const { User } = require('../models/user.js');
 const { tasks } = require('../services/task.js');
+const { users } = require('../services/user.js');
 const { findTask } = require('../middlewares/task_searching.js');
 const { checkUserId } = require('../middlewares/authorization.js');
 const { Query } = require('../helpers/constructors.js');
@@ -51,7 +51,7 @@ router.route('/')
 
     try {
       const task = await tasks.get(taskId);
-      const user = await User.findById(userId);
+      const user = await users.get(userId);
 
       const taskObject = task.toObject();
       taskObject.user = user;

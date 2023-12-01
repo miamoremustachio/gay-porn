@@ -1,6 +1,6 @@
 const express = require('express');
 
-const { User } = require('../models/user.js');
+const { users } = require('../services/user.js');
 const { findUser } = require('../middlewares/user_searching.js');
 const { checkUserId } = require('../middlewares/authorization.js');
 
@@ -9,7 +9,7 @@ const router = express.Router();
 router.route('/')
   .get(async (req, res) => {
     try {
-      const usersList = await User.find();
+      const usersList = await users.getAll();
 
       res.json(usersList);
     } catch(error) {
@@ -20,9 +20,7 @@ router.route('/')
     const userProperties = req.body;
 
     try {
-      const user = new User(userProperties);
-
-      await user.save();
+      const user = await users.create(userProperties);
 
       const userPath = `${req.baseUrl}${req.path}${user.id}`;
 
@@ -35,10 +33,10 @@ router.route('/')
 router.route('/:id')
   .all(findUser, checkUserId)
   .get(async (req, res) => {
-    const id = req.params.id;
+    const userId = req.params.id;
 
     try {
-      const user = await User.findById(id);
+      const user = await users.get(userId);
       
       res.json(user);
     } catch(error) {
@@ -46,12 +44,12 @@ router.route('/:id')
     }
   })
   .put(async (req, res) => {
-    const id = req.params.id;
+    const userId = req.params.id;
     const query = req.body;
     const options = { returnDocument: "after" };
 
     try {
-      const result = await User.findByIdAndUpdate(id, query, options);
+      const result = await users.update(userId, query, options);
 
       res.send(result);
     } catch(error) {
@@ -59,10 +57,10 @@ router.route('/:id')
     }
   })
   .delete(async (req, res) => {
-    const id = req.params.id;
+    const userId = req.params.id;
 
     try {
-      const result = await User.findByIdAndDelete(id);
+      const result = await users.delete(userId);
 
       res.send(result);
     } catch(error) {
