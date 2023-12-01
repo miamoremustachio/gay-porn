@@ -1,7 +1,7 @@
 const express = require('express');
 
-const { Task } = require('../models/task.js');
 const { User } = require('../models/user.js');
+const { tasks } = require('../services/task.js');
 const { findTask } = require('../middlewares/task_searching.js');
 const { checkUserId } = require('../middlewares/authorization.js');
 const { Query } = require('../helpers/constructors.js');
@@ -18,7 +18,7 @@ router.route('/')
     const query = { userId, ...req.query };
     
     try {      
-      const tasksList = await Task.find(query);
+      const tasksList = await tasks.getAll(query);
   
       res.json(tasksList);
     } catch(error) {
@@ -33,9 +33,7 @@ router.route('/')
       checkTitle(title);
       checkProperties(restProperties);
 
-      const task = new Task({ userId, ...req.body });
-
-      await task.save();
+      const task = await tasks.create({ userId, ...req.body });
 
       const taskPath = `${req.baseUrl}${req.path}${task.id}`;
 
@@ -52,7 +50,7 @@ router.route('/')
     const userId = req.get('Authorization');
 
     try {
-      const task = await Task.findById(taskId);
+      const task = await tasks.get(taskId);
       const user = await User.findById(userId);
 
       const taskObject = task.toObject();
@@ -72,7 +70,7 @@ router.route('/')
 
       const query = new Query(req.body);
       const options = { returnDocument: "after" };
-      const result = await Task.findByIdAndUpdate(taskId, query, options);
+      const result = await tasks.update(taskId, query, options);
 
       res.send(result);
     } catch(error) {
@@ -83,7 +81,7 @@ router.route('/')
     const taskId = req.params.id;
 
     try {
-      const result = await Task.findByIdAndDelete(taskId);
+      const result = await tasks.delete(taskId);
       
       res.send(result);
     } catch(error) {

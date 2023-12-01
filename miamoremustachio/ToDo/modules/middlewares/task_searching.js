@@ -1,4 +1,4 @@
-const { Task } = require('../models/task.js');
+const { tasks } = require('../services/task.js');
 const { ERROR_MESSAGES } = require('../helpers/constants.js');
 const { TASK_NOT_FOUND } = ERROR_MESSAGES;
 
@@ -6,7 +6,7 @@ const findTask = async (req, res, next) => {
   const taskId = req.params.id;
 
   try {
-    const task = await Task.findById(taskId);
+    const task = await tasks.get(taskId);
 
     if (!task) {
       throw new Error(TASK_NOT_FOUND);
