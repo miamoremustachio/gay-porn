@@ -12,7 +12,7 @@ const findTask = async (req, res, next) => {
       throw new Error(TASK_NOT_FOUND);
     }
 
-    res.locals.allowedId = task.userId;
+    res.locals.allowedId = task.userId.toString();
   } catch(error) {
     return res.status(404).send(error.message);
   }

@@ -12,7 +12,7 @@ const findUser = async (req, res, next) => {
       throw new Error(USER_NOT_FOUND);
     }
 
-    res.locals.allowedId = user._id;
+    res.locals.allowedId = user.id;
   } catch(error) {
     return res.status(404).send(error.message);
   }
