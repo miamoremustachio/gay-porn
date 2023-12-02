@@ -1,8 +1,8 @@
 const express = require('express');
 
-const { tasks } = require('../services/task.js');
-const { users } = require('../services/user.js');
-const { findTask } = require('../middlewares/task_searching.js');
+const { tasks } = require('../services/task-services.js');
+const { users } = require('../services/user-services.js');
+const { findTask } = require('../middlewares/task-searching.js');
 const { checkUserId } = require('../middlewares/authorization.js');
 const { Query } = require('../helpers/constructors.js');
 const {

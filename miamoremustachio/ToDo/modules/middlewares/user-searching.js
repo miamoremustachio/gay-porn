@@ -1,4 +1,4 @@
-const { users } = require('../services/user.js');
+const { users } = require('../services/user-services.js');
 const { ERROR_MESSAGES } = require('../helpers/constants.js');
 const { USER_NOT_FOUND } = ERROR_MESSAGES;
 

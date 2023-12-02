@@ -1,4 +1,4 @@
-const { tasks } = require('../services/task.js');
+const { tasks } = require('../services/task-services.js');
 const { ERROR_MESSAGES } = require('../helpers/constants.js');
 const { TASK_NOT_FOUND } = ERROR_MESSAGES;
 

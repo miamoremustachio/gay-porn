@@ -7,8 +7,8 @@ const {
   START_MESSAGE,
 } = require('./modules/helpers/constants.js');
 const { setHeaders } = require('./modules/middlewares/CORS.js');
-const { router: taskRouter } = require('./modules/routes/task.js');
-const { router: userRouter } = require('./modules/routes/user.js');
+const { router: taskRouter } = require('./modules/routes/task-routes.js');
+const { router: userRouter } = require('./modules/routes/user-routes.js');
 const { connectDatabase } = require('./modules/database/connection.js');
 
 const app = express();
