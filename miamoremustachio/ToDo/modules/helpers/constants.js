@@ -14,11 +14,16 @@ const TITLE_LENGTH = {
   MAX: 30,
 };
 
+const ROLES = {
+  ADMIN: 'admin',
+  USER: 'user',
+};
+
+const START_MESSAGE = "ToDo server is running.";
+
 const { TO_DO, IN_PROGRESS, DONE } = STATUSES;
 const { LOW, HIGH } = PRIORITIES;
 const { MIN: MIN_LENGTH, MAX: MAX_LENGTH } = TITLE_LENGTH;
-
-const START_MESSAGE = "ToDo server is running.";
 
 const ERROR_MESSAGES = {
   MISSING_TITLE: `✗ Request body is missing the "title" property.`,
@@ -36,6 +41,7 @@ module.exports = {
   STATUSES,
   PRIORITIES,
   TITLE_LENGTH,
+  ROLES,
   START_MESSAGE,
   ERROR_MESSAGES,
 };
