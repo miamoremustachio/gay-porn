@@ -11,6 +11,7 @@ const {
   INVALID_TITLE,
   INVALID_STATUS,
   INVALID_PRIORITY,
+  INVALID_DEADLINE,
 } = ERROR_MESSAGES;
 
 function checkTitle(title) {
@@ -39,7 +40,15 @@ function checkPriority(priority) {
   }
 }
 
-function checkProperties({ title, status, priority }) {
+function checkDeadline(deadline) {
+  const currentDate = new Date();
+
+  if (deadline < currentDate) {
+    throw new Error(INVALID_DEADLINE);
+  }
+}
+
+function checkProperties({ title, status, priority, deadline }) {
   if (title) {
     checkTitle(title);
   }
@@ -50,6 +59,10 @@ function checkProperties({ title, status, priority }) {
 
   if (priority) {
     checkPriority(priority);
+  }
+
+  if (deadline) {
+    checkDeadline(deadline);
   }
 }
 

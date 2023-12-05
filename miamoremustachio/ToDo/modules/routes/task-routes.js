@@ -4,7 +4,7 @@ const { tasks } = require('../services/task-services.js');
 const { users } = require('../services/user-services.js');
 const { findTask } = require('../middlewares/task-searching.js');
 const { checkUserId } = require('../middlewares/authorization.js');
-const { Query } = require('../helpers/constructors.js');
+const { Query } = require('../helpers/task-helper.js');
 const {
   checkTitle,
   checkProperties,
