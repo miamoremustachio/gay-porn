@@ -1,11 +1,8 @@
-require('dotenv').config();
+const { PORT } = require('./config/app-config.js');
 
 const express = require('express');
 
-const {
-  PORT,
-  START_MESSAGE,
-} = require('./modules/helpers/constants.js');
+const { START_MESSAGE } = require('./modules/helpers/constants.js');
 const { setHeaders } = require('./modules/middlewares/CORS.js');
 const { router: taskRouter } = require('./modules/routes/task-routes.js');
 const { router: userRouter } = require('./modules/routes/user-routes.js');
