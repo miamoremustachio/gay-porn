@@ -17,6 +17,6 @@ const tasks = {
   delete(id) {
     return this.model.findByIdAndDelete(id);
   },
-}
+};
 
 module.exports = { tasks };
