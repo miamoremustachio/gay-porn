@@ -5,6 +5,7 @@ const express = require('express');
 const { START_MESSAGE } = require('./modules/helpers/constants.js');
 const { setHeaders } = require('./modules/middlewares/CORS.js');
 const { router: taskRouter } = require('./modules/routes/task-routes.js');
+const { router: subtaskRouter } = require('./modules/routes/subtask-routes.js');
 const { router: userRouter } = require('./modules/routes/user-routes.js');
 const { connectDatabase } = require('./modules/database/connection.js');
 
@@ -17,7 +18,7 @@ app.get('/', (req, res) => {
   res.send(START_MESSAGE);
 });
 
-app.use('/tasks', taskRouter);
+app.use('/tasks', taskRouter, subtaskRouter);
 app.use('/users', userRouter);
 
 async function start() {
