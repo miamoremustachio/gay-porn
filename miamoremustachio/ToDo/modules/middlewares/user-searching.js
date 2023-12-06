@@ -1,6 +1,4 @@
 const { users } = require('../services/user-services.js');
-const { ERROR_MESSAGES } = require('../helpers/constants.js');
-const { USER_NOT_FOUND } = ERROR_MESSAGES;
 
 const findUser = async (req, res, next) => {
   const userId = req.params.id;
@@ -9,12 +7,12 @@ const findUser = async (req, res, next) => {
     const user = await users.get(userId);
 
     if (!user) {
-      throw new Error(USER_NOT_FOUND);
+      return res.sendStatus(404);
     }
 
     res.locals.allowedId = user.id;
   } catch(error) {
-    return res.status(404).send(error.message);
+    return res.status(500).send(error.message);
   }
 
   next();

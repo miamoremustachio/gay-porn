@@ -1,12 +1,14 @@
 const { tasks } = require('../services/task-services.js');
 
-const findTask = async (req, res, next) => {
+const findSubtask = async (req, res, next) => {
   const taskId = req.params.id;
+  const subtaskId = req.params.subtaskId;
 
   try {
     const task = await tasks.get(taskId);
+    const subtask = task.subtasks.id(subtaskId);
 
-    if (!task) {
+    if (!subtask) {
       return res.sendStatus(404);
     }
 
@@ -18,4 +20,4 @@ const findTask = async (req, res, next) => {
   next();
 }
 
-module.exports = { findTask };
+module.exports = { findSubtask };

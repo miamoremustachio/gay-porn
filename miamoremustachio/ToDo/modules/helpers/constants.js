@@ -31,9 +31,6 @@ const ERROR_MESSAGES = {
   INVALID_STATUS: `✗ Invalid status (allowed "status" values: "${TO_DO}", "${IN_PROGRESS}", "${DONE}").`,
   INVALID_PRIORITY: `✗ Invalid priority (allowed "priority" values: "${LOW}", "${HIGH}").`,
   INVALID_DEADLINE: `✗ Invalid deadline (the deadline date can't be earlier than the current date).`,
-  TASK_NOT_FOUND: "✗ Task wasn't found in list.",
-  USER_NOT_FOUND: "✗ User wasn't found in list.",
-  ACCESS_FORBIDDEN: "✗ Access to the requested resourse is denied.",
 };
 
 

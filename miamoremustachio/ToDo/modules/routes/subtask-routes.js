@@ -2,6 +2,7 @@ const express = require('express');
 
 const { tasks } = require('../services/task-services.js');
 const { findTask } = require('../middlewares/task-searching.js');
+const { findSubtask } = require('../middlewares/subtask-searching.js');
 const { checkUserId } = require('../middlewares/authorization.js');
 const { checkTitle } = require('../helpers/task-helper.js');
 const { checkSubtaskProperties } = require('../helpers/subtask-helper.js');
@@ -46,7 +47,7 @@ router.route('/:id/subtasks')
   });
 
 router.route('/:id/subtasks/:subtaskId')
-  .all(findTask, checkUserId)
+  .all(findSubtask, checkUserId)
   .get(async (req, res) => {
     const taskId = req.params.id;
     const subtaskId = req.params.subtaskId;
