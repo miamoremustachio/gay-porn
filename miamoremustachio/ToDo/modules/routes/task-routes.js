@@ -4,11 +4,11 @@ const { tasks } = require('../services/task-services.js');
 const { users } = require('../services/user-services.js');
 const { findTask } = require('../middlewares/task-searching.js');
 const { checkUserId } = require('../middlewares/authorization.js');
-const { Query } = require('../helpers/task-helper.js');
 const {
   checkTitle,
-  checkProperties,
-} = require('../helpers/checking.js');
+  checkTaskProperties,
+  Query,
+} = require('../helpers/task-helper.js');
 
 const router = express.Router();
 
@@ -31,7 +31,7 @@ router.route('/')
 
     try {
       checkTitle(title);
-      checkProperties(restProperties);
+      checkTaskProperties(restProperties);
 
       const task = await tasks.create({ userId, ...req.body });
 
@@ -66,7 +66,7 @@ router.route('/:id')
     const taskId = req.params.id;
 
     try {
-      checkProperties(req.body);
+      checkTaskProperties(req.body);
 
       const query = new Query(req.body);
       const options = { returnDocument: "after" };

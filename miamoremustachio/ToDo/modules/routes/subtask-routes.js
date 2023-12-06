@@ -3,10 +3,8 @@ const express = require('express');
 const { tasks } = require('../services/task-services.js');
 const { findTask } = require('../middlewares/task-searching.js');
 const { checkUserId } = require('../middlewares/authorization.js');
-const {
-  checkTitle,
-  checkProperties,
-} = require('../helpers/checking.js');
+const { checkTitle } = require('../helpers/task-helper.js');
+const { checkSubtaskProperties } = require('../helpers/subtask-helper.js');
 
 const router = express.Router();
 
@@ -30,7 +28,7 @@ router.route('/:id/subtasks')
 
     try {
       checkTitle(title);
-      checkProperties(restProperties);
+      checkSubtaskProperties(restProperties);
 
       const task = await tasks.get(taskId);
       
@@ -67,7 +65,7 @@ router.route('/:id/subtasks/:subtaskId')
     const subtaskId = req.params.subtaskId;
 
     try {
-      checkProperties(req.body);
+      checkSubtaskProperties(req.body);
 
       const task = await tasks.get(taskId);
       const subtask = task.subtasks.id(subtaskId);
