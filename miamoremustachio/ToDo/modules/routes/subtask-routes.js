@@ -1,6 +1,6 @@
 const express = require('express');
 
-const { tasks } = require('../services/task-services.js');
+const { subtasks } = require('../services/subtask-services.js');
 const { findTask } = require('../middlewares/task-searching.js');
 const { findSubtask } = require('../middlewares/subtask-searching.js');
 const { checkUserId } = require('../middlewares/authorization.js');
@@ -15,8 +15,7 @@ router.route('/:id/subtasks')
     const taskId = req.params.id;
     
     try {
-      const task = await tasks.get(taskId);
-      const subtasksList = task.subtasks;
+      const subtasksList = await subtasks.getAll(taskId);
 
       res.json(subtasksList);
     } catch(error) {
@@ -31,12 +30,7 @@ router.route('/:id/subtasks')
       checkTitle(title);
       checkSubtaskProperties(restProperties);
 
-      const task = await tasks.get(taskId);
-      
-      task.subtasks.push(req.body);
-      const subtask = task.subtasks.at(-1);
-
-      await task.save();
+      const subtask = await subtasks.create(taskId, req.body);
 
       const subtaskPath = `${req.originalUrl}/${subtask.id}`;
       
@@ -53,8 +47,7 @@ router.route('/:id/subtasks/:subtaskId')
     const subtaskId = req.params.subtaskId;
 
     try {
-      const task = await tasks.get(taskId);
-      const subtask = task.subtasks.id(subtaskId);
+      const subtask = await subtasks.get(taskId, subtaskId);
 
       res.json(subtask);
     } catch(error) {
@@ -68,13 +61,13 @@ router.route('/:id/subtasks/:subtaskId')
     try {
       checkSubtaskProperties(req.body);
 
-      const task = await tasks.get(taskId);
-      const subtask = task.subtasks.id(subtaskId);
+      const subtask = await subtasks.get(taskId, subtaskId);
       
       subtask.title = req.body.title || subtask.title;
       subtask.status = req.body.status || subtask.status;
-
-      task.save();
+      
+      const task = subtasks.getParent(subtask);
+      await subtasks.saveParent(task);
 
       res.json(subtask);
     } catch(error) {
@@ -86,14 +79,9 @@ router.route('/:id/subtasks/:subtaskId')
     const subtaskId = req.params.subtaskId;
 
     try {
-      const task = await tasks.get(taskId);
-      const subtask = task.subtasks.id(subtaskId);
+      await subtasks.delete(taskId, subtaskId);
 
-      subtask.deleteOne();
-
-      task.save();
-
-      res.json(subtask);
+      res.sendStatus(204);
     } catch(error) {
       res.status(500).send(error.message);
     }
