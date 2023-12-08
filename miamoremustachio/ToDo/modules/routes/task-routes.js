@@ -22,7 +22,7 @@ router.route('/')
   
       res.json(tasksList);
     } catch(error) {
-      res.status(400).send(error.message);
+      res.status(500).send(error.message);
     }
   })
   .post(async (req, res) => {
@@ -32,14 +32,18 @@ router.route('/')
     try {
       checkTitle(title);
       checkTaskProperties(restProperties);
+    } catch(error) {
+      res.status(400).send(error.message);
+      return;
+    }
 
+    try {
       const task = await tasks.create({ userId, ...req.body });
-
       const taskPath = `${req.baseUrl}${req.path}${task.id}`;
 
       res.status(201).send(taskPath);
     } catch(error) {
-      res.status(400).send(error.message);
+      res.status(500).send(error.message);
     }
   });
 
@@ -67,14 +71,19 @@ router.route('/:id')
 
     try {
       checkTaskProperties(req.body);
+    } catch(error) {
+      res.status(400).send(error.message);
+      return;
+    }
 
+    try {
       const query = new Query(req.body);
       const options = { returnDocument: "after" };
       const result = await tasks.update(taskId, query, options);
 
       res.send(result);
     } catch(error) {
-      res.status(400).send(error.message);
+      res.status(500).send(error.message);
     }
   })
   .delete(async (req, res) => {

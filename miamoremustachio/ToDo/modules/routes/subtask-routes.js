@@ -29,14 +29,18 @@ router.route('/:id/subtasks')
     try {
       checkTitle(title);
       checkSubtaskProperties(restProperties);
+    } catch(error) {
+      res.status(400).send(error.message);
+      return;
+    }
 
+    try {
       const subtask = await subtasks.create(taskId, req.body);
-
       const subtaskPath = `${req.originalUrl}/${subtask.id}`;
       
       res.send(subtaskPath);
     } catch(error) {
-      res.status(400).send(error.message);
+      res.status(500).send(error.message);
     }
   });
 
@@ -60,7 +64,12 @@ router.route('/:id/subtasks/:subtaskId')
 
     try {
       checkSubtaskProperties(req.body);
+    } catch(error) {
+      res.status(400).send(error.message);
+      return;
+    }
 
+    try {
       const subtask = await subtasks.get(taskId, subtaskId);
       
       subtask.title = req.body.title || subtask.title;
@@ -71,7 +80,7 @@ router.route('/:id/subtasks/:subtaskId')
 
       res.json(subtask);
     } catch(error) {
-      res.status(400).send(error.message);
+      res.status(500).send(error.message);
     }
   })
   .delete(async (req, res) => {

@@ -7,12 +7,14 @@ const findTask = async (req, res, next) => {
     const task = await tasks.get(taskId);
 
     if (!task) {
-      return res.sendStatus(404);
+      res.sendStatus(404);
+      return;
     }
 
     res.locals.allowedId = task.userId.toString();
   } catch(error) {
-    return res.status(500).send(error.message);
+    res.status(500).send(error.message);
+    return;
   }
   
   next();

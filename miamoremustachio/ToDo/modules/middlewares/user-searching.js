@@ -7,12 +7,14 @@ const findUser = async (req, res, next) => {
     const user = await users.get(userId);
 
     if (!user) {
-      return res.sendStatus(404);
+      res.sendStatus(404);
+      return;
     }
 
     res.locals.allowedId = user.id;
   } catch(error) {
-    return res.status(500).send(error.message);
+    res.status(500).send(error.message);
+    return;
   }
 
   next();

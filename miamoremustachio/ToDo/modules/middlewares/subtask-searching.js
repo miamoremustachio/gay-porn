@@ -8,13 +8,15 @@ const findSubtask = async (req, res, next) => {
     const subtask = await subtasks.get(taskId, subtaskId);
 
     if (!subtask) {
-      return res.sendStatus(404);
+      res.sendStatus(404);
+      return;
     }
 
     const task = subtasks.getParent(subtask);
     res.locals.allowedId = task.userId.toString();
   } catch(error) {
-    return res.status(500).send(error.message);
+    res.status(500).send(error.message);
+    return;
   }
   
   next();

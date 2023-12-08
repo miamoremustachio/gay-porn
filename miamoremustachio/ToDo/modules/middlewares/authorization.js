@@ -3,7 +3,8 @@ const checkUserId = (req, res, next) => {
   const allowedId = res.locals.allowedId;
   
   if (userId !== allowedId) {
-    return res.sendStatus(403);
+    res.sendStatus(403);
+    return;
   }
 
   next();
