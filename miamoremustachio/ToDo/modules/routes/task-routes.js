@@ -79,9 +79,9 @@ router.route('/:id')
     try {
       const query = new Query(req.body);
       const options = { returnDocument: "after" };
-      const result = await tasks.update(taskId, query, options);
+      const task = await tasks.update(taskId, query, options);
 
-      res.send(result);
+      res.json(task);
     } catch(error) {
       res.status(500).send(error.message);
     }
@@ -90,9 +90,9 @@ router.route('/:id')
     const taskId = req.params.id;
 
     try {
-      const result = await tasks.delete(taskId);
+      await tasks.delete(taskId);
       
-      res.send(result);
+      res.sendStatus(204);
     } catch(error) {
       res.status(500).send(error.message);
     }

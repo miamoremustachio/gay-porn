@@ -48,9 +48,9 @@ router.route('/:id')
     const options = { returnDocument: "after" };
 
     try {
-      const result = await users.update(userId, query, options);
+      const user = await users.update(userId, query, options);
 
-      res.send(result);
+      res.json(user);
     } catch(error) {
       res.status(500).send(error.message);
     }
@@ -59,9 +59,9 @@ router.route('/:id')
     const userId = req.params.id;
 
     try {
-      const result = await users.delete(userId);
+      await users.delete(userId);
 
-      res.send(result);
+      res.sendStatus(204);
     } catch(error) {
       res.status(500).send(error.message);
     }
