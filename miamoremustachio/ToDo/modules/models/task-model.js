@@ -11,12 +11,12 @@ const subtasksSchema = new mongoose.Schema({
 });
 
 const taskSchema = new mongoose.Schema({
-  userId: { type: 'ObjectId', ref: 'User' },
   title: String,
   status: { type: String, default: TO_DO },
   priority: { type: String, default: LOW },
   deadline: { type: Date, default: getDefaultDeadline },
   subtasks: [subtasksSchema],
+  user: { type: 'ObjectId', ref: 'User' },
 });
 
 const Task = mongoose.model('Task', taskSchema);

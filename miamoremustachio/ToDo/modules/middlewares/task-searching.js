@@ -11,7 +11,7 @@ const findTask = async (req, res, next) => {
       return;
     }
 
-    res.locals.allowedId = task.userId.toString();
+    res.locals.allowedId = task.user.id;
   } catch(error) {
     res.status(500).send(error.message);
     return;
