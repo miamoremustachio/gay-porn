@@ -72,8 +72,7 @@ router.route('/:id/subtasks/:subtaskId')
     try {
       const subtask = await subtasks.get(taskId, subtaskId);
       
-      subtask.title = req.body.title || subtask.title;
-      subtask.status = req.body.status || subtask.status;
+      subtasks.edit(subtask, req.body);
       
       const task = subtasks.getParent(subtask);
       await subtasks.saveParent(task);

@@ -8,6 +8,10 @@ const subtasks = {
   saveParent(task) {
     return task.save();
   },
+  edit(subtask, updated) {
+    subtask.title = updated.title || subtask.title;
+    subtask.status = updated.status || subtask.status;
+  },
   async create(taskId, doc) {
     const task = await this.collection.get(taskId);
 
