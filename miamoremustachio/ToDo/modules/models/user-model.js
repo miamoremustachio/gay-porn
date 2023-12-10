@@ -11,6 +11,9 @@ const userSchema = new mongoose.Schema({
   address: String,
   email: String,
   roles: { type: [String], default: [USER] },
+},
+{
+  timestamps: true,
 });
 
 const User = mongoose.model('User', userSchema);

@@ -17,6 +17,9 @@ const taskSchema = new mongoose.Schema({
   deadline: { type: Date, default: getDefaultDeadline },
   subtasks: [subtasksSchema],
   user: { type: 'ObjectId', ref: 'User' },
+},
+{
+  timestamps: true,
 });
 
 const Task = mongoose.model('Task', taskSchema);
