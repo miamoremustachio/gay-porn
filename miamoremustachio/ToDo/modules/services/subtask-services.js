@@ -8,9 +8,12 @@ const subtasks = {
   saveParent(task) {
     return task.save();
   },
-  edit(subtask, updated) {
+  complete(subtask) {
+    subtask.completed = true;
+  },
+  edit(subtask, completed, updated) {
+    completed ? this.complete(subtask) : null;
     subtask.title = updated.title || subtask.title;
-    subtask.status = updated.status || subtask.status;
   },
   async create(taskId, doc) {
     const task = await this.collection.get(taskId);

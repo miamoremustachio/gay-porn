@@ -5,7 +5,6 @@ const { findTask } = require('../middlewares/task-searching.js');
 const { findSubtask } = require('../middlewares/subtask-searching.js');
 const { checkUserId } = require('../middlewares/authorization.js');
 const { checkTitle } = require('../helpers/task-helper.js');
-const { checkSubtaskProperties } = require('../helpers/subtask-helper.js');
 
 const router = express.Router();
 
@@ -24,11 +23,10 @@ router.route('/:id/subtasks')
   })
   .post(async (req, res) => {
     const taskId = req.params.id;
-    const { title, ...restProperties } = req.body;
+    const title = req.body.title;
 
     try {
       checkTitle(title);
-      checkSubtaskProperties(restProperties);
     } catch(error) {
       res.status(400).send(error.message);
       return;
@@ -61,9 +59,10 @@ router.route('/:id/subtasks/:subtaskId')
   .put(async (req, res) => {
     const taskId = req.params.id;
     const subtaskId = req.params.subtaskId;
+    const { title, completed } = req.body;
 
     try {
-      checkSubtaskProperties(req.body);
+      title ? checkTitle(title) : null;
     } catch(error) {
       res.status(400).send(error.message);
       return;
@@ -72,7 +71,7 @@ router.route('/:id/subtasks/:subtaskId')
     try {
       const subtask = await subtasks.get(taskId, subtaskId);
       
-      subtasks.edit(subtask, req.body);
+      subtasks.edit(subtask, completed, { title });
       
       const task = subtasks.getParent(subtask);
       await subtasks.saveParent(task);

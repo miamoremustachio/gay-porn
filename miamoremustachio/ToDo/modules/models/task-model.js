@@ -7,7 +7,7 @@ const { getDefaultDeadline } = require('../helpers/task-helper.js');
 
 const subtasksSchema = new mongoose.Schema({
   title: String,
-  status: { type: String, default: TO_DO },
+  completed: { type: Boolean, default: false },
 });
 
 const taskSchema = new mongoose.Schema({
