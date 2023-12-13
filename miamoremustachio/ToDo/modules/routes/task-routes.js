@@ -13,7 +13,7 @@ const router = express.Router();
 
 router.route('/')
   .get(async (req, res) => {
-    const userId = req.get('Authorization');
+    const userId = req.headers.authorization;
     const query = { user: userId, ...req.query };
     
     try {      
@@ -25,7 +25,7 @@ router.route('/')
     }
   })
   .post(async (req, res) => {
-    const userId = req.get('Authorization');
+    const userId = req.headers.authorization;
     const { title, ...restProperties } = req.body;
 
     try {

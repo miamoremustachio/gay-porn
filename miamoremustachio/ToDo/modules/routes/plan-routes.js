@@ -8,9 +8,7 @@ const router = express.Router();
 
 router.route('/')
   .get(async (req, res) => {
-    // #ToDo: test this ebanina:
-    // const userId = req.headers.authorization;
-    const userId = req.get('Authorization');
+    const userId = req.headers.authorization;
     const query = { user: userId };
 
     try {
@@ -22,7 +20,7 @@ router.route('/')
     }
   })
   .post(async (req, res) => {
-    const userId = req.get('Authorization');
+    const userId = req.headers.authorization;
 
     try {
       const plan = await plans.create({ user: userId, ...req.body });

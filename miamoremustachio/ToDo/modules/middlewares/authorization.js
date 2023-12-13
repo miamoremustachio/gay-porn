@@ -1,5 +1,5 @@
 const checkUserId = (req, res, next) => {
-  const userId = req.get('Authorization');
+  const userId = req.headers.authorization;
   const allowedId = res.locals.allowedId;
   
   if (userId !== allowedId) {
