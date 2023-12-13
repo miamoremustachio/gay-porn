@@ -5,6 +5,7 @@ const express = require('express');
 const { START_MESSAGE } = require('./modules/helpers/constants.js');
 const { setHeaders } = require('./modules/middlewares/CORS.js');
 const { router: planRouter } = require('./modules/routes/plan-routes.js');
+const { router: taskReferenceRouter } = require('./modules/routes/task_reference-routes.js');
 const { router: taskRouter } = require('./modules/routes/task-routes.js');
 const { router: subtaskRouter } = require('./modules/routes/subtask-routes.js');
 const { router: userRouter } = require('./modules/routes/user-routes.js');
@@ -19,7 +20,7 @@ app.get('/', (req, res) => {
   res.send(START_MESSAGE);
 });
 
-app.use('/plans', planRouter);
+app.use('/plans', planRouter, taskReferenceRouter);
 app.use('/tasks', taskRouter, subtaskRouter);
 app.use('/users', userRouter);
 

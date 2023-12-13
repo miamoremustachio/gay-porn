@@ -6,7 +6,7 @@ const findPlan = async (req, res, next) => {
 
   try {
     const plan = await plans.get(planId);
-    const tasksList = plan?.tasks;
+    const tasksList = (plan) ? plan.tasks : [];
     const task = (taskId) ? plans.getTask(tasksList, taskId) : true;
     
     if (!plan || !task) {
@@ -17,7 +17,6 @@ const findPlan = async (req, res, next) => {
     res.locals.allowedId = plan.user.id;
   } catch(error) {
     res.status(500).send(error.message);
-    console.log(error);
     return;
   }
 

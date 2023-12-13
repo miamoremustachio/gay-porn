@@ -24,7 +24,7 @@ const plans = {
     .populate('user', this.userProjection);
   },
   getTask(tasksList, taskId) {
-    return tasksList?.find(task => taskId === task._id.toString());
+    return tasksList.find(task => taskId === task._id.toString());
   },
   update(id, query, options) {
     return this.model.findByIdAndUpdate(id, query, options);
