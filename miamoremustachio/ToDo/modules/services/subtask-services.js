@@ -5,9 +5,6 @@ const subtasks = {
   getParent(subtask) {
     return subtask.parent();
   },
-  saveParent(task) {
-    return task.save();
-  },
   complete(subtask) {
     subtask.completed = true;
   },
@@ -33,12 +30,20 @@ const subtasks = {
     const task = await this.collection.get(taskId);
     return task.subtasks;
   },
+  async update(taskId, subtaskId, query) {
+    const subtask = await this.get(taskId, subtaskId);
+    const { completed, ...updated } = query;
+
+    this.edit(subtask, completed, updated);
+    await subtask.parent().save();
+
+    return subtask;
+  },
   async delete(taskId, subtaskId) {
     const subtask = await this.get(taskId, subtaskId);
+  
     subtask.deleteOne();
-
-    const task = subtask.parent();
-    await task.save();
+    await subtask.parent().save();
   },
 }
 

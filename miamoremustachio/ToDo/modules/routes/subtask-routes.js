@@ -59,7 +59,7 @@ router.route('/:id/subtasks/:subtaskId')
   .put(async (req, res) => {
     const taskId = req.params.id;
     const subtaskId = req.params.subtaskId;
-    const { title, completed } = req.body;
+    const { title } = req.body;
 
     try {
       title ? checkTitle(title) : null;
@@ -69,16 +69,12 @@ router.route('/:id/subtasks/:subtaskId')
     }
 
     try {
-      const subtask = await subtasks.get(taskId, subtaskId);
-      
-      subtasks.edit(subtask, completed, { title });
-      
-      const task = subtasks.getParent(subtask);
-      await subtasks.saveParent(task);
+      const subtask = await subtasks.update(taskId, subtaskId, req.body);
 
       res.json(subtask);
     } catch(error) {
       res.status(500).send(error.message);
+      console.log(error);
     }
   })
   .delete(async (req, res) => {

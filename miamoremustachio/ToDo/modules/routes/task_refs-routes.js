@@ -1,7 +1,8 @@
 const express = require('express');
 
-const { plans } = require('../services/plan-services.js');
+const { taskRefs } = require('../services/task_refs-services.js');
 const { findPlan } = require('../middlewares/plan-searching.js');
+const { findTaskRef } = require('../middlewares/task_refs-searching.js');
 const { checkUserId } = require('../middlewares/authorization.js');
 
 const router = express.Router();
@@ -13,13 +14,9 @@ router.route('/:id/tasks')
     const planId = req.params.id;
 
     try {
-      const plan = await plans.get(planId);
-      const tasksList = plan.tasks;
+      await taskRefs.add(planId, req.body);
 
-      plans.addTask(tasksList, req.body);
-
-      await plans.save(plan);
-
+      // #ToDo: fix that poeben'
       const taskPath = `${req.originalUrl}/${planId}`;
 
       res.send(taskPath);
@@ -29,17 +26,15 @@ router.route('/:id/tasks')
   });
 
 router.route('/:id/tasks/:taskId')
-  .all(findPlan, checkUserId)
+  .all(findPlan, findTaskRef, checkUserId)
   .get(async (req, res) => {
     const planId = req.params.id;
     const taskId = req.params.taskId;
 
     try {
-      const plan = await plans.get(planId);
-      const tasksList = plan.tasks;
-      const task = plans.getTask(tasksList, taskId);
+      const taskRef = await taskRefs.get(planId, taskId);
 
-      res.json(task);
+      res.json(taskRef);
     } catch(error) {
       res.status(500).send(error.message);
     }
@@ -49,10 +44,7 @@ router.route('/:id/tasks/:taskId')
     const taskId = req.params.taskId;
 
     try {
-      const plan = await plans.get(planId);
-      plan.tasks = plans.deleteTask(plan.tasks, taskId);
-      
-      await plans.save(plan);
+      await taskRefs.delete(planId, taskId);
 
       res.sendStatus(204);
     } catch(error) {
