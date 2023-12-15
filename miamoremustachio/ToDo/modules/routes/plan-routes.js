@@ -9,7 +9,7 @@ const router = express.Router();
 router.route('/')
   .get(async (req, res) => {
     const userId = req.headers.authorization;
-    const query = { user: userId };
+    const query = { userId };
 
     try {
       const plansList = await plans.getAll(query);
@@ -39,7 +39,7 @@ router.route('/:id')
 
     try {
       const plan = await plans.get(planId);
-      plan.tasks
+      plan.tasks // ?!
 
       res.json(plan);
     } catch(error) {
