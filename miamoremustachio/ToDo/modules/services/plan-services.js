@@ -6,7 +6,7 @@ const { Plan } = require('../models/plan-model.js');
 const plans = {
   model: Plan,
   projections: {
-    plan: '-user',
+    plan: '-user -tasks.user',
     task: [ '-user' ],
     user: [ 'username', 'email' ],
   },
@@ -21,9 +21,14 @@ const plans = {
   getAll(query) {
     const userId = new ObjectId(query.userId);
 
-    // #ToDo: add tasks $lookup
     return this.model.aggregate()
       .match({ user: userId })
+      .lookup({
+        from: 'tasks',
+        localField: 'tasks',
+        foreignField: '_id',
+        as: 'tasks',
+      })
       .addFields({ tasksAmount: { $size: '$tasks' } })
       .project(this.projections.plan);
   },
