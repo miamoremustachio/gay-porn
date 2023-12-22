@@ -32,8 +32,8 @@ const plans = {
       .addFields({ tasksAmount: { $size: '$tasks' } })
       .project(this.projections.plan);
   },
-  update(id, query, options) {
-    return this.model.findByIdAndUpdate(id, query, options);
+  update(id, update, options) {
+    return this.model.findByIdAndUpdate(id, update, options);
   },
   delete(id) {
     return this.model.findByIdAndDelete(id);

@@ -3,6 +3,10 @@ const express = require('express');
 const { plans } = require('../services/plan-services.js');
 const { findPlan } = require('../middlewares/plan-searching.js');
 const { checkUserId } = require('../middlewares/authorization.js');
+const {
+  Plan,
+  UpdatedPlan,
+} = require('../helpers/plan-helper.js');
 
 const router = express.Router();
 
@@ -21,9 +25,10 @@ router.route('/')
   })
   .post(async (req, res) => {
     const userId = req.headers.authorization;
+    const fields = { userId, ...req.body };
 
     try {
-      const plan = await plans.create({ user: userId, ...req.body });
+      const plan = await plans.create(new Plan(fields));
       const planPath = `${req.baseUrl}${req.path}${plan.id}`;
 
       res.send(planPath);
@@ -39,7 +44,6 @@ router.route('/:id')
 
     try {
       const plan = await plans.get(planId);
-      plan.tasks // ?!
 
       res.json(plan);
     } catch(error) {
@@ -48,12 +52,11 @@ router.route('/:id')
   })
   .put(async (req, res) => {
     const planId = req.params.id;
-    // #ToDo: add query filter
-    const query = req.body;
-    const options = { returnDocument: "after" };
+    const update = new UpdatedPlan(req.body);
+    const options = { returnDocument: 'after' };
 
     try {
-      const plan = await plans.update(planId, query, options);
+      const plan = await plans.update(planId, update, options);
 
       res.json(plan);
     } catch(error) {
