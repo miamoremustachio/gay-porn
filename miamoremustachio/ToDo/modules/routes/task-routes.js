@@ -6,7 +6,8 @@ const { checkUserId } = require('../middlewares/authorization.js');
 const {
   checkTitle,
   checkTaskProperties,
-  Query,
+  Task,
+  UpdatedTask,
 } = require('../helpers/task-helper.js');
 
 const router = express.Router();
@@ -27,6 +28,7 @@ router.route('/')
   .post(async (req, res) => {
     const userId = req.headers.authorization;
     const { title, ...restProperties } = req.body;
+    const fields = { userId, title, ...restProperties };
 
     try {
       checkTitle(title);
@@ -37,7 +39,7 @@ router.route('/')
     }
 
     try {
-      const task = await tasks.create({ user: userId, ...req.body });
+      const task = await tasks.create(new Task(fields));
       const taskPath = `${req.baseUrl}${req.path}${task.id}`;
 
       res.status(201).send(taskPath);
@@ -69,10 +71,11 @@ router.route('/:id')
       return;
     }
 
+    const update = new UpdatedTask(req.body);
+    const options = { returnDocument: "after" };
+    
     try {
-      const query = new Query(req.body);
-      const options = { returnDocument: "after" };
-      const task = await tasks.update(taskId, query, options);
+      const task = await tasks.update(taskId, update, options);
 
       res.json(task);
     } catch(error) {

@@ -12,8 +12,8 @@ const tasks = {
   getAll(query) {
     return this.model.find(query).populate('user', this.userProjection);
   },
-  update(id, query, options) {
-    return this.model.findByIdAndUpdate(id, query, options);
+  update(id, update, options) {
+    return this.model.findByIdAndUpdate(id, update, options);
   },
   delete(id) {
     return this.model.findByIdAndDelete(id);

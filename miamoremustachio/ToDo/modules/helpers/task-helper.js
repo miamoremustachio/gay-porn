@@ -74,7 +74,19 @@ function getDefaultDeadline() {
   return deadline;
 }
 
-function Query({ title, status, priority, deadline }) {
+function Task({ title, status, priority, deadline, userId, subtasks }) {
+  this.title = title;
+  this.status = status;
+  this.priority = priority;
+  this.deadline = deadline;
+  this.user = userId;
+
+  if (subtasks) {
+    this.subtasks = subtasks;
+  }
+}
+
+function UpdatedTask({ title, status, priority, deadline }) {
   if (title) {
     this.title = title;
   }
@@ -97,5 +109,6 @@ module.exports = {
   checkStatus,
   checkTaskProperties,
   getDefaultDeadline,
-  Query,
+  Task,
+  UpdatedTask,
 };
