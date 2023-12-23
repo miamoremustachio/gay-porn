@@ -72,7 +72,7 @@ router.route('/:id')
     }
 
     const update = new UpdatedTask(req.body);
-    const options = { returnDocument: "after" };
+    const options = { returnDocument: 'after' };
     
     try {
       const task = await tasks.update(taskId, update, options);

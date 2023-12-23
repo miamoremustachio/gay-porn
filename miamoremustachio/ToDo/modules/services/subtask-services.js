@@ -30,9 +30,9 @@ const subtasks = {
     const task = await this.collection.get(taskId);
     return task.subtasks;
   },
-  async update(taskId, subtaskId, query) {
+  async update(taskId, subtaskId, fieldsToUpdate) {
     const subtask = await this.get(taskId, subtaskId);
-    const { completed, ...updated } = query;
+    const { completed, ...updated } = fieldsToUpdate;
 
     this.edit(subtask, completed, updated);
     await subtask.parent().save();

@@ -44,11 +44,11 @@ router.route('/:id')
   })
   .put(async (req, res) => {
     const userId = req.params.id;
-    const query = req.body;
-    const options = { returnDocument: "after" };
+    const update = req.body;
+    const options = { returnDocument: 'after' };
 
     try {
-      const user = await users.update(userId, query, options);
+      const user = await users.update(userId, update, options);
 
       res.json(user);
     } catch(error) {
