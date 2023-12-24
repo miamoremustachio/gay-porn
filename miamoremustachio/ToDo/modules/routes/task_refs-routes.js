@@ -8,19 +8,17 @@ const { checkUserId } = require('../middlewares/authorization.js');
 const router = express.Router();
 
 router.route('/:id/tasks')
-// #ToDo: apply middlewares to all routes
   .all(findPlan, checkUserId)
   .post(async (req, res) => {
     const planId = req.params.id;
 
     try {
       // #ToDo: add Set collection to avoid duplicate refs
-      await taskRefs.add(planId, req.body);
+      const taskRef = await taskRefs.add(planId, req.body);
 
-      // #ToDo: fix that poeben'
-      const taskPath = `${req.originalUrl}/${planId}`;
+      const taskRefPath = `${req.originalUrl}/${taskRef}`;
 
-      res.send(taskPath);
+      res.send(taskRefPath);
     } catch(error) {
       res.send(500).send(error.message);
     }

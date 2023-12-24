@@ -7,9 +7,9 @@ const taskRefs = {
     
     plan.tasks.push(...taskRefs);
     await plan.save();
-
+ 
     const lastTaskRef = plan.tasks.at(-1);
-    return lastTaskRef;
+    return lastTaskRef._id;
   },
   async get(planId, taskId) {
     const plan = await this.collection.get(planId);
