@@ -74,6 +74,33 @@ function getDefaultDeadline() {
   return deadline;
 }
 
+// #ToDo: add date-fns package
+function getNextDay() {
+  const currentTime = new Date();
+  const nextDay = currentTime.getDate() + 1;
+  const nextDayTime = new Date(currentTime.setDate(nextDay));
+  const nextDayStarting = new Date(nextDayTime.toDateString());
+
+  return nextDayStarting;
+}
+
+function getNextWeek() {
+  const currentTime = new Date();
+  const nextWeek = currentTime.getDate() + 7;
+  const nextWeekStarting = new Date(currentTime.setDate(nextWeek));
+
+  return nextWeekStarting;
+}
+
+function getDateLimit(deadline) {
+  switch (deadline) {
+    case 'today':
+      return getNextDay();
+    case 'week':
+      return getNextWeek();
+  }
+}
+
 function Task({ title, status, priority, deadline, userId, subtasks }) {
   this.title = title;
   this.status = status;
@@ -109,6 +136,7 @@ module.exports = {
   checkStatus,
   checkTaskProperties,
   getDefaultDeadline,
+  getDateLimit,
   Task,
   UpdatedTask,
 };
