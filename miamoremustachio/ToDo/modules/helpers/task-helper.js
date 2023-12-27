@@ -78,8 +78,8 @@ function getDefaultDeadline() {
 function getNextDay() {
   const currentTime = new Date();
   const nextDay = currentTime.getDate() + 1;
-  const nextDayTime = new Date(currentTime.setDate(nextDay));
-  const nextDayStarting = new Date(nextDayTime.toDateString());
+  const nextDayDate = new Date(currentTime.setDate(nextDay));
+  const nextDayStarting = new Date(nextDayDate.toDateString());
 
   return nextDayStarting;
 }

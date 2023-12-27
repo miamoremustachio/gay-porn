@@ -13,8 +13,8 @@ router.route('/:id/tasks')
     const planId = req.params.id;
 
     try {
-      const uniqueTaskRefs = new Set(req.body);
-      const taskRef = await taskRefs.add(planId, uniqueTaskRefs);
+      const taskRefsList = new Set(req.body);
+      const taskRef = await taskRefs.add(planId, taskRefsList);
 
       const taskRefPath = `${req.originalUrl}/${taskRef}`;
 

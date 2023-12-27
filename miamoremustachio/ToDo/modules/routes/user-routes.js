@@ -17,10 +17,10 @@ router.route('/')
     }
   })
   .post(async (req, res) => {
-    const userProperties = req.body;
+    const fields = req.body;
 
     try {
-      const user = await users.create(userProperties);
+      const user = await users.create(fields);
       const userPath = `${req.baseUrl}${req.path}${user.id}`;
 
       res.send(userPath);
