@@ -19,6 +19,7 @@ const ROLES = {
   USER: 'user',
 };
 
+const DEFAULT_SORT_ORDER = 'ascending';
 const START_MESSAGE = "ToDo server is running.";
 
 const { TO_DO, IN_PROGRESS, DONE } = STATUSES;
@@ -39,6 +40,7 @@ module.exports = {
   PRIORITIES,
   TITLE_LENGTH,
   ROLES,
+  DEFAULT_SORT_ORDER,
   START_MESSAGE,
   ERROR_MESSAGES,
 };

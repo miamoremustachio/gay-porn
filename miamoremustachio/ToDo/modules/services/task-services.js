@@ -1,5 +1,8 @@
 const { Task } = require('../models/task-model.js');
-const { getDateLimit } = require('../helpers/task-helper.js');
+const {
+  getDateLimit,
+  SortField,
+} = require('../helpers/task-helper.js');
 
 const tasks = {
   model: Task,
@@ -11,12 +14,18 @@ const tasks = {
     return this.model.findById(id).populate('user', this.userProjection);
   },
   getAll(filter) {
-    const { deadline, ...restParams } = filter;
-    const query = this.model.find(restParams)
+    const { deadline, sort, ['sort-order']: sortOrder, ...restFields } = filter;
+
+    const query = this.model.find(restFields)
       .populate('user', this.userProjection);
       
     if (deadline) {    
-      query.where('deadline').gte(new Date()).lt(getDateLimit(deadline));
+      query.where('deadline').gt(new Date()).lt(getDateLimit(deadline));
+    }
+
+    if (sort) {
+      const sortField = new SortField(sort, sortOrder);
+      query.sort(sortField);
     }
 
     return query.exec();

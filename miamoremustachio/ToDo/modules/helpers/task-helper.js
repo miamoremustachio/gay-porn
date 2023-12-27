@@ -2,6 +2,7 @@ const {
   STATUSES,
   PRIORITIES,
   TITLE_LENGTH,
+  DEFAULT_SORT_ORDER,
   ERROR_MESSAGES,
 } = require('./constants.js');
 
@@ -101,6 +102,10 @@ function getDateLimit(deadline) {
   }
 }
 
+function SortField(field, order) {
+  this[field] = order || DEFAULT_SORT_ORDER;
+}
+
 function Task({ title, status, priority, deadline, userId, subtasks }) {
   this.title = title;
   this.status = status;
@@ -114,6 +119,7 @@ function Task({ title, status, priority, deadline, userId, subtasks }) {
 }
 
 function UpdatedTask({ title, status, priority, deadline }) {
+// #ToDo: create for/in loop for adding properties
   if (title) {
     this.title = title;
   }
@@ -137,6 +143,7 @@ module.exports = {
   checkTaskProperties,
   getDefaultDeadline,
   getDateLimit,
+  SortField,
   Task,
   UpdatedTask,
 };
