@@ -8,8 +8,8 @@ const users = {
   get(id) {
     return this.model.findById(id);
   },
-  getAll(query) {
-    return this.model.find(query);
+  getAll(filter) {
+    return this.model.find(filter);
   },
   update(id, update, options) {
     return this.model.findByIdAndUpdate(id, update, options);

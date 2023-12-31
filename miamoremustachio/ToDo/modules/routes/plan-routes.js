@@ -13,10 +13,10 @@ const router = express.Router();
 router.route('/')
   .get(async (req, res) => {
     const userId = req.headers.authorization;
-    const query = { userId };
+    const filter = { userId };
 
     try {
-      const plansList = await plans.getAll(query);
+      const plansList = await plans.getAll(filter);
 
       res.json(plansList);
     } catch(error) {

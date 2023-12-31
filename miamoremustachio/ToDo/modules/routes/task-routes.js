@@ -15,10 +15,10 @@ const router = express.Router();
 router.route('/')
   .get(async (req, res) => {
     const userId = req.headers.authorization;
-    const query = { user: userId, ...req.query };
+    const filter = { user: userId, ...req.query };
     
     try {      
-      const tasksList = await tasks.getAll(query);
+      const tasksList = await tasks.getAll(filter);
   
       res.json(tasksList);
     } catch(error) {

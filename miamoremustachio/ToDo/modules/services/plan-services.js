@@ -18,8 +18,8 @@ const plans = {
       .populate('tasks', this.projections.task)
       .populate('user', this.projections.user);
   },
-  getAll(query) {
-    const userId = new ObjectId(query.userId);
+  getAll(filter) {
+    const userId = new ObjectId(filter.userId);
 
     return this.model.aggregate()
       .match({ user: userId })
