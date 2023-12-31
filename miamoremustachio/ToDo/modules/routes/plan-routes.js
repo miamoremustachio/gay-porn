@@ -13,7 +13,7 @@ const router = express.Router();
 router.route('/')
   .get(async (req, res) => {
     const userId = req.headers.authorization;
-    const filter = { userId };
+    const filter = { userId, ...req.query };
 
     try {
       const plansList = await plans.getAll(filter);
@@ -41,9 +41,10 @@ router.route('/:id')
   .all(findPlan, checkUserId)
   .get(async (req, res) => {
     const planId = req.params.id;
+    const filter = req.query;
 
     try {
-      const plan = await plans.get(planId);
+      const plan = await plans.get(planId, filter);
 
       res.json(plan);
     } catch(error) {
