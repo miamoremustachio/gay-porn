@@ -37,13 +37,15 @@ const plans = {
     const { sort, ['sort-order']: sortOrder } = filter;
 
     const aggregation = this.model.aggregate()
-    // #ToDo: fix random tasks order
       .match({ user: userId })
       .lookup({
         from: 'tasks',
         localField: 'tasks',
         foreignField: '_id',
         as: 'tasks',
+        pipeline: [{
+          $sort: { deadline: 1 }
+        }],
       })
       .addFields({ tasksAmount: { $size: '$tasks' } })
       .project(this.projections.plan);

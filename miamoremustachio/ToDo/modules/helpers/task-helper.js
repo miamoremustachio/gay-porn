@@ -6,6 +6,8 @@ const {
   ERROR_MESSAGES,
 } = require('./constants.js');
 
+const { Task: taskModel } = require('../models/task-model.js');
+
 const { MIN, MAX } = TITLE_LENGTH;
 const {
   MISSING_TITLE,
@@ -41,6 +43,7 @@ function checkPriority(priority) {
   }
 }
 
+// #ToDo: fix deadline checking
 function checkDeadline(deadline) {
   const currentDate = new Date();
 
@@ -67,73 +70,25 @@ function checkTaskProperties({ title, status, priority, deadline }) {
   }
 }
 
-function getDefaultDeadline() {
-  const taskCreationTime = new Date();
-  const deadlineMonth = taskCreationTime.getMonth() + 1;
-  const deadline = new Date(taskCreationTime.setMonth(deadlineMonth));
-
-  return deadline;
-}
-
-// #ToDo: add date-fns package
-function getNextDay() {
-  const currentTime = new Date();
-  const nextDay = currentTime.getDate() + 1;
-  const nextDayDate = new Date(currentTime.setDate(nextDay));
-  const nextDayStarting = new Date(nextDayDate.toDateString());
-
-  return nextDayStarting;
-}
-
-function getNextWeek() {
-  const currentTime = new Date();
-  const nextWeek = currentTime.getDate() + 7;
-  const nextWeekStarting = new Date(currentTime.setDate(nextWeek));
-
-  return nextWeekStarting;
-}
-
-function getDateLimit(deadline) {
-  switch (deadline) {
-    case 'today':
-      return getNextDay();
-    case 'week':
-      return getNextWeek();
-  }
-}
-
 function SortField(field, order) {
   this[field] = order || DEFAULT_SORT_ORDER;
 }
 
-function Task({ title, status, priority, deadline, userId, subtasks }) {
-  this.title = title;
-  this.status = status;
-  this.priority = priority;
-  this.deadline = deadline;
-  this.user = userId;
-
-  if (subtasks) {
-    this.subtasks = subtasks;
-  }
+function getTaskPaths() {
+  return Object.keys(taskModel.schema.paths);
 }
 
-function UpdatedTask({ title, status, priority, deadline }) {
-// #ToDo: create for/in loop for adding properties
-  if (title) {
-    this.title = title;
+function Task(fields) {
+  const taskPaths = getTaskPaths();
+
+  for (const field in fields) {
+    if (taskPaths.includes(field)) {
+      this[field] = fields[field];
+    }
   }
 
-  if (status) {
-    this.status = status;
-  }
-  
-  if (priority) {
-    this.priority = priority;
-  }
-
-  if (deadline) {
-    this.deadline = deadline;
+  if (fields.user) {
+    this.user = fields.user;
   }
 }
 
@@ -141,9 +96,6 @@ module.exports = {
   checkTitle,
   checkStatus,
   checkTaskProperties,
-  getDefaultDeadline,
-  getDateLimit,
   SortField,
   Task,
-  UpdatedTask,
 };

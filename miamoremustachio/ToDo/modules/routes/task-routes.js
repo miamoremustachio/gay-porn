@@ -7,7 +7,6 @@ const {
   checkTitle,
   checkTaskProperties,
   Task,
-  UpdatedTask,
 } = require('../helpers/task-helper.js');
 
 const router = express.Router();
@@ -28,7 +27,7 @@ router.route('/')
   .post(async (req, res) => {
     const userId = req.headers.authorization;
     const { title, ...restProperties } = req.body;
-    const fields = { userId, title, ...restProperties };
+    const fields = { user: userId, title, ...restProperties };
 
     try {
       checkTitle(title);
@@ -71,7 +70,7 @@ router.route('/:id')
       return;
     }
 
-    const update = new UpdatedTask(req.body);
+    const update = new Task(req.body);
     const options = { returnDocument: 'after' };
     
     try {

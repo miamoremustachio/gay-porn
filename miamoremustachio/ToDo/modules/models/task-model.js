@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const { STATUSES, PRIORITIES } = require('../helpers/constants.js');
 const { TO_DO } = STATUSES;
 const { LOW } = PRIORITIES;
-const { getDefaultDeadline } = require('../helpers/task-helper.js');
+const { getDefaultDeadline } = require('../helpers/time-helper.js');
 
 const subtaskSchema = new mongoose.Schema({
   title: String,
@@ -16,7 +16,7 @@ const taskSchema = new mongoose.Schema({
   priority: { type: String, default: LOW },
   deadline: { type: Date, default: getDefaultDeadline },
   subtasks: [subtaskSchema],
-  user: { type: 'ObjectId', ref: 'User' },
+  user: { type: 'ObjectId', ref: 'User', immutable: true },
 },
 {
   timestamps: true,

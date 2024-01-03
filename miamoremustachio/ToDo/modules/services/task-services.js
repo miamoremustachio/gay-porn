@@ -1,8 +1,6 @@
 const { Task } = require('../models/task-model.js');
-const {
-  getDateLimit,
-  SortField,
-} = require('../helpers/task-helper.js');
+const { SortField } = require('../helpers/task-helper.js');
+const { getDateLimit } = require('../helpers/time-helper.js');
 
 const tasks = {
   model: Task,
