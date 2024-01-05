@@ -4,7 +4,7 @@ const { subtasks } = require('../services/subtask-services.js');
 const { findTask } = require('../middlewares/task-searching.js');
 const { findSubtask } = require('../middlewares/subtask-searching.js');
 const { checkUserId } = require('../middlewares/authorization.js');
-const { checkTitle } = require('../helpers/task-validation.js');
+const { checkTask } = require('../helpers/task-validation.js');
 
 const router = express.Router();
 
@@ -26,7 +26,7 @@ router.route('/:id/subtasks')
     const title = req.body.title;
 
     try {
-      checkTitle(title);
+      checkTask.title(title);
     } catch(error) {
       res.status(400).send(error.message);
       return;
@@ -62,7 +62,7 @@ router.route('/:id/subtasks/:subtaskId')
     const { title } = req.body;
 
     try {
-      title ? checkTitle(title) : null;
+      title ? checkTask.title(title) : null;
     } catch(error) {
       res.status(400).send(error.message);
       return;

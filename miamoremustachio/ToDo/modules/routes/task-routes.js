@@ -6,10 +6,7 @@ const {
 } = require('../services/task-services.js');
 const { findTask } = require('../middlewares/task-searching.js');
 const { checkUserId } = require('../middlewares/authorization.js');
-const {
-  checkTitle,
-  checkTaskProperties,
-} = require('../helpers/task-validation.js');
+const { checkTask } = require('../helpers/task-validation.js');
 
 const router = express.Router();
 
@@ -28,12 +25,12 @@ router.route('/')
   })
   .post(async (req, res) => {
     const userId = req.headers.authorization;
-    const { title, ...restProperties } = req.body;
-    const fields = { user: userId, title, ...restProperties };
+    const { title, ...restFields } = req.body;
+    const fields = { user: userId, title, ...restFields };
 
     try {
-      checkTitle(title);
-      checkTaskProperties(restProperties);
+      checkTask.title(title);
+      checkTask.all(restFields);
     } catch(error) {
       res.status(400).send(error.message);
       return;
@@ -64,9 +61,10 @@ router.route('/:id')
   })
   .put(async (req, res) => {
     const taskId = req.params.id;
+    const fields = req.body;
 
     try {
-      checkTaskProperties(req.body);
+      checkTask.all(fields);
     } catch(error) {
       res.status(400).send(error.message);
       return;

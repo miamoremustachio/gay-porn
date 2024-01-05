@@ -14,61 +14,45 @@ const {
   INVALID_DEADLINE,
 } = ERROR_MESSAGES;
 
-function checkTitle(title) {
-  if (!title) {
-    throw new Error(MISSING_TITLE);
-  }
-  
-  if (title.length < MIN || title.length > MAX) {
-    throw new Error(INVALID_TITLE);
-  }
-}
-
-function checkStatus(status) {
-  const statuses = Object.values(STATUSES);
-
-  if (!statuses.includes(status)) {
-    throw new Error(INVALID_STATUS);
-  }
-}
-
-function checkPriority(priority) {
-  const priorities = Object.values(PRIORITIES);
+const checkTask = {
+  title(title) {
+    if (!title) {
+      throw new Error(MISSING_TITLE);
+    }
     
-  if (!priorities.includes(priority)) {
-    throw new Error(INVALID_PRIORITY);
+    if (title.length < MIN || title.length > MAX) {
+      throw new Error(INVALID_TITLE);
+    }
+  },
+  status(status) {
+    const statuses = Object.values(STATUSES);
+    
+    if (!statuses.includes(status)) {
+      throw new Error(INVALID_STATUS);
+    }
+  },
+  priority(priority) {
+    const priorities = Object.values(PRIORITIES);
+      
+    if (!priorities.includes(priority)) {
+      throw new Error(INVALID_PRIORITY);
+    }
+  },
+  deadline(deadline) {
+    const deadlineDate = new Date(deadline);
+    const currentDate = new Date();
+    
+    if (deadlineDate < currentDate) {
+      throw new Error(INVALID_DEADLINE);
+    }
+  },
+  all(fields) {
+    for (const field in fields) {
+      if (this[field]) {
+        this[field](fields[field]);
+      }
+    }
   }
 }
 
-function checkDeadline(deadline) {
-  const deadlineDate = new Date(deadline);
-  const currentDate = new Date();
-
-  if (deadlineDate < currentDate) {
-    throw new Error(INVALID_DEADLINE);
-  }
-}
-
-function checkTaskProperties({ title, status, priority, deadline }) {
-  if (title) {
-    checkTitle(title);
-  }
-
-  if (status) {
-    checkStatus(status);
-  }
-
-  if (priority) {
-    checkPriority(priority);
-  }
-
-  if (deadline) {
-    checkDeadline(deadline);
-  }
-}
-
-module.exports = {
-  checkTitle,
-  checkStatus,
-  checkTaskProperties,
-};
+module.exports = { checkTask };
