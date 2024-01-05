@@ -1,12 +1,11 @@
 const express = require('express');
 
-const { plans } = require('../services/plan-services.js');
+const {
+  plans,
+  Plan,
+} = require('../services/plan-services.js');
 const { findPlan } = require('../middlewares/plan-searching.js');
 const { checkUserId } = require('../middlewares/authorization.js');
-const {
-  Plan,
-  UpdatedPlan,
-} = require('../helpers/plan-helper.js');
 
 const router = express.Router();
 
@@ -25,7 +24,7 @@ router.route('/')
   })
   .post(async (req, res) => {
     const userId = req.headers.authorization;
-    const fields = { userId, ...req.body };
+    const fields = { user: userId, ...req.body };
 
     try {
       const plan = await plans.create(new Plan(fields));
@@ -53,7 +52,7 @@ router.route('/:id')
   })
   .put(async (req, res) => {
     const planId = req.params.id;
-    const update = new UpdatedPlan(req.body);
+    const update = new Plan(req.body);
     const options = { returnDocument: 'after' };
 
     try {

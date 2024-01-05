@@ -1,17 +1,17 @@
 const STATUSES = {
-  TO_DO: "to do",
-  IN_PROGRESS: "in progress",
-  DONE: "done",
+  TO_DO: 'to do',
+  IN_PROGRESS: 'in progress',
+  DONE: 'done',
 };
 
 const PRIORITIES = {
-  LOW: "low",
-  HIGH: "high",
+  LOW: 'low',
+  HIGH: 'high',
 };
 
 const TITLE_LENGTH = {
   MIN: 3,
-  MAX: 30,
+  MAX: 70,
 };
 
 const ROLES = {
@@ -20,7 +20,7 @@ const ROLES = {
 };
 
 const DEFAULT_SORT_ORDER = 'ascending';
-const START_MESSAGE = "ToDo server is running.";
+const START_MESSAGE = 'ToDo server is running.';
 
 const { TO_DO, IN_PROGRESS, DONE } = STATUSES;
 const { LOW, HIGH } = PRIORITIES;

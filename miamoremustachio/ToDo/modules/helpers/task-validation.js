@@ -2,11 +2,8 @@ const {
   STATUSES,
   PRIORITIES,
   TITLE_LENGTH,
-  DEFAULT_SORT_ORDER,
   ERROR_MESSAGES,
 } = require('./constants.js');
-
-const { Task: taskModel } = require('../models/task-model.js');
 
 const { MIN, MAX } = TITLE_LENGTH;
 const {
@@ -70,32 +67,8 @@ function checkTaskProperties({ title, status, priority, deadline }) {
   }
 }
 
-function SortField(field, order) {
-  this[field] = order || DEFAULT_SORT_ORDER;
-}
-
-function getTaskPaths() {
-  return Object.keys(taskModel.schema.paths);
-}
-
-function Task(fields) {
-  const taskPaths = getTaskPaths();
-
-  for (const field in fields) {
-    if (taskPaths.includes(field)) {
-      this[field] = fields[field];
-    }
-  }
-
-  if (fields.user) {
-    this.user = fields.user;
-  }
-}
-
 module.exports = {
   checkTitle,
   checkStatus,
   checkTaskProperties,
-  SortField,
-  Task,
 };

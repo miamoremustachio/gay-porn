@@ -1,11 +1,11 @@
 const mongoose = require('mongoose');
 const ObjectId = mongoose.Types.ObjectId;
 
-const { Plan } = require('../models/plan-model.js');
-const { SortField } = require('../helpers/task-helper.js');
+const { Plan: PlanModel } = require('../models/plan-model.js');
+const { SortField } = require('../helpers/sort-helper.js');
 
 const plans = {
-  model: Plan,
+  model: PlanModel,
   projections: {
     plan: '-user -tasks.user',
     tasks: '-user',
@@ -56,6 +56,9 @@ const plans = {
 
       return aggregation;
   },
+  getPaths() {
+    return Object.keys(this.model.schema.paths);
+  },
   update(id, update, options) {
     return this.model.findByIdAndUpdate(id, update, options);
   },
@@ -64,4 +67,21 @@ const plans = {
   },
 }
 
-module.exports = { plans };
+function Plan(fields) {
+  const paths = plans.getPaths();
+
+  for (const field in fields) {
+    if (paths.includes(field)) {
+      this[field] = fields[field];
+    }
+  }
+
+  if (fields.user) {
+    this.user = fields.user;
+  }
+}
+
+module.exports = {
+  plans,
+  Plan,
+};

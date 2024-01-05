@@ -4,7 +4,7 @@ const { subtasks } = require('../services/subtask-services.js');
 const { findTask } = require('../middlewares/task-searching.js');
 const { findSubtask } = require('../middlewares/subtask-searching.js');
 const { checkUserId } = require('../middlewares/authorization.js');
-const { checkTitle } = require('../helpers/task-helper.js');
+const { checkTitle } = require('../helpers/task-validation.js');
 
 const router = express.Router();
 

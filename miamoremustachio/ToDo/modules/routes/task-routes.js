@@ -1,13 +1,15 @@
 const express = require('express');
 
-const { tasks } = require('../services/task-services.js');
+const {
+  tasks,
+  Task,
+} = require('../services/task-services.js');
 const { findTask } = require('../middlewares/task-searching.js');
 const { checkUserId } = require('../middlewares/authorization.js');
 const {
   checkTitle,
   checkTaskProperties,
-  Task,
-} = require('../helpers/task-helper.js');
+} = require('../helpers/task-validation.js');
 
 const router = express.Router();
 

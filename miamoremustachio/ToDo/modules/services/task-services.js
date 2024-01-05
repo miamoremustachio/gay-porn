@@ -1,9 +1,9 @@
-const { Task } = require('../models/task-model.js');
-const { SortField } = require('../helpers/task-helper.js');
+const { Task: TaskModel } = require('../models/task-model.js');
+const { SortField } = require('../helpers/sort-helper.js');
 const { getDateLimit } = require('../helpers/time-helper.js');
 
 const tasks = {
-  model: Task,
+  model: TaskModel,
   userProjection: [ 'username', 'email' ],
   create(doc) {
     return this.model.create(doc);
@@ -28,6 +28,9 @@ const tasks = {
 
     return query.exec();
   },
+  getPaths() {
+    return Object.keys(this.model.schema.paths);
+  },
   update(id, update, options) {
     return this.model.findByIdAndUpdate(id, update, options);
   },
@@ -36,4 +39,21 @@ const tasks = {
   },
 };
 
-module.exports = { tasks };
+function Task(fields) {
+  const taskPaths = tasks.getPaths();
+
+  for (const field in fields) {
+    if (taskPaths.includes(field)) {
+      this[field] = fields[field];
+    }
+  }
+
+  if (fields.user) {
+    this.user = fields.user;
+  }
+}
+
+module.exports = {
+  tasks,
+  Task,
+};
