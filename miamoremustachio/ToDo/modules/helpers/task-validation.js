@@ -40,11 +40,11 @@ function checkPriority(priority) {
   }
 }
 
-// #ToDo: fix deadline checking
 function checkDeadline(deadline) {
+  const deadlineDate = new Date(deadline);
   const currentDate = new Date();
 
-  if (deadline < currentDate) {
+  if (deadlineDate < currentDate) {
     throw new Error(INVALID_DEADLINE);
   }
 }
