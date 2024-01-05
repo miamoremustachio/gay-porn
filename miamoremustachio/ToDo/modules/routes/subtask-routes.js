@@ -22,15 +22,16 @@ router.route('/:id/subtasks')
     }
   })
   .post(async (req, res) => {
-    const taskId = req.params.id;
     const title = req.body.title;
-
+    
     try {
       checkSubtask.title(title);
     } catch(error) {
       res.status(400).send(error.message);
       return;
     }
+
+    const taskId = req.params.id;
 
     try {
       const subtask = await subtasks.create(taskId, req.body);
@@ -57,17 +58,18 @@ router.route('/:id/subtasks/:subtaskId')
     }
   })
   .put(async (req, res) => {
-    const taskId = req.params.id;
-    const subtaskId = req.params.subtaskId;
     const { title } = req.body;
-
+    
     try {
       title ? checkSubtask.title(title) : null;
     } catch(error) {
       res.status(400).send(error.message);
       return;
     }
-
+    
+    const taskId = req.params.id;
+    const subtaskId = req.params.subtaskId;
+    
     try {
       const subtask = await subtasks.update(taskId, subtaskId, req.body);
 

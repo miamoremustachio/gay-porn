@@ -24,10 +24,8 @@ router.route('/')
     }
   })
   .post(async (req, res) => {
-    const userId = req.headers.authorization;
     const { title, ...restFields } = req.body;
-    const fields = { user: userId, title, ...restFields };
-
+    
     try {
       checkTask.title(title);
       checkTask.all(restFields);
@@ -35,6 +33,9 @@ router.route('/')
       res.status(400).send(error.message);
       return;
     }
+    
+    const userId = req.headers.authorization;
+    const fields = { user: userId, ...req.body };
 
     try {
       const task = await tasks.create(new Task(fields));
@@ -60,16 +61,16 @@ router.route('/:id')
     }
   })
   .put(async (req, res) => {
-    const taskId = req.params.id;
     const fields = req.body;
-
+    
     try {
       checkTask.all(fields);
     } catch(error) {
       res.status(400).send(error.message);
       return;
     }
-
+    
+    const taskId = req.params.id;
     const update = new Task(req.body);
     const options = { returnDocument: 'after' };
     
