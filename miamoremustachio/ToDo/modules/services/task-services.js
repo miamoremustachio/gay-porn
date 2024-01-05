@@ -17,8 +17,8 @@ const tasks = {
     const query = this.model.find(restFields)
       .populate('user', this.userProjection);
       
-    if (deadline) {    
-      query.where('deadline').gt(new Date()).lt(getDateLimit(deadline));
+    if (deadline) {
+      query.where('deadline').gt(new Date()).lte(getDateLimit(deadline));
     }
 
     if (sort) {

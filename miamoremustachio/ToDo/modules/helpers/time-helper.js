@@ -1,35 +1,30 @@
-function getDefaultDeadline() {
-  const taskCreationTime = new Date();
-  const deadlineMonth = taskCreationTime.getMonth() + 1;
-  const deadline = new Date(taskCreationTime.setMonth(deadlineMonth));
+const {
+  addMonths,
+  endOfDay,
+  endOfWeek,
+  endOfMonth,
+  addWeeks,
+ } = require('date-fns');
 
+function getDefaultDeadline() {
+  const deadline = addMonths(new Date(), 1);
   return deadline;
 }
 
-// #ToDo: add date-fns package
-function getNextDay() {
-  const currentTime = new Date();
-  const nextDay = currentTime.getDate() + 1;
-  const nextDayDate = new Date(currentTime.setDate(nextDay));
-  const nextDayStarting = new Date(nextDayDate.toDateString());
-
-  return nextDayStarting;
-}
-
-function getNextWeek() {
-  const currentTime = new Date();
-  const nextWeek = currentTime.getDate() + 7;
-  const nextWeekStarting = new Date(currentTime.setDate(nextWeek));
-
-  return nextWeekStarting;
-}
-
 function getDateLimit(deadline) {
+  const currentDate = new Date();
+
   switch (deadline) {
     case 'today':
-      return getNextDay();
+      return endOfDay(currentDate);
     case 'week':
-      return getNextWeek();
+      return addWeeks(currentDate, 1);
+    case 'this-week':
+      return endOfWeek(currentDate);
+    case 'month':
+      return addMonths(currentDate, 1);
+    case 'this-month':
+      return endOfMonth(currentDate);
   }
 }
 
