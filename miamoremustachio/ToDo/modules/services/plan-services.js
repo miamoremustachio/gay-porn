@@ -1,19 +1,20 @@
 const mongoose = require('mongoose');
 const ObjectId = mongoose.Types.ObjectId;
 
-const { Plan: PlanModel } = require('../models/plan-model.js');
+const { BaseServices } = require('./base-services.js');
+const { Plan } = require('../models/plan-model.js');
 const { SortField } = require('../helpers/sort-helper.js');
 
-const plans = {
-  model: PlanModel,
-  projections: {
-    plan: '-user -tasks.user',
-    tasks: '-user',
-    user: 'username email',
-  },
-  create(doc) {
-    return this.model.create(doc);
-  },
+class Services extends BaseServices {
+  constructor(model) {
+    super(model);
+    this.projections = {
+      plan: '-user -tasks.user',
+      tasks: '-user',
+      user: 'username email',
+    };
+  }
+
   get(id, filter) {
     const {
       ['tasks-sort']: tasksSort,
@@ -31,7 +32,8 @@ const plans = {
       .populate('user', this.projections.user);
   
       return query;
-  },
+  }
+
   getAll(filter) {
     const userId = new ObjectId(filter.userId);
     const { sort, ['sort-order']: sortOrder } = filter;
@@ -55,33 +57,9 @@ const plans = {
       }
 
       return aggregation;
-  },
-  getPaths() {
-    return Object.keys(this.model.schema.paths);
-  },
-  update(id, update, options) {
-    return this.model.findByIdAndUpdate(id, update, options);
-  },
-  delete(id) {
-    return this.model.findByIdAndDelete(id);
-  },
-}
-
-function Plan(fields) {
-  const paths = plans.getPaths();
-
-  for (const field in fields) {
-    if (paths.includes(field)) {
-      this[field] = fields[field];
-    }
-  }
-
-  if (fields.user) {
-    this.user = fields.user;
   }
 }
 
-module.exports = {
-  plans,
-  Plan,
-};
+const plans = new Services(Plan);
+
+module.exports = { plans };

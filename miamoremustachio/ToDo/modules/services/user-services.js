@@ -1,22 +1,20 @@
+const { BaseServices } = require('./base-services.js');
 const { User } = require('../models/user-model.js');
 
-const users = {
-  model: User,
-  create(doc) {
-    return this.model.create(doc);
-  },
+class Services extends BaseServices {
+  constructor(model) {
+    super(model);
+  }
+
   get(id) {
     return this.model.findById(id);
-  },
+  }
+
   getAll(filter) {
     return this.model.find(filter);
-  },
-  update(id, update, options) {
-    return this.model.findByIdAndUpdate(id, update, options);
-  },
-  delete(id) {
-    return this.model.findByIdAndDelete(id);
-  },
-};
+  }
+}
+
+const users = new Services(User);
 
 module.exports = { users };

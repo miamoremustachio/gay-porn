@@ -1,11 +1,9 @@
 const express = require('express');
 
-const {
-  tasks,
-  Task,
-} = require('../services/task-services.js');
+const { tasks } = require('../services/task-services.js');
 const { findTask } = require('../middlewares/task-searching.js');
 const { checkUserId } = require('../middlewares/authorization.js');
+const { FilteredDoc: Task } = require('../helpers/routes-helper.js');
 const { checkTask } = require('../helpers/task-validation.js');
 
 const router = express.Router();
@@ -38,7 +36,7 @@ router.route('/')
     const fields = { user: userId, ...req.body };
 
     try {
-      const task = await tasks.create(new Task(fields));
+      const task = await tasks.create(new Task(fields, tasks));
       const taskPath = `${req.baseUrl}${req.path}${task.id}`;
 
       res.status(201).send(taskPath);
@@ -71,7 +69,7 @@ router.route('/:id')
     }
     
     const taskId = req.params.id;
-    const update = new Task(req.body);
+    const update = new Task(req.body, tasks);
     const options = { returnDocument: 'after' };
     
     try {

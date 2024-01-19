@@ -1,11 +1,9 @@
 const express = require('express');
 
-const {
-  plans,
-  Plan,
-} = require('../services/plan-services.js');
+const { plans } = require('../services/plan-services.js');
 const { findPlan } = require('../middlewares/plan-searching.js');
 const { checkUserId } = require('../middlewares/authorization.js');
+const { FilteredDoc: Plan } = require('../helpers/routes-helper.js');
 
 const router = express.Router();
 
@@ -27,7 +25,7 @@ router.route('/')
     const fields = { user: userId, ...req.body };
 
     try {
-      const plan = await plans.create(new Plan(fields));
+      const plan = await plans.create(new Plan(fields, plans));
       const planPath = `${req.baseUrl}${req.path}${plan.id}`;
 
       res.send(planPath);
@@ -52,7 +50,7 @@ router.route('/:id')
   })
   .put(async (req, res) => {
     const planId = req.params.id;
-    const update = new Plan(req.body);
+    const update = new Plan(req.body, plans);
     const options = { returnDocument: 'after' };
 
     try {
