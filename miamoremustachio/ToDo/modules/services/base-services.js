@@ -7,16 +7,16 @@ class BaseServices {
     return this.model.create(doc);
   }
 
-  getPaths() {
-    return Object.keys(this.model.schema.paths);
-  }
-
   update(id, update, options) {
     return this.model.findByIdAndUpdate(id, update, options);
   }
-
+  
   delete(id) {
     return this.model.findByIdAndDelete(id);
+  }
+
+  getPaths() {
+    return Object.keys(this.model.schema.paths);
   }
 }
 

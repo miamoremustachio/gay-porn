@@ -1,4 +1,4 @@
-const { getDefaultDeadline } = require('../modules/helpers/task-helper.js');
+const { getDefaultDeadline } = require('../modules/helpers/time-helper.js');
 
 module.exports = {
   async up(db, client) {
