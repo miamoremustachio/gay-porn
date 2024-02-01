@@ -4,15 +4,18 @@
   "description": "Server version of ToDo app written in Express.js",
   "main": "main.js",
   "scripts": {
-    "test": "node main.js"
+    "test": "jest"
   },
   "author": "miamoremustachio",
   "license": "ISC",
   "dependencies": {
+    "@types/jest": "^29.5.11",
     "date-fns": "^3.1.0",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
+    "jest": "^29.7.0",
     "mongodb": "^6.2.0",
-    "mongoose": "^8.0.1"
+    "mongoose": "^8.0.1",
+    "supertest": "^6.3.4"
   }
 }
