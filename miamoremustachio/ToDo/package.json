@@ -4,6 +4,7 @@
   "description": "Server version of ToDo app written in Express.js",
   "main": "main.js",
   "scripts": {
+    "start": "node main.js",
     "test": "jest"
   },
   "author": "miamoremustachio",

@@ -9,6 +9,7 @@ const {
   INVALID_TITLE,
 } = ERROR_MESSAGES;
 
+// #ToDo: add checkTask import
 const checkSubtask = {
   title(title) {
     if (!title) {
