@@ -14,27 +14,27 @@ const TEST_USER_ID = '6561ff62413e98e914253b1f';
 const VALID_TASK = {
   'title': 'drink korvalol',
   'priority': PRIORITIES.HIGH,
-}
+};
 
 const VALID_FIELDS = {
   'title': 'drink boyaryshnik',
   'priority': PRIORITIES.LOW,
   'status': STATUSES.DONE,
   'deadline': getDefaultDeadline(),
-}
+};
 
 const INVALID_TASK = {
   'title': 'aa',
   'priority': 'foo',
   'status': 'bar',
   'deadline': '',
-}
+};
 
 let taskId;
 
 beforeAll(async () => {
   await database.connect();
-})
+});
 
 describe('tasks', () => {
   test('POST /tasks', async () => {
