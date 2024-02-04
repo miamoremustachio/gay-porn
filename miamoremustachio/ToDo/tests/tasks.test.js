@@ -12,12 +12,12 @@ const { getFinalResourceId } = require('../modules/helpers/routes-helper.js');
 const TEST_USER_ID = '6561ff62413e98e914253b1f';
 
 const VALID_TASK = {
-  'title': 'drink korvalol',
+  'title': 'prepare for hard coding',
   'priority': PRIORITIES.HIGH,
 };
 
 const VALID_FIELDS = {
-  'title': 'drink boyaryshnik',
+  'title': 'prepare for ass-burning',
   'priority': PRIORITIES.LOW,
   'status': STATUSES.DONE,
   'deadline': getDefaultDeadline(),
@@ -82,7 +82,7 @@ describe('tasks', () => {
     expect(response.status).toEqual(200);
     for (const task of response.body) {
       expect(task._id).not.toMatch(taskId);
-    };
+    }
   });
 });
 

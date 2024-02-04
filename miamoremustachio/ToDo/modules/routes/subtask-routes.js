@@ -37,7 +37,7 @@ router.route('/:id/subtasks')
       const subtask = await subtasks.create(taskId, req.body);
       const subtaskPath = `${req.originalUrl}/${subtask.id}`;
       
-      res.send(subtaskPath);
+      res.status(201).send(subtaskPath);
     } catch(error) {
       res.status(500).send(error.message);
     }
