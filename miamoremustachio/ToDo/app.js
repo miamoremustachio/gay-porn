@@ -1,6 +1,7 @@
 const express = require('express');
 
 const { setHeaders } = require('./modules/middlewares/CORS.js');
+const { PORT } = require('./config/app-config.js');
 const { START_MESSAGE } = require('./modules/helpers/constants.js');
 const { router: planRouter } = require('./modules/routes/plan-routes.js');
 const { router: taskRefsRouter } = require('./modules/routes/task_refs-routes.js');
@@ -12,6 +13,8 @@ const app = express();
 
 app.use(setHeaders);
 app.use(express.json());
+
+app.set('port', PORT);
 
 app.get('/', (req, res) => {
   res.send(START_MESSAGE);

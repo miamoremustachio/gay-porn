@@ -43,7 +43,6 @@ describe('task refs', () => {
       const response = await request(app)
         .delete(`/plans/${PLAN_ID}/tasks/${taskRef}`)
         .set(HEADERS);
-        console.log(taskRef);
       expect(response.status).toBe(204);
     }
   });
