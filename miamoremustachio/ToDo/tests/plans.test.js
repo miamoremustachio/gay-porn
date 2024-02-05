@@ -75,6 +75,15 @@ describe('plans', () => {
   });
 });
 
+describe('plans (not found)', () => {
+  test('GET /plans/:id', async () => {
+    const response = await request(app)
+      .get(`/plans/${planId}`)
+      .set(HEADERS);
+    expect(response.status).toBe(404);
+  });
+});
+
 afterAll(async () => {
   await database.disconnect();
 });
