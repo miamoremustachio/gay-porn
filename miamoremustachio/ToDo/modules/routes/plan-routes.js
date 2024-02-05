@@ -28,7 +28,7 @@ router.route('/')
       const plan = await plans.create(new Plan(fields, plans));
       const planPath = `${req.baseUrl}${req.path}${plan.id}`;
 
-      res.send(planPath);
+      res.status(201).send(planPath);
     } catch(error) {
       res.status(500).send(error.message);
     }
