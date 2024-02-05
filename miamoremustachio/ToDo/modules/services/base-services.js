@@ -3,6 +3,18 @@ class BaseServices {
     this.model = model;
   }
 
+  get(id) {
+    return this.model.findById(id);
+  }
+
+  getAll(filter) {
+    return this.model.find(filter);
+  }
+
+  getPaths() {
+    return Object.keys(this.model.schema.paths);
+  }
+
   create(doc) {
     return this.model.create(doc);
   }
@@ -13,10 +25,6 @@ class BaseServices {
   
   delete(id) {
     return this.model.findByIdAndDelete(id);
-  }
-
-  getPaths() {
-    return Object.keys(this.model.schema.paths);
   }
 }
 
