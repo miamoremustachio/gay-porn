@@ -6,12 +6,12 @@ const { LOW } = PRIORITIES;
 const { getDefaultDeadline } = require('../helpers/time-helper.js');
 
 const subtaskSchema = new mongoose.Schema({
-  title: String,
+  title: { type: String, required: true },
   completed: { type: Boolean, default: false },
 });
 
 const taskSchema = new mongoose.Schema({
-  title: String,
+  title: { type: String, required: true },
   status: { type: String, default: TO_DO },
   priority: { type: String, default: LOW },
   deadline: { type: Date, default: getDefaultDeadline },

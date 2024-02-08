@@ -12,6 +12,7 @@ router.route('/')
   .get(async (req, res) => {
     const userId = req.headers.authorization;
     const filter = { user: userId, ...req.query };
+    // #ToDo: add sorting variables
     
     try {      
       const tasksList = await tasks.getAll(filter);
@@ -22,21 +23,19 @@ router.route('/')
     }
   })
   .post(async (req, res) => {
-    const { title, ...restFields } = req.body;
+    const fields = req.body;
     
     try {
-      checkTask.title(title);
-      checkTask.all(restFields);
+      checkTask.all(fields);
     } catch(error) {
       res.status(400).send(error.message);
       return;
     }
     
     const userId = req.headers.authorization;
-    const fields = { user: userId, ...req.body };
 
     try {
-      const task = await tasks.create(new Task(fields, tasks));
+      const task = await tasks.create(new Task({ user: userId, ...fields }, tasks));
       const taskPath = `${req.baseUrl}${req.path}${task.id}`;
 
       res.status(201).send(taskPath);
@@ -69,7 +68,7 @@ router.route('/:id')
     }
     
     const taskId = req.params.id;
-    const update = new Task(req.body, tasks);
+    const update = new Task(fields, tasks);
     const options = { returnDocument: 'after' };
     
     try {

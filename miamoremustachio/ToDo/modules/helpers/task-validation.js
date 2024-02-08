@@ -7,7 +7,6 @@ const {
 
 const { MIN, MAX } = TITLE_LENGTH;
 const {
-  MISSING_TITLE,
   INVALID_TITLE,
   INVALID_STATUS,
   INVALID_PRIORITY,
@@ -16,10 +15,6 @@ const {
 
 const checkTask = {
   title(title) {
-    if (!title) {
-      throw new Error(MISSING_TITLE);
-    }
-    
     if (title.length < MIN || title.length > MAX) {
       throw new Error(INVALID_TITLE);
     }
