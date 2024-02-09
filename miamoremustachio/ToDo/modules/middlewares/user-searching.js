@@ -1,4 +1,5 @@
 const { users } = require('../services/user-services.js');
+const { NotFoundError } = require('../errors/not_found-error.js');
 
 const findUser = async (req, res, next) => {
   const userId = req.params.id;
@@ -7,17 +8,16 @@ const findUser = async (req, res, next) => {
     const user = await users.get(userId);
 
     if (!user) {
-      res.sendStatus(404);
-      return;
+      throw new NotFoundError();
     }
 
     res.locals.allowedId = user.id;
-  } catch(error) {
-    res.status(500).send(error.message);
-    return;
-  }
+  
+    next();
 
-  next();
+  } catch(error) {
+    next(error);
+  }
 }
 
 module.exports = { findUser };

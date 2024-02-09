@@ -1,3 +1,5 @@
+const { NotFoundError } = require('../errors/not_found-error.js');
+
 const findTaskRef = (req, res, next) => {
   const taskId = req.params.taskId;
   const taskRefs = res.locals.taskRefs;
@@ -6,15 +8,14 @@ const findTaskRef = (req, res, next) => {
     const taskRef = taskRefs.find(taskRef => taskId === taskRef.toString());
 
     if (!taskRef) {
-      res.sendStatus(404);
-      return;
+      throw new NotFoundError();
     }
-  } catch(error) {
-    res.status(500).send(error.message);
-    return;
-  }
 
-  next();
+    next();
+
+  } catch(error) {
+    next(error);
+  }
 }
 
 module.exports = { findTaskRef };

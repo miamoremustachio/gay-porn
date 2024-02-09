@@ -1,4 +1,5 @@
 const { tasks } = require('../services/task-services.js');
+const { NotFoundError } = require('../errors/not_found-error.js');
 
 const findTask = async (req, res, next) => {
   const taskId = req.params.id;
@@ -7,17 +8,16 @@ const findTask = async (req, res, next) => {
     const task = await tasks.get(taskId);
 
     if (!task) {
-      res.sendStatus(404);
-      return;
+      throw new NotFoundError();
     }
 
     res.locals.allowedId = task.user.id;
+    
+    next();
+
   } catch(error) {
-    res.status(500).send(error.message);
-    return;
-  }
-  
-  next();
+    next(error);
+  }  
 }
 
 module.exports = { findTask };

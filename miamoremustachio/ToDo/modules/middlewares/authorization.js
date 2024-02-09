@@ -1,18 +1,24 @@
+const { UnauthorizedError } = require('../errors/unauthorized-error.js');
+const { ForbiddenError } = require('../errors/forbidden-error.js');
+
 const checkUserId = (req, res, next) => {
   const userId = req.headers.authorization;
   const allowedId = res.locals.allowedId;
 
-  if (!userId) {
-    res.sendStatus(401);
-    return;
-  }
+  try {
+    if (!userId) {
+      throw new UnauthorizedError();
+    }
+    
+    if (userId !== allowedId) {
+      throw new ForbiddenError();
+    }
   
-  if (userId !== allowedId) {
-    res.sendStatus(403);
-    return;
+    next();
+  
+  } catch(error) {
+    next(error);
   }
-
-  next();
 }
 
 module.exports = { checkUserId };
