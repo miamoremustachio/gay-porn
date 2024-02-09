@@ -8,7 +8,7 @@ const { FilteredDoc: Plan } = require('../helpers/routes-helper.js');
 const router = express.Router();
 
 router.route('/')
-  .get(async (req, res) => {
+  .get(async (req, res, next) => {
     const userId = req.headers.authorization;
     const filter = { userId, ...req.query };
 
@@ -17,10 +17,10 @@ router.route('/')
 
       res.json(plansList);
     } catch(error) {
-      res.status(500).send(error.message);
+      next(error);
     }
   })
-  .post(async (req, res) => {
+  .post(async (req, res, next) => {
     const userId = req.headers.authorization;
     const fields = { user: userId, ...req.body };
 
@@ -30,13 +30,13 @@ router.route('/')
 
       res.status(201).send(planPath);
     } catch(error) {
-      res.status(500).send(error.message);
+      next(error);
     }
   })
 
 router.route('/:id')
   .all(findPlan, checkUserId)
-  .get(async (req, res) => {
+  .get(async (req, res, next) => {
     const planId = req.params.id;
     const filter = req.query;
 
@@ -45,10 +45,10 @@ router.route('/:id')
 
       res.json(plan);
     } catch(error) {
-      res.status(500).send(error.message);
+      next(error);
     }
   })
-  .put(async (req, res) => {
+  .put(async (req, res, next) => {
     const planId = req.params.id;
     const update = new Plan(req.body, plans);
     const options = { returnDocument: 'after' };
@@ -58,10 +58,10 @@ router.route('/:id')
 
       res.json(plan);
     } catch(error) {
-      res.status(500).send(error.message);
+      next(error);
     }
   })
-  .delete(async (req, res) => {
+  .delete(async (req, res, next) => {
     const planId = req.params.id;
 
     try {
@@ -69,7 +69,7 @@ router.route('/:id')
 
       res.sendStatus(204);
     } catch(error) {
-      res.status(500).send(error.message);
+      next(error);
     }
   });
 

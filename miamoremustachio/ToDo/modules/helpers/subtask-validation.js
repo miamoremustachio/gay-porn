@@ -1,3 +1,5 @@
+const { ValidationError } = require('../errors/validation-error.js');
+
 const {
   TITLE_LENGTH,
   ERROR_MESSAGES,
@@ -8,9 +10,10 @@ const { INVALID_TITLE } = ERROR_MESSAGES;
 
 // #ToDo: add checkTask import
 const checkSubtask = {
+  entity: 'Subtask',
   title(title) {
     if (title.length < MIN || title.length > MAX) {
-      throw new Error(INVALID_TITLE);
+      throw new ValidationError(INVALID_TITLE, this.entity);
     }
   },
 }

@@ -9,7 +9,7 @@ const router = express.Router();
 
 router.route('/:id/tasks')
   .all(findPlan, checkUserId)
-  .post(async (req, res) => {
+  .post(async (req, res, next) => {
     const planId = req.params.id;
 
     try {
@@ -20,13 +20,13 @@ router.route('/:id/tasks')
 
       res.send(taskRefPath);
     } catch(error) {
-      res.send(500).send(error.message);
+      next(error);
     }
   });
 
 router.route('/:id/tasks/:taskId')
   .all(findPlan, findTaskRef, checkUserId)
-  .get(async (req, res) => {
+  .get(async (req, res, next) => {
     const planId = req.params.id;
     const taskId = req.params.taskId;
 
@@ -35,10 +35,10 @@ router.route('/:id/tasks/:taskId')
 
       res.json(taskRef);
     } catch(error) {
-      res.status(500).send(error.message);
+      next(error);
     }
   })
-  .delete(async (req, res) => {
+  .delete(async (req, res, next) => {
     const planId = req.params.id;
     const taskId = req.params.taskId;
 
@@ -47,7 +47,7 @@ router.route('/:id/tasks/:taskId')
 
       res.sendStatus(204);
     } catch(error) {
-      res.status(500).send(error.message);
+      next(error);
     }
   });
 

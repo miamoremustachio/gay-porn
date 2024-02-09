@@ -10,7 +10,7 @@ const router = express.Router();
 
 router.route('/:id/subtasks')
   .all(findTask, checkUserId)
-  .get(async (req, res) => {
+  .get(async (req, res, next) => {
     const taskId = req.params.id;
     
     try {
@@ -18,16 +18,16 @@ router.route('/:id/subtasks')
 
       res.json(subtasksList);
     } catch(error) {
-      res.status(500).send(error.message);
+      next(error);
     }
   })
-  .post(async (req, res) => {
+  .post(async (req, res, next) => {
     const title = req.body.title;
     
     try {
       checkSubtask.title(title);
     } catch(error) {
-      res.status(400).send(error.message);
+      next(error);
       return;
     }
 
@@ -39,13 +39,13 @@ router.route('/:id/subtasks')
       
       res.status(201).send(subtaskPath);
     } catch(error) {
-      res.status(500).send(error.message);
+      next(error);
     }
   });
 
 router.route('/:id/subtasks/:subtaskId')
   .all(findSubtask, checkUserId)
-  .get(async (req, res) => {
+  .get(async (req, res, next) => {
     const taskId = req.params.id;
     const subtaskId = req.params.subtaskId;
 
@@ -54,16 +54,16 @@ router.route('/:id/subtasks/:subtaskId')
 
       res.json(subtask);
     } catch(error) {
-      res.status(500).send(error.message);
+      next(error);
     }
   })
-  .put(async (req, res) => {
+  .put(async (req, res, next) => {
     const { title } = req.body;
     
     try {
       title ? checkSubtask.title(title) : null;
     } catch(error) {
-      res.status(400).send(error.message);
+      next(error);
       return;
     }
     
@@ -75,11 +75,10 @@ router.route('/:id/subtasks/:subtaskId')
 
       res.json(subtask);
     } catch(error) {
-      res.status(500).send(error.message);
-      console.log(error);
+      next(error);
     }
   })
-  .delete(async (req, res) => {
+  .delete(async (req, res, next) => {
     const taskId = req.params.id;
     const subtaskId = req.params.subtaskId;
 
@@ -88,7 +87,7 @@ router.route('/:id/subtasks/:subtaskId')
 
       res.sendStatus(204);
     } catch(error) {
-      res.status(500).send(error.message);
+      next(error);
     }
   });
 

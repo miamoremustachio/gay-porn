@@ -7,16 +7,16 @@ const { checkUserId } = require('../middlewares/authorization.js');
 const router = express.Router();
 
 router.route('/')
-  .get(async (req, res) => {
+  .get(async (req, res, next) => {
     try {
       const usersList = await users.getAll();
 
       res.json(usersList);
     } catch(error) {
-      res.status(500).send(error.message);
+      next(error);
     }
   })
-  .post(async (req, res) => {
+  .post(async (req, res, next) => {
     const fields = req.body;
 
     try {
@@ -25,13 +25,13 @@ router.route('/')
 
       res.send(userPath);
     } catch(error) {
-      res.status(500).send(error.message);
+      next(error);
     }
   });
 
 router.route('/:id')
   .all(findUser, checkUserId)
-  .get(async (req, res) => {
+  .get(async (req, res, next) => {
     const userId = req.params.id;
 
     try {
@@ -39,10 +39,10 @@ router.route('/:id')
       
       res.json(user);
     } catch(error) {
-      res.status(500).send(error.message);
+      next(error);
     }
   })
-  .put(async (req, res) => {
+  .put(async (req, res, next) => {
     const userId = req.params.id;
     const update = req.body;
     const options = { returnDocument: 'after' };
@@ -52,10 +52,10 @@ router.route('/:id')
 
       res.json(user);
     } catch(error) {
-      res.status(500).send(error.message);
+      next(error);
     }
   })
-  .delete(async (req, res) => {
+  .delete(async (req, res, next) => {
     const userId = req.params.id;
 
     try {
@@ -63,7 +63,7 @@ router.route('/:id')
 
       res.sendStatus(204);
     } catch(error) {
-      res.status(500).send(error.message);
+      next(error);
     }
   });
 
