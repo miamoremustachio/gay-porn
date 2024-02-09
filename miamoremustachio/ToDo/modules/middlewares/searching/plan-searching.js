@@ -1,5 +1,5 @@
-const { plans } = require('../services/plan-services.js');
-const { NotFoundError } = require('../errors/not_found-error.js');
+const { plans } = require('../../services/plan-services.js');
+const { NotFoundError } = require('../../errors/not_found-error.js');
 
 const findPlan = async (req, res, next) => {
   const planId = req.params.id;

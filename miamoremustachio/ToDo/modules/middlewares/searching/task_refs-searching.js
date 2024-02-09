@@ -1,4 +1,4 @@
-const { NotFoundError } = require('../errors/not_found-error.js');
+const { NotFoundError } = require('../../errors/not_found-error.js');
 
 const findTaskRef = (req, res, next) => {
   const taskId = req.params.taskId;

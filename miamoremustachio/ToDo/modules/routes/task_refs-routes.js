@@ -1,8 +1,8 @@
 const express = require('express');
 
 const { taskRefs } = require('../services/task_refs-services.js');
-const { findPlan } = require('../middlewares/plan-searching.js');
-const { findTaskRef } = require('../middlewares/task_refs-searching.js');
+const { findPlan } = require('../middlewares/searching/plan-searching.js');
+const { findTaskRef } = require('../middlewares/searching/task_refs-searching.js');
 const { checkUserId } = require('../middlewares/authorization.js');
 
 const router = express.Router();

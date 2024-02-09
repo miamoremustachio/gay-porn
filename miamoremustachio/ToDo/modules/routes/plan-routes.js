@@ -1,7 +1,7 @@
 const express = require('express');
 
 const { plans } = require('../services/plan-services.js');
-const { findPlan } = require('../middlewares/plan-searching.js');
+const { findPlan } = require('../middlewares/searching/plan-searching.js');
 const { checkUserId } = require('../middlewares/authorization.js');
 const { FilteredDoc: Plan } = require('../helpers/routes-helper.js');
 

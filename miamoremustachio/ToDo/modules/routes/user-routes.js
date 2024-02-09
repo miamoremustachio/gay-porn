@@ -1,7 +1,7 @@
 const express = require('express');
 
 const { users } = require('../services/user-services.js');
-const { findUser } = require('../middlewares/user-searching.js');
+const { findUser } = require('../middlewares/searching/user-searching.js');
 const { checkUserId } = require('../middlewares/authorization.js');
 
 const router = express.Router();

@@ -1,5 +1,5 @@
-const { users } = require('../services/user-services.js');
-const { NotFoundError } = require('../errors/not_found-error.js');
+const { users } = require('../../services/user-services.js');
+const { NotFoundError } = require('../../errors/not_found-error.js');
 
 const findUser = async (req, res, next) => {
   const userId = req.params.id;

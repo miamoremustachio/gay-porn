@@ -1,5 +1,5 @@
-const { subtasks } = require('../services/subtask-services.js');
-const { NotFoundError } = require('../errors/not_found-error.js');
+const { subtasks } = require('../../services/subtask-services.js');
+const { NotFoundError } = require('../../errors/not_found-error.js');
 
 const findSubtask = async (req, res, next) => {
   const taskId = req.params.id;

@@ -1,5 +1,5 @@
-const { ValidationError } = require('../errors/validation-error.js');
-const { TITLE_LENGTH } = require('../helpers/constants.js');
+const { ValidationError } = require('../../errors/validation-error.js');
+const { TITLE_LENGTH } = require('../../helpers/constants.js');
 
 const { MIN, MAX } = TITLE_LENGTH;
 

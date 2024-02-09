@@ -1,10 +1,10 @@
 const express = require('express');
 
 const { subtasks } = require('../services/subtask-services.js');
-const { findTask } = require('../middlewares/task-searching.js');
-const { findSubtask } = require('../middlewares/subtask-searching.js');
+const { findTask } = require('../middlewares/searching/task-searching.js');
+const { findSubtask } = require('../middlewares/searching/subtask-searching.js');
 const { checkUserId } = require('../middlewares/authorization.js');
-const { checkSubtaskFields } = require('../middlewares/subtask-validation.js');
+const { checkSubtaskFields } = require('../middlewares/validation/subtask-validation.js');
 
 const router = express.Router();
 
