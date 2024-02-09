@@ -9,7 +9,7 @@ const { checkTask } = require('../helpers/task-validation.js');
 const router = express.Router();
 
 router.route('/')
-  .get(async (req, res) => {
+  .get(async (req, res, next) => {
     const userId = req.headers.authorization;
     const filter = { user: userId, ...req.query };
     // #ToDo: add sorting variables
@@ -19,16 +19,16 @@ router.route('/')
   
       res.json(tasksList);
     } catch(error) {
-      res.status(500).send(error.message);
+      next(error);
     }
   })
-  .post(async (req, res) => {
+  .post(async (req, res, next) => {
     const fields = req.body;
     
     try {
       checkTask.all(fields);
     } catch(error) {
-      res.status(400).send(error.message);
+      next(error);
       return;
     }
     
@@ -40,13 +40,13 @@ router.route('/')
 
       res.status(201).send(taskPath);
     } catch(error) {
-      res.status(500).send(error.message);
+      next(error);
     }
   });
 
 router.route('/:id')
   .all(findTask, checkUserId)
-  .get(async (req, res) => {
+  .get(async (req, res, next) => {
     const taskId = req.params.id;
 
     try {
@@ -54,16 +54,16 @@ router.route('/:id')
 
       res.json(task);
     } catch(error) {
-      res.status(500).send(error.message);
+      next(error);
     }
   })
-  .put(async (req, res) => {
+  .put(async (req, res, next) => {
     const fields = req.body;
     
     try {
       checkTask.all(fields);
     } catch(error) {
-      res.status(400).send(error.message);
+      next(error);
       return;
     }
     
@@ -76,10 +76,10 @@ router.route('/:id')
 
       res.json(task);
     } catch(error) {
-      res.status(500).send(error.message);
+      next(error);
     }
   })
-  .delete(async (req, res) => {
+  .delete(async (req, res, next) => {
     const taskId = req.params.id;
 
     try {
@@ -87,7 +87,7 @@ router.route('/:id')
       
       res.sendStatus(204);
     } catch(error) {
-      res.status(500).send(error.message);
+      next(error);
     }
   });
 

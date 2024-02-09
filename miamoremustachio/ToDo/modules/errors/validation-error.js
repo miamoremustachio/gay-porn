@@ -1,7 +1,7 @@
-const CustomError = require('./custom-error.js');
+const { ClientError } = require('./client-error.js');
 
-class ValidationError extends CustomError {
-  constructor(validatedValue, message) {
+class ValidationError extends ClientError {
+  constructor(message, validatedValue) {
     let cause;
     
     if (typeof validatedValue === 'string') {
@@ -14,4 +14,4 @@ class ValidationError extends CustomError {
   }
 }
 
-module.exports = ValidationError;
+module.exports = { ValidationError };
