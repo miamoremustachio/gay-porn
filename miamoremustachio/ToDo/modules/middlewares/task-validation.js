@@ -5,7 +5,7 @@ const {
   PRIORITIES,
   TITLE_LENGTH,
   ERROR_MESSAGES,
-} = require('./constants.js');
+} = require('../helpers/constants.js');
 
 const { MIN, MAX } = TITLE_LENGTH;
 const {
@@ -15,6 +15,7 @@ const {
   INVALID_DEADLINE,
 } = ERROR_MESSAGES;
 
+// #ToDo: add base-validation clASS
 const checkTask = {
   entity: 'Task',
   title(title) {
@@ -51,6 +52,19 @@ const checkTask = {
       }
     }
   }
+};
+
+const checkTaskFields = (req, res, next) => {
+  const fields = req.body;
+    
+    try {
+      checkTask.all(fields);
+    } catch(error) {
+      next(error);
+      return;
+    }
+
+    next();
 }
 
-module.exports = { checkTask };
+module.exports = { checkTaskFields };

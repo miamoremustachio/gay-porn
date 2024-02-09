@@ -3,8 +3,8 @@ const express = require('express');
 const { tasks } = require('../services/task-services.js');
 const { findTask } = require('../middlewares/task-searching.js');
 const { checkUserId } = require('../middlewares/authorization.js');
+const { checkTaskFields } = require('../middlewares/task-validation.js');
 const { FilteredDoc: Task } = require('../helpers/routes-helper.js');
-const { checkTask } = require('../helpers/task-validation.js');
 
 const router = express.Router();
 
@@ -22,20 +22,12 @@ router.route('/')
       next(error);
     }
   })
-  .post(async (req, res, next) => {
-    const fields = req.body;
-    
-    try {
-      checkTask.all(fields);
-    } catch(error) {
-      next(error);
-      return;
-    }
-    
+  .post(checkTaskFields, async (req, res, next) => {
     const userId = req.headers.authorization;
+    const fields = { user: userId, ...req.body };
 
     try {
-      const task = await tasks.create(new Task({ user: userId, ...fields }, tasks));
+      const task = await tasks.create(new Task(fields, tasks));
       const taskPath = `${req.baseUrl}${req.path}${task.id}`;
 
       res.status(201).send(taskPath);
@@ -57,16 +49,8 @@ router.route('/:id')
       next(error);
     }
   })
-  .put(async (req, res, next) => {
+  .put(checkTaskFields, async (req, res, next) => {
     const fields = req.body;
-    
-    try {
-      checkTask.all(fields);
-    } catch(error) {
-      next(error);
-      return;
-    }
-    
     const taskId = req.params.id;
     const update = new Task(fields, tasks);
     const options = { returnDocument: 'after' };
