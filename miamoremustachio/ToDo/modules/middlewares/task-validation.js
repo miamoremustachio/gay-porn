@@ -4,37 +4,47 @@ const {
   STATUSES,
   PRIORITIES,
   TITLE_LENGTH,
-  ERROR_MESSAGES,
 } = require('../helpers/constants.js');
 
 const { MIN, MAX } = TITLE_LENGTH;
+
 const {
-  INVALID_TITLE,
-  INVALID_STATUS,
-  INVALID_PRIORITY,
-  INVALID_DEADLINE,
-} = ERROR_MESSAGES;
+  TO_DO,
+  IN_PROGRESS,
+  DONE,
+} = STATUSES;
+
+const {
+  LOW,
+  HIGH,
+} = PRIORITIES;
 
 // #ToDo: add base-validation clASS
 const checkTask = {
   entity: 'Task',
+  messages: {
+    title: `Invalid title (only strings between ${MIN} and ${MAX} characters are allowed).`,
+    status: `Invalid status (allowed status values: "${TO_DO}", "${IN_PROGRESS}", "${DONE}").`,
+    priority: `Invalid priority (allowed priority values: "${LOW}", "${HIGH}").`,
+    deadline: `Invalid deadline (the deadline date can't be earlier than the current date).`,
+  },
   title(title) {
     if (title.length < MIN || title.length > MAX) {
-      throw new ValidationError(INVALID_TITLE, this.entity);
+      throw new ValidationError(this.messages.title, this.entity);
     }
   },
   status(status) {
     const statuses = Object.values(STATUSES);
     
     if (!statuses.includes(status)) {
-      throw new ValidationError(INVALID_STATUS, this.entity);
+      throw new ValidationError(this.messages.status, this.entity);
     }
   },
   priority(priority) {
     const priorities = Object.values(PRIORITIES);
       
     if (!priorities.includes(priority)) {
-      throw new ValidationError(INVALID_PRIORITY, this.entity);
+      throw new ValidationError(this.messages.priority, this.entity);
     }
   },
   deadline(deadline) {
@@ -42,7 +52,7 @@ const checkTask = {
     const currentDate = new Date();
     
     if (deadlineDate < currentDate) {
-      throw new ValidationError(INVALID_DEADLINE, this.entity);
+      throw new ValidationError(this.messages.deadline, this.entity);
     }
   },
   all(fields) {
@@ -51,7 +61,7 @@ const checkTask = {
         this[field](fields[field]);
       }
     }
-  }
+  },
 };
 
 const checkTaskFields = (req, res, next) => {
