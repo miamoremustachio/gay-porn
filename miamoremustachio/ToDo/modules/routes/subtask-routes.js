@@ -4,7 +4,7 @@ const { subtasks } = require('../services/subtask-services.js');
 const { findTask } = require('../middlewares/task-searching.js');
 const { findSubtask } = require('../middlewares/subtask-searching.js');
 const { checkUserId } = require('../middlewares/authorization.js');
-const { checkSubtask } = require('../helpers/subtask-validation.js');
+const { checkSubtaskFields } = require('../middlewares/subtask-validation.js');
 
 const router = express.Router();
 
@@ -21,16 +21,7 @@ router.route('/:id/subtasks')
       next(error);
     }
   })
-  .post(async (req, res, next) => {
-    const title = req.body.title;
-    
-    try {
-      checkSubtask.title(title);
-    } catch(error) {
-      next(error);
-      return;
-    }
-
+  .post(checkSubtaskFields, async (req, res, next) => {
     const taskId = req.params.id;
 
     try {
@@ -57,16 +48,7 @@ router.route('/:id/subtasks/:subtaskId')
       next(error);
     }
   })
-  .put(async (req, res, next) => {
-    const { title } = req.body;
-    
-    try {
-      title ? checkSubtask.title(title) : null;
-    } catch(error) {
-      next(error);
-      return;
-    }
-    
+  .put(checkSubtaskFields, async (req, res, next) => {    
     const taskId = req.params.id;
     const subtaskId = req.params.subtaskId;
     
