@@ -2,8 +2,8 @@ const express = require('express');
 
 const { tasks } = require('../services/task-services.js');
 const { findTask } = require('../middlewares/searching/task-searching.js');
+const { validateTask } = require('../middlewares/validation/task-validation.js');
 const { checkUserId } = require('../middlewares/authorization.js');
-const { checkTaskFields } = require('../middlewares/validation/task-validation.js');
 const { FilteredDoc: Task } = require('../helpers/routes-helper.js');
 
 const router = express.Router();
@@ -22,7 +22,7 @@ router.route('/')
       next(error);
     }
   })
-  .post(checkTaskFields, async (req, res, next) => {
+  .post(validateTask, async (req, res, next) => {
     const userId = req.headers.authorization;
     const fields = { user: userId, ...req.body };
 
@@ -49,7 +49,7 @@ router.route('/:id')
       next(error);
     }
   })
-  .put(checkTaskFields, async (req, res, next) => {
+  .put(validateTask, async (req, res, next) => {
     const fields = req.body;
     const taskId = req.params.id;
     const update = new Task(fields, tasks);

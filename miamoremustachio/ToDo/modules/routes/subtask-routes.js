@@ -3,8 +3,8 @@ const express = require('express');
 const { subtasks } = require('../services/subtask-services.js');
 const { findTask } = require('../middlewares/searching/task-searching.js');
 const { findSubtask } = require('../middlewares/searching/subtask-searching.js');
+const { validateSubtask } = require('../middlewares/validation/subtask-validation.js');
 const { checkUserId } = require('../middlewares/authorization.js');
-const { checkSubtaskFields } = require('../middlewares/validation/subtask-validation.js');
 
 const router = express.Router();
 
@@ -21,7 +21,7 @@ router.route('/:id/subtasks')
       next(error);
     }
   })
-  .post(checkSubtaskFields, async (req, res, next) => {
+  .post(validateSubtask, async (req, res, next) => {
     const taskId = req.params.id;
 
     try {
@@ -48,7 +48,7 @@ router.route('/:id/subtasks/:subtaskId')
       next(error);
     }
   })
-  .put(checkSubtaskFields, async (req, res, next) => {    
+  .put(validateSubtask, async (req, res, next) => {    
     const taskId = req.params.id;
     const subtaskId = req.params.subtaskId;
     
