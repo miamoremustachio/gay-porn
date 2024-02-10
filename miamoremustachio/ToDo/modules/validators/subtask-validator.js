@@ -1,18 +1,29 @@
+const { BaseValidator } = require('../validators/base-validator.js');
 const { ValidationError } = require('../errors/validation-error.js');
 const { TITLE_LENGTH } = require('../helpers/constants.js');
 
 const { MIN, MAX } = TITLE_LENGTH;
 
-const checkSubtask = {
-  entity: 'Subtask',
-  messages: {
-    title: `Invalid title (only strings between ${MIN} and ${MAX} characters are allowed).`,
-  },
+class SubtaskValidationError extends ValidationError {
+  constructor(message) {
+    const entity = 'Subtask';
+    super(message, entity);
+  }
+}
+
+class SubtaskValidator extends BaseValidator {
+  constructor() {
+    super();
+    this.messages = {
+      title: `Invalid title (only strings between ${MIN} and ${MAX} characters are allowed).`,
+    };
+  }
+
   title(title) {
     if (title.length < MIN || title.length > MAX) {
-      throw new ValidationError(this.messages.title, this.entity);
+      throw new SubtaskValidationError(this.messages.title);
     }
-  },
+  }
 };
 
-module.exports = { checkSubtask };
+module.exports = { SubtaskValidator };

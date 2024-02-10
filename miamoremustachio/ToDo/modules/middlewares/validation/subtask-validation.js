@@ -1,11 +1,13 @@
-const { checkSubtask } = require('../../validators/subtask-validator.js');
+const { SubtaskValidator } = require('../../validators/subtask-validator.js');
+
+const check = new SubtaskValidator();
 
 const validateSubtask = (req, res, next) => {
   const { title } = req.body;
 
   if (title) {
     try {
-      checkSubtask.title(title);
+      check.title(title);
     } catch(error) {
       next(error);
       return;

@@ -1,14 +1,8 @@
 const { ClientError } = require('./client-error.js');
 
 class ValidationError extends ClientError {
-  constructor(message, validatedValue) {
-    let cause;
-    
-    if (typeof validatedValue === 'string') {
-      cause = `${validatedValue} validation failed: `
-    } else {
-      cause = 'Validation failed: ';
-    }
+  constructor(message, entity) {
+    const cause = (entity) ? `${entity} validation failed: ` : 'Validation failed: '; 
 
     super(cause + message);
   }
