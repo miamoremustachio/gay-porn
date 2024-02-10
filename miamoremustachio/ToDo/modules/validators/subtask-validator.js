@@ -15,7 +15,7 @@ class SubtaskValidator extends BaseValidator {
   constructor() {
     super();
     this.messages = {
-      title: `Invalid title (only strings between ${MIN} and ${MAX} characters are allowed).`,
+      title: 'Invalid title: unacceptable string length.',
     };
   }
 

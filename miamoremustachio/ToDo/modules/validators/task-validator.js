@@ -1,7 +1,6 @@
 const { BaseValidator } = require('../validators/base-validator.js');
 const { ValidationError } = require('../errors/validation-error.js');
 
-// #ToDo: move constants to validator files
 const {
   STATUSES,
   PRIORITIES,
@@ -17,25 +16,14 @@ class TaskValidationError extends ValidationError {
 
 const { MIN, MAX } = TITLE_LENGTH;
 
-const {
-  TO_DO,
-  IN_PROGRESS,
-  DONE,
-} = STATUSES;
-
-const {
-  LOW,
-  HIGH,
-} = PRIORITIES;
-
 class TaskValidator extends BaseValidator {
   constructor() {
     super();
     this.messages = {
-      title: `Invalid title (only strings between ${MIN} and ${MAX} characters are allowed).`,
-      status: `Invalid status (allowed status values: "${TO_DO}", "${IN_PROGRESS}", "${DONE}").`,
-      priority: `Invalid priority (allowed priority values: "${LOW}", "${HIGH}").`,
-      deadline: `Invalid deadline (the deadline date can't be earlier than the current date).`,
+      title: 'Invalid title: unacceptable string length.',
+      status: 'Invalid status: received value doesn\'t match any of the allowed status fields.',
+      priority: 'Invalid priority: received value doesn\'t match any of the allowed priority fields.',
+      deadline: 'Invalid deadline: the deadline date can\'t be earlier than the current date.',
     };
   }
 
