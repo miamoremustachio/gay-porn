@@ -2,31 +2,15 @@ const request = require('supertest');
 
 const { app } = require('../app.js');
 const { database } = require('../modules/database/connection.js');
-const { getDefaultDeadline } = require('../modules/helpers/time-helper.js');
-const { getFinalResourceId } = require('../modules/helpers/routes-helper.js');
-const { TASK_STATUSES, TASK_PRIORITIES } = require('../modules/models/task-model.js');
+const { getFinalResourceId } = require('./fixtures/test-utils.js');
 
-const USER_ID = '6561ff62413e98e914253b1f';
-const HEADERS = { Authorization: USER_ID };
-
-const VALID_TASK = {
-  'title': 'prepare for hard coding',
-  'priority': TASK_PRIORITIES.HIGH,
-};
-
-const VALID_FIELDS = {
-  'title': 'prepare for ass-burning',
-  'priority': TASK_PRIORITIES.LOW,
-  'status': TASK_STATUSES.DONE,
-  'deadline': getDefaultDeadline(),
-};
-
-const INVALID_TASK = {
-  'title': 'a'.repeat(71),
-  'priority': 'foo',
-  'status': 'bar',
-  'deadline': Date.now(),
-};
+const {
+  USER_ID,
+  HEADERS,
+  VALID_TASK,
+  VALID_FIELDS,
+  INVALID_TASK,
+} = require('./fixtures/task-data.js');
 
 let taskId;
 

@@ -1,4 +1,7 @@
 function FilteredDoc(fields, services) {
+  // #ToDo: move path-getting into routes
+  // (replace 'services' param to 'paths')
+
   const paths = services.getPaths();
 
   for (const field in fields) {
@@ -12,13 +15,4 @@ function FilteredDoc(fields, services) {
   }
 }
 
-function getFinalResourceId(endpoint) {
-  const startIndex = endpoint.lastIndexOf('/') + 1;
-  const resourceId = endpoint.slice(startIndex);
-  return resourceId;
-}
-
-module.exports = {
-  FilteredDoc,
-  getFinalResourceId,
-};
+module.exports = { FilteredDoc };

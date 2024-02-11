@@ -2,7 +2,7 @@ const request = require('supertest');
 
 const { app } = require('../app.js');
 const { database } = require('../modules/database/connection.js');
-const { getFinalResourceId } = require('../modules/helpers/routes-helper.js');
+const { getFinalResourceId } = require('./fixtures/test-utils.js');
 
 const TASK_ID = '65633d765d1d06dcad8ff7d0';
 const USER_ID = '6561ff62413e98e914253b1f';
