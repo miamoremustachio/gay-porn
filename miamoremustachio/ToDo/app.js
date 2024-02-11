@@ -3,7 +3,6 @@ const express = require('express');
 const { PORT } = require('./config/app-config.js');
 const { setHeaders } = require('./modules/middlewares/CORS.js');
 const { errorHandler } = require('./modules/middlewares/error-handling.js');
-const { START_MESSAGE } = require('./modules/helpers/constants.js');
 const { router: planRouter } = require('./modules/routes/plan-routes.js');
 const { router: taskRefsRouter } = require('./modules/routes/task_refs-routes.js');
 const { router: taskRouter } = require('./modules/routes/task-routes.js');
@@ -18,7 +17,7 @@ app.use(express.json());
 app.set('port', PORT);
 
 app.get('/', (req, res) => {
-  res.send(START_MESSAGE);
+  res.send('ToDo server is running :3');
 });
 
 app.use('/plans', planRouter, taskRefsRouter);

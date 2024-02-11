@@ -1,4 +1,4 @@
-const { DEFAULT_SORT_ORDER } = require('./constants.js');
+const DEFAULT_SORT_ORDER = 'ascending';
 
 function SortField(field, order) {
   this[field] = order || DEFAULT_SORT_ORDER;
