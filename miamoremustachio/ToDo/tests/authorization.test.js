@@ -1,11 +1,12 @@
 const request = require('supertest');
-const mongoose = require('mongoose');
 
 const { app } = require('../app.js');
 const { database } = require('../modules/database/connection.js');
 
-const TASK_ID = '65633d765d1d06dcad8ff7d0';
-const RANDOM_ID = new mongoose.Types.ObjectId().toString();
+const {
+  TASK_ID,
+  RANDOM_ID,
+} = require('./fixtures/authorization-data.js');
 
 beforeAll(async () => {
   await database.connect();
