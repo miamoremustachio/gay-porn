@@ -11,7 +11,6 @@ const userSchema = new mongoose.Schema({
   username: String,
   gender: String,
   age: Number,
-  address: String,
   email: String,
   roles: { type: [String], default: [USER] },
 },
