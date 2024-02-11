@@ -1,5 +1,5 @@
-const { STATUSES } = require('../modules/helpers/constants.js');
-const { TO_DO } = STATUSES;
+const { TASK_STATUSES } = require('../modules/models/task-model.js');
+const { TO_DO } = TASK_STATUSES;
 
 module.exports = {
   async up(db, client) {

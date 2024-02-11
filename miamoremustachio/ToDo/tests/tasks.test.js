@@ -2,22 +2,22 @@ const request = require('supertest');
 
 const { app } = require('../app.js');
 const { database } = require('../modules/database/connection.js');
-const { STATUSES, PRIORITIES } = require('../modules/helpers/constants.js');
 const { getDefaultDeadline } = require('../modules/helpers/time-helper.js');
 const { getFinalResourceId } = require('../modules/helpers/routes-helper.js');
+const { TASK_STATUSES, TASK_PRIORITIES } = require('../modules/models/task-model.js');
 
 const USER_ID = '6561ff62413e98e914253b1f';
 const HEADERS = { Authorization: USER_ID };
 
 const VALID_TASK = {
   'title': 'prepare for hard coding',
-  'priority': PRIORITIES.HIGH,
+  'priority': TASK_PRIORITIES.HIGH,
 };
 
 const VALID_FIELDS = {
   'title': 'prepare for ass-burning',
-  'priority': PRIORITIES.LOW,
-  'status': STATUSES.DONE,
+  'priority': TASK_PRIORITIES.LOW,
+  'status': TASK_STATUSES.DONE,
   'deadline': getDefaultDeadline(),
 };
 

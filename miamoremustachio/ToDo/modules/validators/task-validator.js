@@ -1,11 +1,8 @@
+const { TASK_STATUSES, TASK_PRIORITIES, TASK_TITLE_LENGTH } = require('../models/task-model.js');
 const { BaseValidator } = require('../validators/base-validator.js');
 const { ValidationError } = require('../errors/validation-error.js');
 
-const {
-  STATUSES,
-  PRIORITIES,
-  TITLE_LENGTH,
-} = require('../helpers/constants.js');
+const { MIN, MAX } = TASK_TITLE_LENGTH;
 
 class TaskValidationError extends ValidationError {
   constructor(message) {
@@ -14,11 +11,10 @@ class TaskValidationError extends ValidationError {
   }
 }
 
-const { MIN, MAX } = TITLE_LENGTH;
-
 class TaskValidator extends BaseValidator {
   constructor() {
     super();
+
     this.messages = {
       title: 'Invalid title: unacceptable string length.',
       status: 'Invalid status: received value doesn\'t match any of the allowed status fields.',
@@ -34,7 +30,7 @@ class TaskValidator extends BaseValidator {
   }
 
   status(status) {
-    const statuses = Object.values(STATUSES);
+    const statuses = Object.values(TASK_STATUSES);
     
     if (!statuses.includes(status)) {
       throw new TaskValidationError(this.messages.status);
@@ -42,7 +38,7 @@ class TaskValidator extends BaseValidator {
   }
 
   priority(priority) {
-    const priorities = Object.values(PRIORITIES);
+    const priorities = Object.values(TASK_PRIORITIES);
       
     if (!priorities.includes(priority)) {
       throw new TaskValidationError(this.messages.priority);

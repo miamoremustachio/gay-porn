@@ -1,8 +1,8 @@
 const { BaseValidator } = require('../validators/base-validator.js');
 const { ValidationError } = require('../errors/validation-error.js');
-const { TITLE_LENGTH } = require('../helpers/constants.js');
+const { TASK_TITLE_LENGTH } = require('../models/task-model.js');
 
-const { MIN, MAX } = TITLE_LENGTH;
+const { MIN, MAX } = TASK_TITLE_LENGTH;
 
 class SubtaskValidationError extends ValidationError {
   constructor(message) {

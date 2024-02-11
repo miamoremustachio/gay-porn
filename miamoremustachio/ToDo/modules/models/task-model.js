@@ -1,15 +1,32 @@
 const mongoose = require('mongoose');
 
-const { STATUSES, PRIORITIES } = require('../helpers/constants.js');
-const { TO_DO } = STATUSES;
-const { LOW } = PRIORITIES;
 const { getDefaultDeadline } = require('../helpers/time-helper.js');
+
+const TASK_STATUSES = {
+  TO_DO: 'to do',
+  IN_PROGRESS: 'in progress',
+  DONE: 'done',
+};
+
+const TASK_PRIORITIES = {
+  LOW: 'low',
+  HIGH: 'high',
+};
+
+const TASK_TITLE_LENGTH = {
+  MIN: 3,
+  MAX: 70,
+};
+
+const { TO_DO } = TASK_STATUSES;
+const { LOW } = TASK_PRIORITIES;
 
 const subtaskSchema = new mongoose.Schema({
   title: { type: String, required: true },
   completed: { type: Boolean, default: false },
 });
 
+// #ToDo: add mongoose built-in validation
 const taskSchema = new mongoose.Schema({
   title: { type: String, required: true },
   status: { type: String, default: TO_DO },
@@ -24,4 +41,9 @@ const taskSchema = new mongoose.Schema({
 
 const Task = mongoose.model('Task', taskSchema);
 
-module.exports = { Task };
+module.exports = {
+  TASK_STATUSES,
+  TASK_PRIORITIES,
+  TASK_TITLE_LENGTH,
+  Task,
+};
