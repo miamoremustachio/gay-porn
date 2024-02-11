@@ -9,7 +9,6 @@ const { USER } = USER_ROLES;
 
 const userSchema = new mongoose.Schema({
   username: String,
-  fullName: String,
   gender: String,
   age: Number,
   address: String,
