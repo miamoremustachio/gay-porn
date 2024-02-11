@@ -4,15 +4,11 @@ const { app } = require('../app.js');
 const { database } = require('../modules/database/connection.js');
 const { getFinalResourceId } = require('./fixtures/test-utils.js');
 
-const PLAN_ID = '65c09742561b3a1051705b49';
-const USER_ID = '6561ff62413e98e914253b1f';
-const HEADERS = { Authorization: USER_ID };
-
-const VALID_TASK_REFS = [
-  '655449a15812e4abfc786f29',
-  '65544d9f5ae1fc8d350a6693',
-  '655451b35ae1fc8d350a6695',
-];
+const {
+  PLAN_ID,
+  HEADERS,
+  VALID_TASK_REFS,
+} = require('./fixtures/task_refs-data.js');
 
 let lastTaskRef;
 
