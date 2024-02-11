@@ -7,12 +7,14 @@ const { getFinalResourceId } = require('./fixtures/test-utils.js');
 const {
   TASK_ID,
   HEADERS,
-  VALID_SUBTASK,
-  VALID_FIELDS,
-  INVALID_SUBTASK,
+  ValidSubtask,
+  ValidSubtaskFields,
+  InvalidSubtask,
 } = require('./fixtures/subtask-data.js');
 
 let subtaskId;
+const subtask = new ValidSubtask();
+const subtaskFields = new ValidSubtaskFields();
 
 beforeAll(async () => {
   await database.connect();
@@ -23,7 +25,7 @@ describe('subtasks', () => {
     const response = await request(app)
       .post(`/tasks/${TASK_ID}/subtasks`)
       .set(HEADERS)
-      .send(VALID_SUBTASK);
+      .send(subtask);
     subtaskId = getFinalResourceId(response.text);
     expect(response.status).toBe(201);
   });
@@ -33,7 +35,7 @@ describe('subtasks', () => {
       .get(`/tasks/${TASK_ID}/subtasks/${subtaskId}`)
       .set(HEADERS);
     expect(response.status).toBe(200);
-    expect(response.body.title).toMatch(VALID_SUBTASK.title);
+    expect(response.body.title).toMatch(subtask.title);
     expect(response.body.completed).toBeFalsy();
   });
 
@@ -41,9 +43,9 @@ describe('subtasks', () => {
     const response = await request(app)
       .put(`/tasks/${TASK_ID}/subtasks/${subtaskId}`)
       .set(HEADERS)
-      .send(VALID_FIELDS);
+      .send(subtaskFields);
     expect(response.status).toBe(200);
-    expect(response.body.title).toMatch(VALID_FIELDS.title);
+    expect(response.body.title).toMatch(subtaskFields.title);
     expect(response.body.completed).toBeTruthy();
   });
 
@@ -70,9 +72,8 @@ describe('subtasks (invalid)', () => {
     const response = await request(app)
       .post(`/tasks/${TASK_ID}/subtasks`)
       .set(HEADERS)
-      .send(INVALID_SUBTASK);
+      .send(new InvalidSubtask());
     expect(response.status).toBe(400);
-    console.log(`POST error message: \n${response.text}`);
   });
 });
 

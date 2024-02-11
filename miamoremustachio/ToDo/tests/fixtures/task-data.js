@@ -4,29 +4,29 @@ const { TASK_STATUSES, TASK_PRIORITIES } = require('../../modules/models/task-mo
 const USER_ID = '6561ff62413e98e914253b1f';
 const HEADERS = { Authorization: USER_ID };
 
-const VALID_TASK = {
-  'title': 'prepare for hard coding',
-  'priority': TASK_PRIORITIES.HIGH,
+function ValidTask() {
+  this.title = 'prepare for hard coding';
+  this.priority = TASK_PRIORITIES.HIGH;
 };
 
-const VALID_FIELDS = {
-  'title': 'prepare for ass-burning',
-  'priority': TASK_PRIORITIES.LOW,
-  'status': TASK_STATUSES.DONE,
-  'deadline': getDefaultDeadline(),
+function ValidTaskFields() {
+  this.title = 'prepare for ass-burning';
+  this.priority = TASK_PRIORITIES.LOW;
+  this.status = TASK_STATUSES.DONE;
+  this.deadline = getDefaultDeadline();
 };
 
-const INVALID_TASK = {
-  'title': 'a'.repeat(71),
-  'priority': 'foo',
-  'status': 'bar',
-  'deadline': Date.now(),
+function InvalidTask() {
+  this.title = 'a'.repeat(71);
+  this.priority = 'foo';
+  this.status = 'bar';
+  this.deadline = Date.now();
 };
 
 module.exports = {
   USER_ID,
   HEADERS,
-  VALID_TASK,
-  VALID_FIELDS,
-  INVALID_TASK,
+  ValidTask,
+  ValidTaskFields,
+  InvalidTask,
 };

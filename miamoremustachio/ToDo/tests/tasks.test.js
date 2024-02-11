@@ -7,12 +7,14 @@ const { getFinalResourceId } = require('./fixtures/test-utils.js');
 const {
   USER_ID,
   HEADERS,
-  VALID_TASK,
-  VALID_FIELDS,
-  INVALID_TASK,
+  ValidTask,
+  ValidTaskFields,
+  InvalidTask,
 } = require('./fixtures/task-data.js');
 
 let taskId;
+const task = new ValidTask();
+const taskFields = new ValidTaskFields();
 
 beforeAll(async () => {
   await database.connect();
@@ -23,7 +25,7 @@ describe('tasks', () => {
     const response = await request(app)
       .post('/tasks')
       .set(HEADERS)
-      .send(VALID_TASK);
+      .send(task);
     taskId = getFinalResourceId(response.text);
     expect(response.status).toBe(201);
   });
@@ -33,8 +35,8 @@ describe('tasks', () => {
       .get(`/tasks/${taskId}`)
       .set(HEADERS);
     expect(response.status).toBe(200);
-    expect(response.body.title).toMatch(VALID_TASK.title);
-    expect(response.body.priority).toMatch(VALID_TASK.priority);
+    expect(response.body.title).toMatch(task.title);
+    expect(response.body.priority).toMatch(task.priority);
     expect(response.body.user._id).toMatch(USER_ID);
   });
 
@@ -42,12 +44,12 @@ describe('tasks', () => {
     const response = await request(app)
       .put(`/tasks/${taskId}`)
       .set(HEADERS)
-      .send(VALID_FIELDS);
+      .send(taskFields);
     expect(response.status).toBe(200);
-    expect(response.body.title).toMatch(VALID_FIELDS.title);
-    expect(response.body.status).toMatch(VALID_FIELDS.status);
-    expect(response.body.priority).toMatch(VALID_FIELDS.priority);
-    expect(response.body.deadline).toBe(VALID_FIELDS.deadline.toISOString());
+    expect(response.body.title).toMatch(taskFields.title);
+    expect(response.body.status).toMatch(taskFields.status);
+    expect(response.body.priority).toMatch(taskFields.priority);
+    expect(response.body.deadline).toBe(taskFields.deadline.toISOString());
   });
 
   test('DELETE /tasks/:id', async () => {
@@ -73,9 +75,8 @@ describe('tasks (invalid)', () => {
     const response = await request(app)
       .post('/tasks')
       .set(HEADERS)
-      .send(INVALID_TASK);
+      .send(new InvalidTask());
     expect(response.status).toBe(400);
-    console.log(`POST error message: \n${response.text}`);
   });
 });
 

@@ -7,11 +7,13 @@ const { getFinalResourceId } = require('./fixtures/test-utils.js');
 const {
   USER_ID,
   HEADERS,
-  VALID_PLAN,
-  VALID_FIELDS,
+  ValidPlan,
+  ValidPlanFields,
 } = require('./fixtures/plan-data.js');
 
 let planId;
+const plan = new ValidPlan();
+const planFields = new ValidPlanFields();
 
 beforeAll(async () => {
   await database.connect();
@@ -22,7 +24,7 @@ describe('plans', () => {
     const response = await request(app)
       .post('/plans')
       .set(HEADERS)
-      .send(VALID_PLAN);
+      .send(plan);
     planId = getFinalResourceId(response.text);
     expect(response.status).toBe(201);
   });
@@ -32,10 +34,10 @@ describe('plans', () => {
       .get(`/plans/${planId}`)
       .set(HEADERS);
     expect(response.status).toBe(200);
-    expect(response.body.title).toMatch(VALID_PLAN.title);
+    expect(response.body.title).toMatch(plan.title);
     expect(response.body.user._id).toMatch(USER_ID);
     for (const task of response.body.tasks) {
-      expect(VALID_PLAN.tasks).toContain(task._id);
+      expect(plan.tasks).toContain(task._id);
     }
   });
 
@@ -43,9 +45,9 @@ describe('plans', () => {
     const response = await request(app)
       .put(`/plans/${planId}`)
       .set(HEADERS)
-      .send(VALID_FIELDS);
+      .send(planFields);
     expect(response.status).toBe(200);
-    expect(response.body.title).toMatch(VALID_FIELDS.title);
+    expect(response.body.title).toMatch(planFields.title);
   });
 
   test('DELETE /plans/:id', async () => {
