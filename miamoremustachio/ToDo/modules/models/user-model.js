@@ -1,7 +1,11 @@
 const mongoose = require('mongoose');
 
-const { ROLES } = require('../helpers/constants.js');
-const { USER } = ROLES;
+const USER_ROLES = {
+  ADMIN: 'admin',
+  USER: 'user',
+};
+
+const { USER } = USER_ROLES;
 
 const userSchema = new mongoose.Schema({
   username: String,
@@ -18,4 +22,4 @@ const userSchema = new mongoose.Schema({
 
 const User = mongoose.model('User', userSchema);
 
-module.exports = { User };
+module.exports = { USER_ROLES, User };

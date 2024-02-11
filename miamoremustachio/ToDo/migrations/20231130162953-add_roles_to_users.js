@@ -1,5 +1,5 @@
-const { ROLES } = require('../modules/helpers/constants.js');
-const { USER } = ROLES;
+const { USER_ROLES } = require('../modules/models/user-model.js');
+const { USER } = USER_ROLES;
 
 module.exports = {
   async up(db, client) {
@@ -7,6 +7,6 @@ module.exports = {
   },
 
   async down(db, client) {
-    await db.collection('users').updateMany({}, { $unset: { roles: "" } });
+    await db.collection('users').updateMany({}, { $unset: { roles: '' } });
   }
 };
