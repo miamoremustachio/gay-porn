@@ -5,7 +5,12 @@
   "main": "main.js",
   "scripts": {
     "start": "node main.js",
-    "test": "jest"
+    "test": "jest",
+    "test:auth": "jest tests/authorization.test.js",
+    "test:plans": "jest tests/plans.test.js",
+    "test:subtasks": "jest tests/subtasks.test.js",
+    "test:taskrefs": "jest tests/task_refs.test.js",
+    "test:tasks": "jest tests/tasks.test.js"
   },
   "author": "miamoremustachio",
   "license": "ISC",
