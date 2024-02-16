@@ -1,8 +1,7 @@
+const validator = require('validator');
+
 const { BaseValidator } = require('../validators/base-validator.js');
 const { ValidationError } = require('../errors/validation-error.js');
-const { TASK_TITLE_LENGTH } = require('../models/task-model.js');
-
-const { MIN, MAX } = TASK_TITLE_LENGTH;
 
 class SubtaskValidationError extends ValidationError {
   constructor(message) {
@@ -20,7 +19,9 @@ class SubtaskValidator extends BaseValidator {
   }
 
   title(title) {
-    if (title.length < MIN || title.length > MAX) {
+    const isLengthInvalid = !validator.isLength(title, { min: 3, max: 70 });
+
+    if (isLengthInvalid) {
       throw new SubtaskValidationError(this.messages.title);
     }
   }

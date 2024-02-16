@@ -3,15 +3,13 @@ const { SubtaskValidator } = require('../../validators/subtask-validator.js');
 const check = new SubtaskValidator();
 
 const validateSubtask = (req, res, next) => {
-  const { title } = req.body;
+  const fields = req.body;
 
-  if (title) {
-    try {
-      check.title(title);
-    } catch(error) {
-      next(error);
-      return;
-    }
+  try {
+    check.all(fields);
+  } catch(error) {
+    next(error);
+    return;
   }
 
   next();

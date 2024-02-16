@@ -1,6 +1,3 @@
-const { TASK_STATUSES } = require('../modules/models/task-model.js');
-const { TO_DO } = TASK_STATUSES;
-
 module.exports = {
   async up(db, client) {
     await db.collection('tasks').updateMany({
@@ -17,7 +14,7 @@ module.exports = {
       'subtasks.completed': { $exists: true },
     },
     {
-      $set: { 'subtasks.$[].status': TO_DO },
+      $set: { 'subtasks.$[].status': 'to do' },
       $unset: { 'subtasks.$[].completed': '' },
     });
   }
