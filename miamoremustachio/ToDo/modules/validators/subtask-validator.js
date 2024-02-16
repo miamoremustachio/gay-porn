@@ -25,6 +25,6 @@ class SubtaskValidator extends BaseValidator {
       throw new SubtaskValidationError(this.messages.title);
     }
   }
-};
+}
 
 module.exports = { SubtaskValidator };

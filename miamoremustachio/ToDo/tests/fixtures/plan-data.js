@@ -8,11 +8,11 @@ function ValidPlan() {
     '65544d9f5ae1fc8d350a6693',
     '655451b35ae1fc8d350a6695',
   ];
-};
+}
 
 function ValidPlanFields() {
   this.title = 'become a true backender-shmackender';
-};
+}
 
 module.exports = {
   USER_ID,

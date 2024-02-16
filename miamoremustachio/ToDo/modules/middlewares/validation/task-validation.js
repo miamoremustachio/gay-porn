@@ -5,14 +5,14 @@ const check = new TaskValidator();
 const validateTask = (req, res, next) => {
   const fields = req.body;
     
-    try {
-      check.all(fields);
-    } catch(error) {
-      next(error);
-      return;
-    }
+  try {
+    check.all(fields);
+  } catch(error) {
+    next(error);
+    return;
+  }
 
-    next();
+  next();
 }
 
 module.exports = { validateTask };

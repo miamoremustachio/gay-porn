@@ -5,6 +5,6 @@ class ClientError extends Error {
     this.name = this.constructor.name;
     this.status = status || 400;
   }
-};
+}
 
 module.exports = { ClientError };

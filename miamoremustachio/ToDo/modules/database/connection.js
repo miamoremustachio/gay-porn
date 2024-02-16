@@ -11,6 +11,6 @@ const database = {
     await mongoose.disconnect();
     console.log('Database disconnected ✓');
   },
-}
+};
 
 module.exports = { database };

@@ -10,21 +10,21 @@ const HEADERS = { Authorization: USER_ID };
 function ValidTask() {
   this.title = 'prepare for hard coding';
   this.priority = validPriority;
-};
+}
 
 function ValidTaskFields() {
   this.title = 'prepare for ass-burning';
   this.priority = validPriority;
   this.status = validStatus;
   this.deadline = getDefaultDeadline();
-};
+}
 
 function InvalidTask() {
   this.title = 'a'.repeat(71);
   this.priority = 'foo';
   this.status = 'bar';
   this.deadline = Date.now();
-};
+}
 
 module.exports = {
   USER_ID,

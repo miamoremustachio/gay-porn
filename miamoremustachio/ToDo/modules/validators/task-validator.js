@@ -36,6 +36,6 @@ class TaskValidator extends BaseValidator {
       throw new TaskValidationError(this.messages.deadline);
     }
   }
-};
+}
 
 module.exports = { TaskValidator };
