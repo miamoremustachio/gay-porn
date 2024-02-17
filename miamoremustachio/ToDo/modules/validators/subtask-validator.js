@@ -19,6 +19,8 @@ class SubtaskValidator extends BaseValidator {
   }
 
   title(title) {
+    title = title.toString();
+    
     const isLengthInvalid = !validator.isLength(title, { min: 3, max: 70 });
 
     if (isLengthInvalid) {

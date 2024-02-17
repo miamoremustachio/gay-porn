@@ -1,22 +1,23 @@
-const { getDefaultDeadline } = require('../../modules/helpers/time-helper.js');
 const { Task } = require('../../modules/models/task-model.js');
 
-const validStatus = Task.schema.path('status').enumValues[0];
-const validPriority = Task.schema.path('priority').enumValues[0];
+const validStatuses = Task.schema.path('status').enumValues;
+const validPriorities = Task.schema.path('priority').enumValues;
+
+const defaultDeadline = Task.schema.path('deadline').defaultValue();
 
 const USER_ID = '6561ff62413e98e914253b1f';
 const HEADERS = { Authorization: USER_ID };
 
 function ValidTask() {
   this.title = 'prepare for hard coding';
-  this.priority = validPriority;
+  this.priority = validPriorities[0];
 }
 
 function ValidTaskFields() {
   this.title = 'prepare for ass-burning';
-  this.priority = validPriority;
-  this.status = validStatus;
-  this.deadline = getDefaultDeadline();
+  this.priority = validPriorities[1];
+  this.status = validStatuses[1];
+  this.deadline = defaultDeadline;
 }
 
 function InvalidTask() {
