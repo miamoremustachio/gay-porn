@@ -2,6 +2,7 @@ const express = require('express');
 
 const { users } = require('../services/user-services.js');
 const { findUser } = require('../middlewares/searching/user-searching.js');
+const { validateUser } = require('../middlewares/validation/user-validation.js');
 const { checkUserId } = require('../middlewares/authorization.js');
 
 const router = express.Router();
@@ -16,7 +17,7 @@ router.route('/')
       next(error);
     }
   })
-  .post(async (req, res, next) => {
+  .post(validateUser, async (req, res, next) => {
     const fields = req.body;
 
     try {
@@ -42,7 +43,7 @@ router.route('/:id')
       next(error);
     }
   })
-  .put(async (req, res, next) => {
+  .put(validateUser, async (req, res, next) => {
     const userId = req.params.id;
     const update = req.body;
     const options = { returnDocument: 'after' };

@@ -1,18 +1,24 @@
 const mongoose = require('mongoose');
 
-const USER_ROLES = {
+const ROLES = {
   ADMIN: 'admin',
   USER: 'user',
 };
 
-const { USER } = USER_ROLES;
+const GENDERS = {
+  MALE: 'male',
+  FEMALE: 'female',
+  NONBINARY: 'non-binary',
+};
+
+const { USER } = ROLES;
 
 const userSchema = new mongoose.Schema({
-  username: String,
-  gender: String,
-  age: Number,
-  email: String,
-  roles: { type: [String], default: [USER] },
+  username: { type: String, required: true, unique: true },
+  gender: { type: String, enum: Object.values(GENDERS) },
+  age: { type: Number, min: 7, max: 120 },
+  email: { type: String, required: true, unique: true },
+  roles: { type: [String], enum: Object.values(ROLES), default: [USER] },
 },
 {
   timestamps: true,
@@ -20,4 +26,4 @@ const userSchema = new mongoose.Schema({
 
 const User = mongoose.model('User', userSchema);
 
-module.exports = { USER_ROLES, User };
+module.exports = { User };

@@ -1,9 +1,6 @@
-const { USER_ROLES } = require('../modules/models/user-model.js');
-const { USER } = USER_ROLES;
-
 module.exports = {
   async up(db, client) {
-    await db.collection('users').updateMany({}, { $set: { roles: [USER] } });
+    await db.collection('users').updateMany({}, { $set: { roles: ['user'] } });
   },
 
   async down(db, client) {
