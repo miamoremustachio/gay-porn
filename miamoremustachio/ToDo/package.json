@@ -10,7 +10,8 @@
     "test:plans": "jest tests/plans.test.js",
     "test:subtasks": "jest tests/subtasks.test.js",
     "test:taskrefs": "jest tests/task_refs.test.js",
-    "test:tasks": "jest tests/tasks.test.js"
+    "test:tasks": "jest tests/tasks.test.js",
+    "test:users": "jest tests/users.test.js"
   },
   "author": "miamoremustachio",
   "license": "ISC",

@@ -15,8 +15,8 @@ const { USER } = ROLES;
 
 const userSchema = new mongoose.Schema({
   username: { type: String, required: true, unique: true },
+  age: { type: Number },
   gender: { type: String, enum: Object.values(GENDERS) },
-  age: { type: Number, min: 7, max: 120 },
   email: { type: String, required: true, unique: true },
   roles: { type: [String], enum: Object.values(ROLES), default: [USER] },
 },

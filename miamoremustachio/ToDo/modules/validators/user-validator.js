@@ -16,22 +16,45 @@ class UserValidator extends BaseValidator {
 
     this.messages = {
       username: 'Invalid username: unacceptable string length.',
+      age: {
+        type: 'Invalid age: value is not integer.',
+        range: 'Invalid age: value is outside the acceptable age range.',
+      },
       email: 'Invalid email: received string is not a valid email address.',
     };
   }
 
   username(username) {
-    const isLengthOutOfRange = !validator.isLength(username, { min: 3, max: 15 });
+    username = username.toString();
+
+    const isOutOfRange = !validator.isLength(username, { min: 3, max: 15 });
     
-    if (isLengthOutOfRange) {
+    if (isOutOfRange) {
       throw new UserValidationError(this.messages.username);
     }
   }
 
-  email(email) {
-    const isEmailInvalid = !validator.isEmail(email);
+  age(age) {
+    age = age.toString();
 
-    if (isEmailInvalid) {
+    const isNotInteger = !validator.isInt(age);
+
+    if (isNotInteger) {
+      throw new UserValidationError(this.messages.age.type);
+    }
+    const isOutOfRange = !validator.isInt(age, { min: 7, max: 120 });
+
+    if (isOutOfRange) {
+      throw new UserValidationError(this.messages.age.range);
+    }
+  }
+
+  email(email) {
+    email = email.toString();
+    
+    const isInvalid = !validator.isEmail(email);
+
+    if (isInvalid) {
       throw new UserValidationError(this.messages.email);
     }
   }

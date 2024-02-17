@@ -24,7 +24,7 @@ router.route('/')
       const user = await users.create(fields);
       const userPath = `${req.baseUrl}${req.path}${user.id}`;
 
-      res.send(userPath);
+      res.status(201).send(userPath);
     } catch(error) {
       next(error);
     }
