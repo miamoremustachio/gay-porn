@@ -2,6 +2,7 @@ const express = require('express');
 
 const { plans } = require('../services/plan-services.js');
 const { findPlan } = require('../middlewares/searching/plan-searching.js');
+const { validatePlan } = require('../middlewares/validation/plan-validation.js');
 const { checkUserId } = require('../middlewares/authorization.js');
 const { FilteredDoc: Plan } = require('../helpers/routes-helper.js');
 
@@ -20,7 +21,7 @@ router.route('/')
       next(error);
     }
   })
-  .post(async (req, res, next) => {
+  .post(validatePlan, async (req, res, next) => {
     const userId = req.headers.authorization;
     const fields = { user: userId, ...req.body };
 
@@ -48,7 +49,7 @@ router.route('/:id')
       next(error);
     }
   })
-  .put(async (req, res, next) => {
+  .put(validatePlan, async (req, res, next) => {
     const planId = req.params.id;
     const update = new Plan(req.body, plans);
     const options = { returnDocument: 'after' };
