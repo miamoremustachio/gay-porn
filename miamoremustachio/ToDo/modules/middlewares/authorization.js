@@ -14,11 +14,12 @@ const checkUserId = (req, res, next) => {
       throw new ForbiddenError();
     }
   
-    next();
-  
   } catch(error) {
     next(error);
+    return;
   }
+  
+  next();
 }
 
 module.exports = { checkUserId };

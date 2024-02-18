@@ -9,10 +9,6 @@ function FilteredDoc(fields, services) {
       this[field] = fields[field];
     }
   }
-
-  if (fields.user) {
-    this.user = fields.user;
-  }
 }
 
 module.exports = { FilteredDoc };

@@ -12,8 +12,8 @@ const clientSideErrors = [
 ];
 
 function isItCausedByClient(error) {
-  for (const ClientErrorClass of clientSideErrors) {
-    if (error instanceof ClientErrorClass) {
+  for (const AnyClientError of clientSideErrors) {
+    if (error instanceof AnyClientError) {
       return true;
     }
   }
