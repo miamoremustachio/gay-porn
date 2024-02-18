@@ -71,7 +71,7 @@ describe('users', () => {
   })
 });
 
-describe('users (invalid', () => {
+describe('users (invalid)', () => {
   test('POST /users', async () => {
     const response = await request(app)
       .post('/users')

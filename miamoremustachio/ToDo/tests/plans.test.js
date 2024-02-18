@@ -9,6 +9,7 @@ const {
   HEADERS,
   ValidPlan,
   ValidPlanFields,
+  InvalidPlan,
 } = require('./fixtures/plan-data.js');
 
 let planId;
@@ -65,6 +66,16 @@ describe('plans', () => {
     for (const plan of response.body) {
       expect(plan._id).not.toMatch(planId);
     }
+  });
+});
+
+describe('plans (invalid)', () => {
+  test('POST /plans', async () => {
+    const response = await request(app)
+      .post('/plans')
+      .set(HEADERS)
+      .send(new InvalidPlan());
+    expect(response.status).toBe(400);
   });
 });
 

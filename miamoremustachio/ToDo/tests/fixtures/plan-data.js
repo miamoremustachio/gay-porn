@@ -14,9 +14,14 @@ function ValidPlanFields() {
   this.title = 'become a true backender-shmackender';
 }
 
+function InvalidPlan() {
+  this.title = 'a'.repeat(71);
+}
+
 module.exports = {
   USER_ID,
   HEADERS,
   ValidPlan,
   ValidPlanFields,
+  InvalidPlan,
 };
