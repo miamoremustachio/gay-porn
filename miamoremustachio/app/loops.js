@@ -7,23 +7,23 @@ while (i <= 19) {
 }
 
 // 2.
-let l = 1;
+let j = 1;
 
 while (true) {
-  console.log(l++);
-  if (l > 19) break;
+  console.log(j++);
+  if (j > 19) break;
 }
 
 // 3.
-let j = 1;
+let k = 1;
 
 do {
-  console.log(j);
-  j++;
+  console.log(k);
+  k++;
 
-} while (j <= 19);
+} while (k <= 19);
 
 // 4.
-for (let k = 1; k <= 19; k++) {
-  console.log(k);
+for (let l = 1; l <= 19; l++) {
+  console.log(l);
 }
