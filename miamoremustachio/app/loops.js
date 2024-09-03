@@ -6,6 +6,15 @@ while (i <= 19) {
   i++;
 }
 
+// "while" loop with break:
+let l = 1;
+
+while (true) {
+  console.log(l++);
+
+  if (l > 19) break;
+}
+
 // "do...while" loop:
 let j = 1;
 
