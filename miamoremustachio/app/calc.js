@@ -6,7 +6,7 @@ const INVALID_OPERATION = 'Error: Invalid operation.';
 const INVALID_OPERAND = 'Error: Invalid operand.';
 
 function isOperandValid(operand) {
-  return (Number.isFinite(operand)) ? true : false;
+  return Number.isFinite(operand);
 }
 
 function validate(a, b) {
@@ -45,7 +45,6 @@ function calc(operation, a, b) {
 
     default:
       console.error(INVALID_OPERATION);
-      return;
   }
 }
 
