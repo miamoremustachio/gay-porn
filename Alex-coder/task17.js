@@ -24,3 +24,4 @@ console.log(phoneBook.list['Sarah Johnson']); // undefined (удалено)
 for (const name in phoneBook.list) {
   console.log(name + " - " + phoneBook.list[name] );
 }
+
