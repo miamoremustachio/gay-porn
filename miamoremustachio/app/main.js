@@ -1,14 +1,14 @@
 const CONTACTS = {
-  IGNAT: "Ignat Ebanatovich",
-  IZOLDA: "Izolda Ebunkova",
-  KLAVDIYA: "Klavdiya Pidrilishna",
-  KONDRATIY: "Kondratiy Zalupovich",
+  IGNAT: 'Ignat Ebanatovich',
+  IZOLDA: 'Izolda Ebunkova',
+  KLAVDIYA: 'Klavdiya Pidrilishna',
+  KONDRATIY: 'Kondratiy Zalupovich',
 };
 
 const ERRORS = {
-  CONTACT_EXIST: "Error: Contact already exists",
-  CONTACT_NOT_FOUND: "Error: Contact not found.",
-  INVALID_PHONE_NUMBER: "Error: Invalid phone number.",
+  CONTACT_EXIST: 'Error: Contact already exists.',
+  CONTACT_NOT_FOUND: 'Error: Contact not found.',
+  INVALID_PHONE_NUMBER: 'Error: Invalid phone number.',
 };
 
 const { IGNAT, IZOLDA, KLAVDIYA, KONDRATIY } = CONTACTS;
@@ -62,6 +62,8 @@ const phoneBook = {
 phoneBook.log();
 
 phoneBook.add('Oleg', 1); // ✓
+phoneBook.add('Olga', -1); // ✓
+// TODO: add checking for negates
 phoneBook.add('Olga', 42); // ✗
 phoneBook.add('Olga'); // ✗
 phoneBook.add(IGNAT); // ✗ 
