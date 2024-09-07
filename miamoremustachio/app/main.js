@@ -19,7 +19,7 @@ function isContactExists(contact, list) {
 }
 
 function isPhoneNumberValid(phoneNumber) {
-  return (Number.isFinite(phoneNumber) && phoneNumber <= 15);
+  return (Number.isFinite(phoneNumber) && phoneNumber > 0 && phoneNumber <= 15);
 }
 
 const phoneBook = {
@@ -62,8 +62,7 @@ const phoneBook = {
 phoneBook.log();
 
 phoneBook.add('Oleg', 1); // ✓
-phoneBook.add('Olga', -1); // ✓
-// TODO: add checking for negates
+phoneBook.add('Olga', -1); // ✗
 phoneBook.add('Olga', 42); // ✗
 phoneBook.add('Olga'); // ✗
 phoneBook.add(IGNAT); // ✗ 
