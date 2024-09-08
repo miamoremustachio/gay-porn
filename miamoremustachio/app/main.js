@@ -78,15 +78,12 @@ const toDo = {
     this.list[task] = status;
   },
   show() {
-    console.log('To do:');
-    showTasksByStatus(TO_DO, this.list);
+    for (let status in STATUSES) {
+      const statusValue = STATUSES[status];
 
-    console.log('In progress:');
-    showTasksByStatus(IN_PROGRESS, this.list);
-
-    console.log('Done:');
-    showTasksByStatus(DONE, this.list);
-    // TODO: add loop to iterate over all statuses
+      console.log(`${statusValue}:`);
+      showTasksByStatus(statusValue, this.list);
+    }
   },
 };
 
