@@ -8,7 +8,7 @@ const { TO_DO, IN_PROGRESS, DONE } = STATUSES;
 
 const ERRORS = {
   TASK_EXIST: 'Error: Task you want to add is already in list.',
-  TASK_NOT_FOUND: 'Error: Task not found',
+  TASK_NOT_FOUND: 'Error: Task not found.',
   INVALID_STATUS: `Error: Invalid status: it must be either "${TO_DO}", "${IN_PROGRESS}" or "${DONE}".`,
 };
 
@@ -19,7 +19,7 @@ function showTasksByStatus(status, list) {
 
   for (let task in list) {
     if (list[task] === status) {
-      console.log(`\t ${task}`);
+      console.log(`\t "${task}"`);
       i++;
     }
   }
