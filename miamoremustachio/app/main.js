@@ -100,7 +100,7 @@ toDo.add('bar', TO_DO);
 console.log(toDo.list.bar === DONE); // ✓
 
 toDo.add('baz', '(invalid status)');
-console.log(!toDo.list.baz); // ✓
+console.log(toDo.list.baz === undefined); // ✓
 
 toDo.changeStatus('foo', DONE);
 console.log(toDo.list.foo === DONE); // ✓
@@ -109,12 +109,12 @@ toDo.changeStatus('foo', '(invalid status)');
 console.log(toDo.list.foo === DONE); // ✓
 
 toDo.changeStatus('baz', DONE);
-console.log(!toDo.list.baz); // ✓
+console.log(toDo.list.baz === undefined); // ✓
 
 toDo.delete('foo');
-console.log(!toDo.list.foo); // ✓
+console.log(toDo.list.foo === undefined); // ✓
 
 toDo.delete('baz');
-console.log(!toDo.list.baz); // ✓
+console.log(toDo.list.baz === undefined); // ✓
 
 toDo.show();
