@@ -43,7 +43,9 @@ const validate = {
     },
   },
   status(status) {
-    if (status === TO_DO || status === IN_PROGRESS || status === DONE) {
+    const validStatusesList = Object.values(STATUSES);
+
+    if (validStatusesList.includes(status)) {
       return;
     
     } else {
