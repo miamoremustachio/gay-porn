@@ -31,25 +31,24 @@ const validate = {
   task: {
     exist(task, list) {
       if (task in list) {
-        return console.error(TASK_EXIST);
+        console.error(TASK_EXIST);
+        return true;
       }
-
-      return true;
     },
     notFound(task, list) {
-      if (task in list) return true;
-      
-      else {
-        return console.error(TASK_NOT_FOUND);
+      if (!(task in list)) {
+        console.error(TASK_NOT_FOUND);
+        return true;
       }
     },
   },
   status(status) {
     if (status === TO_DO || status === IN_PROGRESS || status === DONE) {
-      return true;
+      return;
     
     } else {
-      return console.error(INVALID_STATUS);
+      console.error(INVALID_STATUS);
+      return true;
     }
   },
 };
@@ -61,19 +60,19 @@ const toDo = {
     'code': DONE,
   },
   add(task, status = TO_DO) {
-    if (!validate.task.exist(task, this.list)) return;
-    if (!validate.status(status)) return;
+    if (validate.task.exist(task, this.list)) return;
+    if (validate.status(status)) return;
 
     this.list[task] = status;
   },
   delete(task) {
-    if (!validate.task.notFound(task, this.list)) return;
+    if (validate.task.notFound(task, this.list)) return;
 
     delete this.list[task];
   },
   changeStatus(task, status) {
-    if (!validate.task.notFound(task, this.list)) return;
-    if (!validate.status(status)) return;
+    if (validate.task.notFound(task, this.list)) return;
+    if (validate.status(status)) return;
 
     this.list[task] = status;
   },
