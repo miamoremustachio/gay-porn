@@ -15,16 +15,16 @@ const ERRORS = {
 const { TASK_EXIST, TASK_NOT_FOUND, INVALID_STATUS } = ERRORS;
 
 function showTasksByStatus(status, list) {
-  let i = 0;
+  let hasTasksWithThisStatus;
 
   for (let task in list) {
     if (list[task] === status) {
       console.log(`\t "${task}"`);
-      i++;
+      hasTasksWithThisStatus = true;
     }
   }
 
-  if (!i) console.log('\t -');
+  if (!hasTasksWithThisStatus) console.log('\t -');
 }
 
 const validate = {
