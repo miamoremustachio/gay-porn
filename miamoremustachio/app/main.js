@@ -6,13 +6,22 @@ const STATUSES = {
 
 const { TO_DO, IN_PROGRESS, DONE } = STATUSES;
 
+const PRIORITIES = {
+  LOW: 'low',
+  MEDIUM: 'medium',
+  HIGH: 'high',
+};
+
+const { LOW, MEDIUM, HIGH } = PRIORITIES;
+
 const ERRORS = {
   TASK_EXIST: 'Error: Task you want to add is already in list.',
   TASK_NOT_FOUND: 'Error: Task not found.',
-  INVALID_STATUS: `Error: Invalid status: it must be either "${TO_DO}", "${IN_PROGRESS}" or "${DONE}".`,
+  INVALID_STATUS: `Error: Invalid status: it must be either "${Object.values(STATUSES).join(', ')}.`,
+  INVALID_PRIORITY: `Error: Invalid status: it must be either ${Object.values(PRIORITIES).join(', ')}`,
 };
 
-const { TASK_EXIST, TASK_NOT_FOUND, INVALID_STATUS } = ERRORS;
+const { TASK_EXIST, TASK_NOT_FOUND, INVALID_STATUS, INVALID_PRIORITY } = ERRORS;
 
 function showTasksByStatus(status, list) {
   let hasTasksWithThisStatus;
@@ -33,6 +42,23 @@ function isStatusValid(status) {
   return validStatusesList.includes(status);
 }
 
+function isPriorityValid(priority) {
+  const validPrioritiesList = Object.values(PRIORITIES);
+
+  return validPrioritiesList.includes(priority);
+}
+
+const validationLayer = {
+  'status': {
+    fn: isStatusValid,
+    errorMessage: INVALID_STATUS,
+  },
+  'priority': {
+    fn: isPriorityValid,
+    errorMessage: INVALID_PRIORITY, 
+  },
+};
+
 function* generateIds() {
   let id = 1;
 
@@ -46,17 +72,23 @@ const getId = () => idGenerator.next().value;
 
 const toDo = {
   list: [
-    { id: getId(), title: 'eat', status: TO_DO },
-    { id: getId(), title: 'sleep', status: IN_PROGRESS },
-    { id: getId(), title: 'code', status: DONE },
+    { id: getId(), title: 'eat', status: TO_DO, priority: LOW },
+    { id: getId(), title: 'sleep', status: IN_PROGRESS, priority: MEDIUM },
+    { id: getId(), title: 'code', status: DONE, priority: HIGH },
   ],
-  add(title, status = TO_DO) {
+  add(title, status = TO_DO, priority = MEDIUM) {
     if (!isStatusValid(status)) {
       console.error(INVALID_STATUS);
       return;
     }
 
-    this.list.push({ id: getId(), title, status });
+    if (!isPriorityValid(priority)) {
+      console.error(INVALID_PRIORITY);
+      return;
+    }
+
+    const newTask = this.list.push({ id: getId(), title, status, priority });
+    return newTask;
   },
   deleteById(taskId) {
     const taskIndex = this.list.findIndex((task) => task.id === taskId);
@@ -66,8 +98,8 @@ const toDo = {
       console.error(TASK_NOT_FOUND);
       return;
     };
-
-    this.list.splice(taskIndex, 1);
+    const deleted = this.list.splice(taskIndex, 1);
+    return deleted;
   },
   deleteByTitle(title) {
     const taskIndex = this.list.findIndex((task) => task.title === title);
@@ -80,7 +112,25 @@ const toDo = {
 
     this.list.splice(taskIndex, 1);
   },
-  show() {
+  changeTask(taskId, propertyKey, propertyValue) {
+    const task = this.list.find((task) => task.id === taskId);
+
+    if (!task) {
+      console.error(TASK_NOT_FOUND);
+      return;
+    }
+
+    const { fn: validateProperty, errorMessage } = validationLayer[propertyKey];
+
+    if (!validateProperty(propertyValue)) {
+      console.error(errorMessage);
+      return;
+    }
+
+    task[propertyKey] = propertyValue;
+    return task;
+  },
+  showTaskList() {
     for (let status in STATUSES) {
       const statusValue = STATUSES[status];
 
@@ -108,7 +158,7 @@ const invalidStatus = fixtures.statuses.invalid;
 const validIds = [ ...fixtures.ids.valid ];
 const invalidIds = [ ...fixtures.ids.invalid ];
 
-toDo.show();
+toDo.showTaskList();
 
 toDo.add(validTitles[0]);
 const testTask1 = toDo.list.find((task) => task.title === validTitles[0]);
@@ -138,4 +188,4 @@ toDo.deleteById(invalidIds[1]);
 const testTask7 = toDo.list.find((task) => task.id === validIds[1]);
 console.log(Boolean(testTask7)); // ✓
 
-toDo.show();
+toDo.showTaskList();
