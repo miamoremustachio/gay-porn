@@ -98,37 +98,52 @@ const toDo = {
 };
 
 // TODO: add fixtures
+const fixtures = {
+  titles: {
+    valid: [ 'foo', 'bar', 'baz' ],
+  },
+  statuses: {
+    invalid: 'a',
+  },
+  ids: {
+    valid: [ 1, 2, 3 ],
+    invalid: [ '1', '2', '3' ],
+  },
+};
+
+const validTitles = [ ...fixtures.titles.valid ];
+const invalidStatus = fixtures.statuses.invalid;
+const validIds = [ ...fixtures.ids.valid ];
+const invalidIds = [ ...fixtures.ids.invalid ];
+
 toDo.show();
 
-toDo.add('foo');
-const testTask1 = toDo.list.find((task) => task.title === 'foo');
-console.log(testTask1.title === 'foo'); // ✓ 
+toDo.add(validTitles[0]);
+const testTask1 = toDo.list.find((task) => task.title === validTitles[0]);
+console.log(testTask1.title === validTitles[0]); // ✓
 
-toDo.add('bar', DONE);
-const testTask2 = toDo.list.find((task) => task.title === 'bar');
+toDo.add(validTitles[1], DONE);
+const testTask2 = toDo.list.find((task) => task.title === validTitles[1]);
 console.log(testTask2.status === DONE); // ✓
 
-toDo.add('baz', '(invalid status)');
-const testTask3 = toDo.list.find((task) => task.title === 'baz');
+toDo.add(validTitles[2], invalidStatus);
+const testTask3 = toDo.list.find((task) => task.title === validTitles[2]);
 console.log(testTask3 === undefined); // ✓
 
-toDo.deleteByTitle('foo');
-const testTask4 = toDo.list.find((task) => task.title === 'foo');
+toDo.deleteByTitle(validTitles[0]);
+const testTask4 = toDo.list.find((task) => task.title === validTitles[0]);
 console.log(testTask4 === undefined); // ✓
 
-toDo.deleteByTitle('baz');
-const testTask5 = toDo.list.find((task) => task.title === 'baz');
+toDo.deleteByTitle(validTitles[2]);
+const testTask5 = toDo.list.find((task) => task.title === validTitles[2]);
 console.log(testTask5 === undefined); // ✓
 
-toDo.deleteById(1);
-const testTask6 = toDo.list.find((task => task.id === 1));
+toDo.deleteById(validIds[0]);
+const testTask6 = toDo.list.find((task => task.id === validIds[0]));
 console.log(testTask6 === undefined); // ✓
 
-toDo.deleteById('2');
-const testTask7 = toDo.list.find((task) => task.id === 2);
+toDo.deleteById(invalidIds[1]);
+const testTask7 = toDo.list.find((task) => task.id === validIds[1]);
 console.log(Boolean(testTask7)); // ✓
 
 toDo.show();
-
-// feat: task ID
-// add tasks array, add ID generator
