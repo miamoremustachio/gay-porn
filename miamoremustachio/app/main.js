@@ -17,31 +17,18 @@ const { TASK_EXIST, TASK_NOT_FOUND, INVALID_STATUS } = ERRORS;
 function showTasksByStatus(status, list) {
   let hasTasksWithThisStatus;
 
-  for (let task in list) {
-    if (list[task] === status) {
-      console.log(`\t "${task}"`);
-      hasTasksWithThisStatus = true;
-    }
-  }
+  const filteredList = list.filter((task) => task.status === status);
+
+  filteredList.forEach((task) => {
+    console.log(`\t ${task.id}. "${task.title}"`);
+    hasTasksWithThisStatus = true;
+  })
 
   if (!hasTasksWithThisStatus) console.log('\t -');
 }
 
+// TODO: add predicate function for status validation
 const validate = {
-  task: {
-    exist(task, list) {
-      if (task in list) {
-        console.error(TASK_EXIST);
-        return true;
-      }
-    },
-    notFound(task, list) {
-      if (!(task in list)) {
-        console.error(TASK_NOT_FOUND);
-        return true;
-      }
-    },
-  },
   status(status) {
     const validStatusesList = Object.values(STATUSES);
 
@@ -55,28 +42,50 @@ const validate = {
   },
 };
 
+function* generateIds() {
+  let id = 1;
+
+  while(true) {
+    yield id++;
+  }
+}
+
+const idGenerator = generateIds();
+const getId = () => idGenerator.next().value;
+
 const toDo = {
-  list: {
-    'eat': TO_DO,
-    'sleep': IN_PROGRESS,
-    'code': DONE,
-  },
-  add(task, status = TO_DO) {
-    if (validate.task.exist(task, this.list)) return;
+  list: [
+    { id: getId(), title: 'eat', status: TO_DO },
+    { id: getId(), title: 'sleep', status: IN_PROGRESS },
+    { id: getId(), title: 'code', status: DONE },
+  ],
+  add(title, status = TO_DO) {
     if (validate.status(status)) return;
 
-    this.list[task] = status;
+    this.list.push({ id: getId(), title, status });
   },
-  delete(task) {
-    if (validate.task.notFound(task, this.list)) return;
+  deleteById(taskId) {
+    // TODO: add task seeking function
+    const taskIndex = this.list.findIndex((task) => task.id === taskId);
+    const task = this.list[taskIndex] || null;
 
-    delete this.list[task];
+    if (!task) {
+      console.error(TASK_NOT_FOUND);
+      return;
+    };
+
+    this.list.splice(taskIndex, 1);
   },
-  changeStatus(task, status) {
-    if (validate.task.notFound(task, this.list)) return;
-    if (validate.status(status)) return;
+  deleteByTitle(title) {
+    const taskIndex = this.list.findIndex((task) => task.title === title);
+    const task = this.list[taskIndex] || null;
 
-    this.list[task] = status;
+    if (!task) {
+      console.error(TASK_NOT_FOUND);
+      return;
+    };
+
+    this.list.splice(taskIndex, 1);
   },
   show() {
     for (let status in STATUSES) {
@@ -88,34 +97,38 @@ const toDo = {
   },
 };
 
-// tests:
+// TODO: add fixtures
 toDo.show();
 
 toDo.add('foo');
-console.log(toDo.list.foo === TO_DO); // ✓
+const testTask1 = toDo.list.find((task) => task.title === 'foo');
+console.log(testTask1.title === 'foo'); // ✓ 
 
 toDo.add('bar', DONE);
-console.log(toDo.list.bar === DONE); // ✓
-
-toDo.add('bar', TO_DO);
-console.log(toDo.list.bar === DONE); // ✓
+const testTask2 = toDo.list.find((task) => task.title === 'bar');
+console.log(testTask2.status === DONE); // ✓
 
 toDo.add('baz', '(invalid status)');
-console.log(toDo.list.baz === undefined); // ✓
+const testTask3 = toDo.list.find((task) => task.title === 'baz');
+console.log(testTask3 === undefined); // ✓
 
-toDo.changeStatus('foo', DONE);
-console.log(toDo.list.foo === DONE); // ✓
+toDo.deleteByTitle('foo');
+const testTask4 = toDo.list.find((task) => task.title === 'foo');
+console.log(testTask4 === undefined); // ✓
 
-toDo.changeStatus('foo', '(invalid status)');
-console.log(toDo.list.foo === DONE); // ✓
+toDo.deleteByTitle('baz');
+const testTask5 = toDo.list.find((task) => task.title === 'baz');
+console.log(testTask5 === undefined); // ✓
 
-toDo.changeStatus('baz', DONE);
-console.log(toDo.list.baz === undefined); // ✓
+toDo.deleteById(1);
+const testTask6 = toDo.list.find((task => task.id === 1));
+console.log(testTask6 === undefined); // ✓
 
-toDo.delete('foo');
-console.log(toDo.list.foo === undefined); // ✓
-
-toDo.delete('baz');
-console.log(toDo.list.baz === undefined); // ✓
+toDo.deleteById('2');
+const testTask7 = toDo.list.find((task) => task.id === 2);
+console.log(Boolean(testTask7)); // ✓
 
 toDo.show();
+
+// feat: task ID
+// add tasks array, add ID generator
