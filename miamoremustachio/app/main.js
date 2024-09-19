@@ -5,13 +5,15 @@ const ERRORS = {
 const { INVALID_MESSAGE } = ERRORS;
 
 function showVerticalMessage(message) {
+  const charToUpperCase = 's';
+  const messageLength = 7;
+
   if (typeof message !== 'string') {
     console.error(INVALID_MESSAGE);
     return;
   }
 
-  let printedMessage = message.slice(0, 7);
-  const charToUpperCase = 's';
+  let printedMessage = message.slice(0, messageLength);
 
   if (message.startsWith(charToUpperCase)) {
     printedMessage = charToUpperCase.toUpperCase() + printedMessage.slice(1);
