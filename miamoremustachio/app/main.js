@@ -27,20 +27,11 @@ function showTasksByStatus(status, list) {
   if (!hasTasksWithThisStatus) console.log('\t -');
 }
 
-// TODO: add predicate function for status validation
-const validate = {
-  status(status) {
-    const validStatusesList = Object.values(STATUSES);
-
-    if (validStatusesList.includes(status)) {
-      return;
-    
-    } else {
-      console.error(INVALID_STATUS);
-      return true;
-    }
-  },
-};
+function isStatusValid(status) {
+  const validStatusesList = Object.values(STATUSES);
+  
+  return validStatusesList.includes(status);
+}
 
 function* generateIds() {
   let id = 1;
@@ -60,7 +51,10 @@ const toDo = {
     { id: getId(), title: 'code', status: DONE },
   ],
   add(title, status = TO_DO) {
-    if (validate.status(status)) return;
+    if (!isStatusValid(status)) {
+      console.error(INVALID_STATUS);
+      return;
+    }
 
     this.list.push({ id: getId(), title, status });
   },
