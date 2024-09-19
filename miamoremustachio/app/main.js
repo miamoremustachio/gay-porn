@@ -65,7 +65,6 @@ const toDo = {
     this.list.push({ id: getId(), title, status });
   },
   deleteById(taskId) {
-    // TODO: add task seeking function
     const taskIndex = this.list.findIndex((task) => task.id === taskId);
     const task = this.list[taskIndex] || null;
 
@@ -97,7 +96,6 @@ const toDo = {
   },
 };
 
-// TODO: add fixtures
 const fixtures = {
   titles: {
     valid: [ 'foo', 'bar', 'baz' ],
