@@ -1,3 +1,13 @@
+const TASK_PROPERTIES = {
+  TITLE: 'title',
+  STATUS: 'status',
+  PRIORITY: 'priority',
+};
+
+const { TITLE, STATUS, PRIORITY } = TASK_PROPERTIES;
+
+const MAX_TITLE_LENGTH = 70;
+
 const STATUSES = {
   TO_DO: 'To do',
   IN_PROGRESS: 'In progress',
@@ -13,16 +23,17 @@ const PRIORITIES = {
 };
 
 const { LOW, MEDIUM, HIGH } = PRIORITIES;
-// TODO: add namespace for tasks properties
 
 const ERRORS = {
   TASK_EXIST: 'Error: Task you want to add is already in list.',
   TASK_NOT_FOUND: 'Error: Task not found.',
+  INVALID_TITLE: `Error: Invalid title: it must be a string less than ${MAX_TITLE_LENGTH} characters long.`,
   INVALID_STATUS: `Error: Invalid status: it must be either "${Object.values(STATUSES).join(', ')}.`,
   INVALID_PRIORITY: `Error: Invalid priority: it must be either ${Object.values(PRIORITIES).join(', ')}.`,
 };
 
-const { TASK_EXIST, TASK_NOT_FOUND, INVALID_STATUS, INVALID_PRIORITY } = ERRORS;
+const { TASK_EXIST, TASK_NOT_FOUND, INVALID_TITLE, INVALID_STATUS, INVALID_PRIORITY } = ERRORS;
+
 
 function showTasksByStatus(status, list) {
   let hasTasksWithThisStatus;
@@ -35,6 +46,10 @@ function showTasksByStatus(status, list) {
   })
 
   if (!hasTasksWithThisStatus) console.log('\t -');
+}
+
+function isTitleValid(title) {
+  return (typeof title === 'string' && title.length < MAX_TITLE_LENGTH);
 }
 
 function isStatusValid(status) {
@@ -50,12 +65,15 @@ function isPriorityValid(priority) {
 }
 
 const validationLayer = {
-  // TODO: add title validation
-  'status': {
+  [TITLE]: {
+    fn: isTitleValid,
+    errorMessage: INVALID_TITLE, 
+  },
+  [STATUS]: {
     fn: isStatusValid,
     errorMessage: INVALID_STATUS,
   },
-  'priority': {
+  [PRIORITY]: {
     fn: isPriorityValid,
     errorMessage: INVALID_PRIORITY, 
   },
@@ -80,6 +98,11 @@ const toDo = {
   ],
   add(title, status = TO_DO, priority = MEDIUM) {
     // TODO: insert validation layer
+    if (!isTitleValid(title)) {
+      console.error(INVALID_TITLE);
+      return;
+    }
+
     if (!isStatusValid(status)) {
       console.error(INVALID_STATUS);
       return;
