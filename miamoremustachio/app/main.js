@@ -13,12 +13,13 @@ const PRIORITIES = {
 };
 
 const { LOW, MEDIUM, HIGH } = PRIORITIES;
+// TODO: add namespace for tasks properties
 
 const ERRORS = {
   TASK_EXIST: 'Error: Task you want to add is already in list.',
   TASK_NOT_FOUND: 'Error: Task not found.',
   INVALID_STATUS: `Error: Invalid status: it must be either "${Object.values(STATUSES).join(', ')}.`,
-  INVALID_PRIORITY: `Error: Invalid status: it must be either ${Object.values(PRIORITIES).join(', ')}`,
+  INVALID_PRIORITY: `Error: Invalid priority: it must be either ${Object.values(PRIORITIES).join(', ')}.`,
 };
 
 const { TASK_EXIST, TASK_NOT_FOUND, INVALID_STATUS, INVALID_PRIORITY } = ERRORS;
@@ -49,6 +50,7 @@ function isPriorityValid(priority) {
 }
 
 const validationLayer = {
+  // TODO: add title validation
   'status': {
     fn: isStatusValid,
     errorMessage: INVALID_STATUS,
@@ -77,6 +79,7 @@ const toDo = {
     { id: getId(), title: 'code', status: DONE, priority: HIGH },
   ],
   add(title, status = TO_DO, priority = MEDIUM) {
+    // TODO: insert validation layer
     if (!isStatusValid(status)) {
       console.error(INVALID_STATUS);
       return;
@@ -160,6 +163,7 @@ const invalidIds = [ ...fixtures.ids.invalid ];
 
 toDo.showTaskList();
 
+// TODO: add tests for tasks changing
 toDo.add(validTitles[0]);
 const testTask1 = toDo.list.find((task) => task.title === validTitles[0]);
 console.log(testTask1.title === validTitles[0]); // ✓
