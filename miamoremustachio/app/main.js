@@ -169,6 +169,7 @@ const toDo = {
 const fixtures = {
   titles: {
     valid: [ 'foo', 'bar', 'baz' ],
+    invalid: [ 1, null, 'a'.repeat(MAX_TITLE_LENGTH) ],
   },
   statuses: {
     invalid: 'a',
@@ -180,6 +181,7 @@ const fixtures = {
 };
 
 const validTitles = [ ...fixtures.titles.valid ];
+const invalidTitles = [ ...fixtures.titles.invalid ];
 const invalidStatus = fixtures.statuses.invalid;
 const validIds = [ ...fixtures.ids.valid ];
 const invalidIds = [ ...fixtures.ids.invalid ];
@@ -187,6 +189,7 @@ const invalidIds = [ ...fixtures.ids.invalid ];
 toDo.showTaskList();
 
 // TODO: add tests for tasks changing
+// TODO: add loops for tests running
 toDo.add(validTitles[0]);
 const testTask1 = toDo.list.find((task) => task.title === validTitles[0]);
 console.log(testTask1.title === validTitles[0]); // ✓
@@ -194,6 +197,18 @@ console.log(testTask1.title === validTitles[0]); // ✓
 toDo.add(validTitles[1], DONE);
 const testTask2 = toDo.list.find((task) => task.title === validTitles[1]);
 console.log(testTask2.status === DONE); // ✓
+
+toDo.add(invalidTitles[0], DONE);
+const testTask8 = toDo.list.find((task) => task.title === invalidTitles[0]);
+console.log(testTask8 === undefined); // ✓
+
+toDo.add(invalidTitles[1], DONE);
+const testTask9 = toDo.list.find((task) => task.title === invalidTitles[1]);
+console.log(testTask9 === undefined); // ✓
+
+toDo.add(invalidTitles[2], DONE);
+const testTask10 = toDo.list.find((task) => task.title === invalidTitles[2]);
+console.log(testTask10 === undefined); // ✓
 
 toDo.add(validTitles[2], invalidStatus);
 const testTask3 = toDo.list.find((task) => task.title === validTitles[2]);
