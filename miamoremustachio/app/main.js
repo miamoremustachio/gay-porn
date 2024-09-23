@@ -42,7 +42,7 @@ function showTasksByStatus(status, list) {
 
   const filteredList = list.filter((task) => task.status === status);
 
-  filteredList.forEach((task) => {
+  filteredList.forEach(task => {
     console.log(`\t ${task.id}. "${task.title}"`);
     hasTasksWithThisStatus = true;
   })
@@ -118,7 +118,7 @@ const toDo = {
     return newTask;
   },
   deleteById(taskId) {
-    const taskIndex = this.list.findIndex((task) => task.id === taskId);
+    const taskIndex = this.list.findIndex(task => task.id === taskId);
     const task = this.list[taskIndex] || null;
 
     if (!task) {
@@ -129,7 +129,7 @@ const toDo = {
     return deleted;
   },
   deleteByTitle(title) {
-    const taskIndex = this.list.findIndex((task) => task.title === title);
+    const taskIndex = this.list.findIndex(task => task.title === title);
     const task = this.list[taskIndex] || null;
 
     if (!task) {
@@ -140,7 +140,7 @@ const toDo = {
     this.list.splice(taskIndex, 1);
   },
   changeTask(taskId, propertyKey, propertyValue) {
-    const task = this.list.find((task) => task.id === taskId);
+    const task = this.list.find(task => task.id === taskId);
 
     if (!task) {
       console.error(TASK_NOT_FOUND);
@@ -191,43 +191,43 @@ toDo.showTaskList();
 
 // TODO: add tests for tasks changing
 toDo.add(validTitles[0]);
-const testTask1 = toDo.list.find((task) => task.title === validTitles[0]);
+const testTask1 = toDo.list.find(task => task.title === validTitles[0]);
 console.log(testTask1.title === validTitles[0]); // ✓
 
 toDo.add(validTitles[1], DONE);
-const testTask2 = toDo.list.find((task) => task.title === validTitles[1]);
+const testTask2 = toDo.list.find(task => task.title === validTitles[1]);
 console.log(testTask2.status === DONE); // ✓
 
 toDo.add(invalidTitles[0], DONE);
-const testTask8 = toDo.list.find((task) => task.title === invalidTitles[0]);
+const testTask8 = toDo.list.find(task => task.title === invalidTitles[0]);
 console.log(testTask8 === undefined); // ✓
 
 toDo.add(invalidTitles[1], DONE);
-const testTask9 = toDo.list.find((task) => task.title === invalidTitles[1]);
+const testTask9 = toDo.list.find(task => task.title === invalidTitles[1]);
 console.log(testTask9 === undefined); // ✓
 
 toDo.add(invalidTitles[2], DONE);
-const testTask10 = toDo.list.find((task) => task.title === invalidTitles[2]);
+const testTask10 = toDo.list.find(task => task.title === invalidTitles[2]);
 console.log(testTask10 === undefined); // ✓
 
 toDo.add(validTitles[2], invalidStatus);
-const testTask3 = toDo.list.find((task) => task.title === validTitles[2]);
+const testTask3 = toDo.list.find(task => task.title === validTitles[2]);
 console.log(testTask3 === undefined); // ✓
 
 toDo.deleteByTitle(validTitles[0]);
-const testTask4 = toDo.list.find((task) => task.title === validTitles[0]);
+const testTask4 = toDo.list.find(task => task.title === validTitles[0]);
 console.log(testTask4 === undefined); // ✓
 
 toDo.deleteByTitle(validTitles[2]);
-const testTask5 = toDo.list.find((task) => task.title === validTitles[2]);
+const testTask5 = toDo.list.find(task => task.title === validTitles[2]);
 console.log(testTask5 === undefined); // ✓
 
 toDo.deleteById(validIds[0]);
-const testTask6 = toDo.list.find((task => task.id === validIds[0]));
+const testTask6 = toDo.list.find(task => task.id === validIds[0]);
 console.log(testTask6 === undefined); // ✓
 
 toDo.deleteById(invalidIds[1]);
-const testTask7 = toDo.list.find((task) => task.id === validIds[1]);
+const testTask7 = toDo.list.find(task => task.id === validIds[1]);
 console.log(Boolean(testTask7)); // ✓
 
 toDo.showTaskList();
