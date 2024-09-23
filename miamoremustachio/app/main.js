@@ -15,6 +15,7 @@ const STATUSES = {
 };
 
 const { TO_DO, IN_PROGRESS, DONE } = STATUSES;
+const DEFAULT_STATUS = TO_DO;
 
 const PRIORITIES = {
   LOW: 'low',
@@ -23,6 +24,7 @@ const PRIORITIES = {
 };
 
 const { LOW, MEDIUM, HIGH } = PRIORITIES;
+const DEFAULT_PRIORITY = MEDIUM;
 
 const ERRORS = {
   TASK_EXIST: 'Error: Task you want to add is already in list.',
@@ -96,8 +98,7 @@ const toDo = {
     { id: getId(), title: 'sleep', status: IN_PROGRESS, priority: MEDIUM },
     { id: getId(), title: 'code', status: DONE, priority: HIGH },
   ],
-  add(title, status = TO_DO, priority = MEDIUM) {
-    // TODO: insert validation layer
+  add(title, status = DEFAULT_STATUS, priority = DEFAULT_PRIORITY) {
     if (!isTitleValid(title)) {
       console.error(INVALID_TITLE);
       return;
@@ -189,7 +190,6 @@ const invalidIds = [ ...fixtures.ids.invalid ];
 toDo.showTaskList();
 
 // TODO: add tests for tasks changing
-// TODO: add loops for tests running
 toDo.add(validTitles[0]);
 const testTask1 = toDo.list.find((task) => task.title === validTitles[0]);
 console.log(testTask1.title === validTitles[0]); // ✓
