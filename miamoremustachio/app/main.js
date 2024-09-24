@@ -8,23 +8,17 @@ const {
   ERRORS,
 } = require('./modules/constants');
 
+const {
+  showTasksByStatus,
+  idGenerator,
+} = require('./modules/helpers');
+
+const getId = () => idGenerator.next().value;
+
 const { TITLE, STATUS, PRIORITY } = TASK_PROPERTIES;
 const { TO_DO, IN_PROGRESS, DONE } = STATUSES;
 const { LOW, MEDIUM, HIGH } = PRIORITIES;
 const { TASK_NOT_FOUND, INVALID_TITLE, INVALID_STATUS, INVALID_PRIORITY } = ERRORS;
-
-function showTasksByStatus(status, list) {
-  let hasTasksWithThisStatus;
-
-  const filteredList = list.filter((task) => task.status === status);
-
-  filteredList.forEach(task => {
-    console.log(`\t ${task.id}. "${task.title}"`);
-    hasTasksWithThisStatus = true;
-  })
-
-  if (!hasTasksWithThisStatus) console.log('\t -');
-}
 
 function isTitleValid(title) {
   return (typeof title === 'string' && title.length < MAX_TITLE_LENGTH);
@@ -56,17 +50,6 @@ const validationLayer = {
     errorMessage: INVALID_PRIORITY, 
   },
 };
-
-function* generateIds() {
-  let id = 1;
-
-  while(true) {
-    yield id++;
-  }
-}
-
-const idGenerator = generateIds();
-const getId = () => idGenerator.next().value;
 
 const toDo = {
   list: [
