@@ -1,41 +1,17 @@
-const TASK_PROPERTIES = {
-  TITLE: 'title',
-  STATUS: 'status',
-  PRIORITY: 'priority',
-};
+const {
+  TASK_PROPERTIES,
+  MAX_TITLE_LENGTH,
+  STATUSES,
+  DEFAULT_STATUS,
+  PRIORITIES,
+  DEFAULT_PRIORITY,
+  ERRORS,
+} = require('./modules/constants');
 
 const { TITLE, STATUS, PRIORITY } = TASK_PROPERTIES;
-
-const MAX_TITLE_LENGTH = 70;
-
-const STATUSES = {
-  TO_DO: 'To do',
-  IN_PROGRESS: 'In progress',
-  DONE: 'Done',
-};
-
 const { TO_DO, IN_PROGRESS, DONE } = STATUSES;
-const DEFAULT_STATUS = TO_DO;
-
-const PRIORITIES = {
-  LOW: 'low',
-  MEDIUM: 'medium',
-  HIGH: 'high',
-};
-
 const { LOW, MEDIUM, HIGH } = PRIORITIES;
-const DEFAULT_PRIORITY = MEDIUM;
-
-const ERRORS = {
-  TASK_EXIST: 'Error: Task you want to add is already in list.',
-  TASK_NOT_FOUND: 'Error: Task not found.',
-  INVALID_TITLE: `Error: Invalid title: it must be a string less than ${MAX_TITLE_LENGTH} characters long.`,
-  INVALID_STATUS: `Error: Invalid status: it must be either "${Object.values(STATUSES).join(', ')}.`,
-  INVALID_PRIORITY: `Error: Invalid priority: it must be either ${Object.values(PRIORITIES).join(', ')}.`,
-};
-
-const { TASK_EXIST, TASK_NOT_FOUND, INVALID_TITLE, INVALID_STATUS, INVALID_PRIORITY } = ERRORS;
-
+const { TASK_NOT_FOUND, INVALID_TITLE, INVALID_STATUS, INVALID_PRIORITY } = ERRORS;
 
 function showTasksByStatus(status, list) {
   let hasTasksWithThisStatus;
