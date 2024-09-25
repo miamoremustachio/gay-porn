@@ -1,11 +1,12 @@
 const { 
+  MIN_TITLE_LENGTH,
   MAX_TITLE_LENGTH,
   STATUSES,
 } = require('../app/modules/constants');
 
 const fixtures = {
   titles: {
-    valid: [ 'foo', 'bar', 'baz' ],
+    valid: [ 'a'.repeat(MIN_TITLE_LENGTH + 1), 'a'.repeat(MAX_TITLE_LENGTH - 1), 'oleg' ],
     invalid: [ 1, null, 'a'.repeat(MAX_TITLE_LENGTH) ],
   },
   statuses: {

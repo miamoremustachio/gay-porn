@@ -9,7 +9,12 @@ const validIds = [ ...fixtures.ids.valid ];
 const invalidIds = [ ...fixtures.ids.invalid ];
 
 test('valid title, no status', () => {
-  toDo.add(validTitles[0]);
+  try {
+    toDo.add(validTitles[0]);
+  
+  } catch(err) {
+    console.error(err.message);
+  }
   
   const task = toDo.list.find(task => task.title === validTitles[0]);
   
@@ -17,15 +22,25 @@ test('valid title, no status', () => {
 });
 
 test('valid title, valid status', () => {
-  toDo.add(validTitles[1], validStatus);
-  
+  try {
+    toDo.add(validTitles[1], validStatus);
+
+  } catch(err) {
+    console.error(err.message);
+  }
+    
   const task = toDo.list.find(task => task.title === validTitles[1]);
   
   expect(task.status).toBe(validStatus);
 });
 
 test('invalid title', () => {
-  toDo.add(invalidTitles[0]);
+  try {
+    toDo.add(invalidTitles[0]);
+
+  } catch(err) {
+    console.error(err.message);
+  }
 
   const task = toDo.list.find(task => task.title === invalidTitles[0]);
   
@@ -33,7 +48,12 @@ test('invalid title', () => {
 });
 
 test('invalid status', () => {
-  toDo.add(validTitles[2], invalidStatus);
+  try {
+    toDo.add(validTitles[2], invalidStatus);
+
+  } catch(err) {
+    console.error(err.message);
+  }
 
   const task = toDo.list.find(task => task.title === validTitles[2]);
   

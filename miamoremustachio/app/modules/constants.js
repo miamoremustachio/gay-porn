@@ -4,7 +4,8 @@ const TASK_PROPERTIES = {
   PRIORITY: 'priority',
 };
 
-const MAX_TITLE_LENGTH = 70;
+const MIN_TITLE_LENGTH = 3;
+const MAX_TITLE_LENGTH = 30;
 
 const STATUSES = {
   TO_DO: 'To do',
@@ -24,13 +25,14 @@ const DEFAULT_PRIORITY = PRIORITIES.MEDIUM;
 
 const ERRORS = {
   TASK_NOT_FOUND: 'Error: Task not found.',
-  INVALID_TITLE: `Error: Invalid title: it must be a string less than ${MAX_TITLE_LENGTH} characters long.`,
+  INVALID_TITLE: `Error: Invalid title: it must be a string more than ${MIN_TITLE_LENGTH} and less than ${MAX_TITLE_LENGTH} characters long.`,
   INVALID_STATUS: `Error: Invalid status: it must be either "${Object.values(STATUSES).join(', ')}.`,
   INVALID_PRIORITY: `Error: Invalid priority: it must be either ${Object.values(PRIORITIES).join(', ')}.`,
 };
 
 module.exports = {
   TASK_PROPERTIES,
+  MIN_TITLE_LENGTH,
   MAX_TITLE_LENGTH,
   STATUSES,
   DEFAULT_STATUS,

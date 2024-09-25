@@ -1,6 +1,5 @@
 const {
   TASK_PROPERTIES,
-  MAX_TITLE_LENGTH,
   STATUSES,
   DEFAULT_STATUS,
   PRIORITIES,
@@ -34,18 +33,15 @@ const toDo = {
   ],
   add(title, status = DEFAULT_STATUS, priority = DEFAULT_PRIORITY) {
     if (!isTitleValid(title)) {
-      console.error(INVALID_TITLE);
-      return;
+      throw new Error(INVALID_TITLE);
     }
 
     if (!isStatusValid(status)) {
-      console.error(INVALID_STATUS);
-      return;
+      throw new Error(INVALID_STATUS);
     }
 
     if (!isPriorityValid(priority)) {
-      console.error(INVALID_PRIORITY);
-      return;
+      throw new Error(INVALID_PRIORITY);
     }
 
     const newTask = this.list.push({ id: getId(), title, status, priority });
@@ -56,9 +52,9 @@ const toDo = {
     const task = this.list[taskIndex] || null;
 
     if (!task) {
-      console.error(TASK_NOT_FOUND);
-      return;
+      throw new Error(TASK_NOT_FOUND);
     };
+
     const deleted = this.list.splice(taskIndex, 1);
     return deleted;
   },
@@ -67,25 +63,23 @@ const toDo = {
     const task = this.list[taskIndex] || null;
 
     if (!task) {
-      console.error(TASK_NOT_FOUND);
-      return;
+      throw new Error(TASK_NOT_FOUND);
     };
 
-    this.list.splice(taskIndex, 1);
+    const deleted = this.list.splice(taskIndex, 1);
+    return deleted;
   },
   changeTask(taskId, propertyKey, propertyValue) {
     const task = this.list.find(task => task.id === taskId);
 
     if (!task) {
-      console.error(TASK_NOT_FOUND);
-      return;
+      throw new Error(TASK_NOT_FOUND);
     }
 
     const { fn: validateProperty, errorMessage } = validationLayer[propertyKey];
 
     if (!validateProperty(propertyValue)) {
-      console.error(errorMessage);
-      return;
+      throw new Error(errorMessage);
     }
 
     task[propertyKey] = propertyValue;

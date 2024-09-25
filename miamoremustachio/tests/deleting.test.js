@@ -8,8 +8,17 @@ const invalidStatus = fixtures.statuses.invalid;
 const validIds = [ ...fixtures.ids.valid ];
 const invalidIds = [ ...fixtures.ids.invalid ];
 
+for (let title of validTitles) {
+  toDo.add(title);
+}
+
 test('valid title', () => {
-  toDo.deleteByTitle(validTitles[0]);
+  try {
+    toDo.deleteByTitle(validTitles[0]);
+  
+  } catch(err) {
+    console.error(err.message);
+  }
   
   const task = toDo.list.find(task => task.title === validTitles[0]);
   
@@ -17,7 +26,12 @@ test('valid title', () => {
 });
 
 test('valid id', () => {
-  toDo.deleteById(validIds[0]);
+  try {
+    toDo.deleteById(validIds[0]);
+
+  } catch(err) {
+    console.error(err.message);
+  }
 
   const task = toDo.list.find(task => task.id === validIds[0]);
   
@@ -25,7 +39,12 @@ test('valid id', () => {
 });
 
 test('invalid id', () => {
-  toDo.deleteById(invalidIds[1]);
+  try {
+    toDo.deleteById(invalidIds[1]);
+
+  } catch(err) {
+    console.error(err.message);
+  }
 
   const task = toDo.list.find(task => task.id === validIds[1]);
   

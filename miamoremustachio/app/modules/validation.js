@@ -1,5 +1,6 @@
 const { 
   TASK_PROPERTIES,
+  MIN_TITLE_LENGTH,
   MAX_TITLE_LENGTH,
   STATUSES,
   PRIORITIES,
@@ -10,7 +11,7 @@ const { TITLE, STATUS, PRIORITY } = TASK_PROPERTIES;
 const { INVALID_TITLE, INVALID_STATUS, INVALID_PRIORITY } = ERRORS;
 
 function isTitleValid(title) {
-  return (typeof title === 'string' && title.length < MAX_TITLE_LENGTH);
+  return (typeof title === 'string' && title.length > MIN_TITLE_LENGTH && title.length < MAX_TITLE_LENGTH);
 }
 
 function isStatusValid(status) {
