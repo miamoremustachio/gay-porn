@@ -8,22 +8,26 @@ const invalidStatus = fixtures.statuses.invalid;
 const validIds = [ ...fixtures.ids.valid ];
 const invalidIds = [ ...fixtures.ids.invalid ];
 
-// toDo.showTaskList();
+test('valid title', () => {
+  toDo.deleteByTitle(validTitles[0]);
+  
+  const task = toDo.list.find(task => task.title === validTitles[0]);
+  
+  expect(task).toBeUndefined();
+});
 
-// toDo.deleteByTitle(validTitles[0]);
-// const testTask4 = toDo.list.find(task => task.title === validTitles[0]);
-// console.log(testTask4 === undefined); // ✓
+test('valid id', () => {
+  toDo.deleteById(validIds[0]);
 
-// toDo.deleteByTitle(validTitles[2]);
-// const testTask5 = toDo.list.find(task => task.title === validTitles[2]);
-// console.log(testTask5 === undefined); // ✓
+  const task = toDo.list.find(task => task.id === validIds[0]);
+  
+  expect(task).toBeUndefined();
+});
 
-// toDo.deleteById(validIds[0]);
-// const testTask6 = toDo.list.find(task => task.id === validIds[0]);
-// console.log(testTask6 === undefined); // ✓
+test('invalid id', () => {
+  toDo.deleteById(invalidIds[1]);
 
-// toDo.deleteById(invalidIds[1]);
-// const testTask7 = toDo.list.find(task => task.id === validIds[1]);
-// console.log(Boolean(testTask7)); // ✓
-
-// toDo.showTaskList();
+  const task = toDo.list.find(task => task.id === validIds[1]);
+  
+  expect(task).toBeDefined();
+});

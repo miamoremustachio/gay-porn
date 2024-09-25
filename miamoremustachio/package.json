@@ -14,8 +14,5 @@
   "description": ":3",
   "devDependencies": {
     "jest": "^29.7.0"
-  },
-  "dependencies": {
-    "@types/node": "^22.7.0"
   }
 }
