@@ -5,6 +5,6 @@ module.exports.OPERATIONS = {
 };
 
 module.exports.ERRORS = {
-  INVALID_OPERATION: 'Error: Invalid operation.',
   INVALID_OPERAND: 'Error: Invalid operand.',
+  INVALID_OPERATION: 'Error: Invalid operation.',
 };

@@ -3,12 +3,14 @@ const { OPERATIONS, ERRORS } = require('./modules/constants');
 const { add, subtract, multiply } = require('./modules/operations');
 
 const { ADD, SUBTRACT, MULTI } = OPERATIONS;
-const { INVALID_OPERATION } = ERRORS;
+const { INVALID_OPERAND, INVALID_OPERATION } = ERRORS;
 
 module.exports.calc = function(operation, a, b) {
   const validationPassed = validateOperand(a, b);
-  
-  if (!validationPassed) return;
+
+  if (!validationPassed) {
+    throw new Error(INVALID_OPERAND);
+  };
   
   switch (operation) {
     case ADD:
@@ -21,6 +23,6 @@ module.exports.calc = function(operation, a, b) {
       return multiply(a, b);
 
     default:
-      console.error(INVALID_OPERATION);
+      throw new Error(INVALID_OPERATION);
   }
 }
