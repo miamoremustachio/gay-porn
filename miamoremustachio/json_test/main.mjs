@@ -83,4 +83,16 @@ try {
   console.error(err.message);
 } // ✓
 
+try {
+  const stringifiedData = JSON.stringify(data);
+
+  console.log(typeof stringifiedData); // string
+
+  const parsedData = JSON.parse(stringifiedData);
+
+  console.log(typeof parsedData); // object
+} catch(err) {
+  console.error(err.message);
+}
+
 data.log();
