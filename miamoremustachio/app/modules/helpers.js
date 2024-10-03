@@ -21,7 +21,16 @@ function* generateIds() {
 
 const idGenerator = generateIds();
 
+const getId = () => idGenerator.next().value;
+
+function addIds(tasks) {
+  const tasksList = tasks.map((task) => ( { ...task, id: getId() } ));
+
+  return tasksList;
+}
+
 module.exports = {
   showTasksByStatus,
-  idGenerator,
+  getId,
+  addIds,
 };

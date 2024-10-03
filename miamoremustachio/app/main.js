@@ -1,36 +1,32 @@
+const data = require('./database/tasks.json');
+
 const {
   TASK_PROPERTIES,
   STATUSES,
   DEFAULT_STATUS,
-  PRIORITIES,
   DEFAULT_PRIORITY,
   ERRORS,
 } = require('./modules/constants');
 
 const {
   showTasksByStatus,
-  idGenerator,
+  getId,
+  addIds,
 } = require('./modules/helpers');
 
 const { validationLayer } = require('./modules/validation');
 
+const tasksList = addIds(data.tasks);
+
 const { TITLE, STATUS, PRIORITY } = TASK_PROPERTIES;
-const { TO_DO, IN_PROGRESS, DONE } = STATUSES;
-const { LOW, MEDIUM, HIGH } = PRIORITIES;
 const { TASK_NOT_FOUND, INVALID_TITLE, INVALID_STATUS, INVALID_PRIORITY } = ERRORS;
 
 const { fn: isTitleValid } = validationLayer[TITLE];
 const { fn: isStatusValid } = validationLayer[STATUS];
 const { fn: isPriorityValid } = validationLayer[PRIORITY];
 
-const getId = () => idGenerator.next().value;
-
 const toDo = {
-  list: [
-    { id: getId(), title: 'eat', status: TO_DO, priority: LOW },
-    { id: getId(), title: 'sleep', status: IN_PROGRESS, priority: MEDIUM },
-    { id: getId(), title: 'code', status: DONE, priority: HIGH },
-  ],
+  list: tasksList,
   add(title, status = DEFAULT_STATUS, priority = DEFAULT_PRIORITY) {
     if (!isTitleValid(title)) {
       throw new Error(INVALID_TITLE);
