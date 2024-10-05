@@ -1,37 +1,5 @@
-const ERROR = {
-  OOPS: 'Oops! Some shit happened!',
-};
-
-function requestTask(task) {
-  return fetch(`https://jsonplaceholder.typicode.com/todos/${task}`)
-    .then(response => {
-        if (!response.ok) {
-          throw new Error(ERROR.OOPS);
-        }
-    
-        return response.json();
-      })
-  
-    .catch(err => console.error(err.message));
-}
-
-function requestTaskList(taskCount) {
-  const promises = [];
-  
-  for (let i = 1; i <= taskCount; i++) {
-    promises.push(requestTask(i));
-  }
-
-  return Promise.all(promises);
-}
-
-function getTodoList(tasksArray) {
-  return tasksArray.map(task => {
-      const checkMark = task.completed ? '☑' : '☐';
-
-      return `\n\t ${checkMark} ${task.title}`;
-    });
-}
+const { getTodoList } = require('./modules/helpers');
+const { requestTaskList } = require('./modules/requests');
 
 function showTodo(taskCount) {
   requestTaskList(taskCount)
@@ -42,4 +10,4 @@ function showTodo(taskCount) {
     });
 }
 
-showTodo(10);
+showTodo(42);
