@@ -1,12 +1,11 @@
 const { SERVER_URL } = require('./constants');
-const { getResponseErrorMessage } = require('./helpers');
+const { getResponseErrorMessage: getErrorMessage } = require('./helpers');
 
 module.exports.requestName = function(name) {
   return fetch(`${SERVER_URL}?name=${name}`)
     .then(response => {
       if (!response.ok) {
-        const errorMessage = getResponseErrorMessage(response.status);
-        throw new Error(errorMessage);
+        throw new Error(getErrorMessage(response));
       }
 
       return response.json();

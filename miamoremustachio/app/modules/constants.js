@@ -8,7 +8,5 @@ To check the possible gender of your name, send a POST request to this URL:
 "${this.HOST}:${this.PORT}/<write_your_name_here>"`;
 
 module.exports.ERROR = {
-  REQUEST_CLIENT_ERROR: 'Request error: Client side.',
-  REQUEST_SERVER_ERROR: 'Request error: Server side.',
   NAME_NOT_FOUND: 'There is no such name in the database :(',
 };
