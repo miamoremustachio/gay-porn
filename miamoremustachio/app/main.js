@@ -1,5 +1,6 @@
 const { PORT, WELCOME_MESSAGE, ERROR } = require('./modules/constants');
-const { isUrlValid, getNameFromUrl, requestName } = require('./modules/helpers');
+const { isUrlValid, getNameFromUrl } = require('./modules/helpers');
+const { requestName } = require('./modules/requests');
 const http = require('http');
 
 const { NAME_NOT_FOUND } = ERROR;
