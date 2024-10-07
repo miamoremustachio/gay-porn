@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const { PORT, WELCOME_MESSAGE, ERROR } = require('./modules/constants');
 const { isUrlValid, getNameFromUrl } = require('./modules/helpers');
 const { requestName } = require('./modules/requests');
