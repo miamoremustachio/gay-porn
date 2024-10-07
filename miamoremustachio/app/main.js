@@ -1,23 +1,25 @@
-const { ERROR } = require('./modules/constants');
-const { requestName } = require('./modules/helpers');
+const { INIT_QUESTION, ERROR } = require('./modules/constants');
+const { readline, requestName } = require('./modules/helpers');
 
 const { NAME_NOT_FOUND } = ERROR;
+
+readline.question(INIT_QUESTION, name => genderize(name));
 
 function genderize(name) {
   requestName(name)
     .then(data => {
+      if (!data.gender) {
+        throw new Error(NAME_NOT_FOUND);
+      }
+
       const name = data.name;
       const gender = data.gender;
       const probability = Math.trunc(data.probability * 100);
       
-      if (!gender) {
-        throw new Error(NAME_NOT_FOUND);
-      }
-      
       console.log(`The name ${name} is ${gender} with a probability of ${probability}%.`);
     })
 
-    .catch(err => console.error(err.message));
-}
+    .catch(err => console.error(err.message))
 
-genderize('Oleg');
+    .finally(() => readline.close());
+}
