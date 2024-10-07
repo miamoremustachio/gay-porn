@@ -1,12 +1,28 @@
-const { INIT_QUESTION, ERROR } = require('./modules/constants');
-const { readline, requestName } = require('./modules/helpers');
+const { PORT, WELCOME_MESSAGE, ERROR } = require('./modules/constants');
+const { isUrlValid, getNameFromUrl, requestName } = require('./modules/helpers');
+const http = require('http');
 
 const { NAME_NOT_FOUND } = ERROR;
 
-readline.question(INIT_QUESTION, name => genderize(name));
+const server = http.createServer().listen(PORT);
+
+server.on('request', (req, res) => {
+  if (!isUrlValid(req.url)) return;
+
+  if (req.url === '/') {
+    res.end(WELCOME_MESSAGE);
+    return;
+  }
+  
+  const name = getNameFromUrl(req.url);
+
+  genderize(name)
+    .then(response => res.end(response))
+    .catch(err => res.end(err.message));
+});
 
 function genderize(name) {
-  requestName(name)
+  return requestName(name)
     .then(data => {
       if (!data.gender) {
         throw new Error(NAME_NOT_FOUND);
@@ -16,10 +32,8 @@ function genderize(name) {
       const gender = data.gender;
       const probability = Math.trunc(data.probability * 100);
       
-      console.log(`The name ${name} is ${gender} with a probability of ${probability}%.`);
-    })
-
-    .catch(err => console.error(err.message))
-
-    .finally(() => readline.close());
+      const responseMessage = `The name ${name} is ${gender} with a probability of ${probability}%.`;
+      
+      return responseMessage;
+    });
 }

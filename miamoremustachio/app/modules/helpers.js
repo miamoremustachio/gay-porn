@@ -1,10 +1,10 @@
-const { SERVER_URL, ERROR } = require('./constants');
-const { stdin: input, stdout: output } = require('process');
+const { SERVER_URL, FAVICON, ERROR } = require('./constants');
 
-module.exports.readline = require('readline').createInterface({ input, output });
+const isClientError = status => (status >= 400 && status < 500);
+const isServerError = status => (status >= 500);
 
-const isClientError = (status) => (status >= 400 && status < 500);
-const isServerError = (status) => (status >= 500);
+module.exports.isUrlValid = url => (url !== FAVICON);
+module.exports.getNameFromUrl = url => url.slice(1);
 
 const { REQUEST_CLIENT_ERROR, REQUEST_SERVER_ERROR } = ERROR;
 
@@ -31,5 +31,5 @@ module.exports.requestName = function(name) {
       }
 
       return response.json();
-    })
+    });
 }
