@@ -3,7 +3,7 @@ const { readline, requestName } = require('./modules/helpers');
 
 const { NAME_NOT_FOUND } = ERROR;
 
-readline.question(INIT_QUESTION, name => genderize(name));
+const askQuestion = () => readline.question(INIT_QUESTION, genderize);
 
 function genderize(name) {
   requestName(name)
@@ -21,5 +21,7 @@ function genderize(name) {
 
     .catch(err => console.error(err.message))
 
-    .finally(() => readline.close());
+    .finally(askQuestion);
 }
+
+askQuestion();
