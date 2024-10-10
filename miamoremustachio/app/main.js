@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const { ERROR } = require('./modules/constants');
 const { closeReadline, requestName } = require('./modules/helpers');
 
