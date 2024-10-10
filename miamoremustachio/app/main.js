@@ -1,12 +1,10 @@
-const { INIT_QUESTION, ERROR } = require('./modules/constants');
-const { readline, requestName } = require('./modules/helpers');
+const { ERROR } = require('./modules/constants');
+const { closeReadline, requestName } = require('./modules/helpers');
 
 const { NAME_NOT_FOUND } = ERROR;
 
-const askQuestion = () => readline.question(INIT_QUESTION, genderize);
-
 function genderize(name) {
-  requestName(name)
+  return requestName(name)
     .then(data => {
       if (!data.gender) {
         throw new Error(NAME_NOT_FOUND);
@@ -21,7 +19,7 @@ function genderize(name) {
 
     .catch(err => console.error(err.message))
 
-    .finally(askQuestion);
+    .finally(closeReadline);
 }
 
-askQuestion();
+module.exports = { genderize };

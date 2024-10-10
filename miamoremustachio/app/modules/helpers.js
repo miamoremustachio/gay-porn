@@ -1,7 +1,11 @@
 const { SERVER_URL } = require('./constants');
 const { stdin: input, stdout: output } = require('process');
 
-module.exports.readline = require('readline').createInterface({ input, output });
+const readline = require('readline').createInterface({ input, output });
+
+module.exports.closeReadline = readline.close.bind(readline);
+
+module.exports.convertMsToSeconds = ms => ms / 1000;
 
 const getResponseErrorMessage = (response) => `${response.status}: ${response.statusText}.`; 
 
