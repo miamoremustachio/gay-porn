@@ -1,15 +1,13 @@
 const {
   TASK_PROPERTIES,
   STATUSES,
-  DEFAULT_STATUS,
   PRIORITIES,
-  DEFAULT_PRIORITY,
   ERRORS,
 } = require('./modules/constants');
 
 const {
   showTasksByStatus,
-  idGenerator,
+  Task,
 } = require('./modules/helpers');
 
 const { validationLayer } = require('./modules/validation');
@@ -23,28 +21,27 @@ const { fn: isTitleValid } = validationLayer[TITLE];
 const { fn: isStatusValid } = validationLayer[STATUS];
 const { fn: isPriorityValid } = validationLayer[PRIORITY];
 
-const getId = () => idGenerator.next().value;
-
 const toDo = {
   list: [
-    { id: getId(), title: 'eat', status: TO_DO, priority: LOW },
-    { id: getId(), title: 'sleep', status: IN_PROGRESS, priority: MEDIUM },
-    { id: getId(), title: 'code', status: DONE, priority: HIGH },
+    new Task('eat', TO_DO, LOW),
+    new Task('sleep', IN_PROGRESS, MEDIUM),
+    new Task('code', DONE, HIGH),
   ],
-  add(title, status = DEFAULT_STATUS, priority = DEFAULT_PRIORITY) {
+  add(title, status, priority) {
     if (!isTitleValid(title)) {
       throw new Error(INVALID_TITLE);
     }
 
-    if (!isStatusValid(status)) {
+    if (status && !isStatusValid(status)) {
       throw new Error(INVALID_STATUS);
     }
 
-    if (!isPriorityValid(priority)) {
+    if (priority && !isPriorityValid(priority)) {
       throw new Error(INVALID_PRIORITY);
     }
 
-    const newTask = this.list.push({ id: getId(), title, status, priority });
+    const newTask = this.list.push(new Task(title, status, priority));
+    console.log(this.list);
     return newTask;
   },
   deleteById(taskId) {

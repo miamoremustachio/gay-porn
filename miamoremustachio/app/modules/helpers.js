@@ -1,3 +1,5 @@
+const { DEFAULT_STATUS, DEFAULT_PRIORITY } = require('./constants');
+
 function showTasksByStatus(status, list) {
   let hasTasksWithThisStatus;
 
@@ -20,8 +22,16 @@ function* generateIds() {
 }
 
 const idGenerator = generateIds();
+const getId = () => idGenerator.next().value;
+
+function Task(title, status, priority) {
+  this.id = getId();
+  this.title = title;
+  this.status = status || DEFAULT_STATUS;
+  this.priority = priority || DEFAULT_PRIORITY;
+}
 
 module.exports = {
   showTasksByStatus,
-  idGenerator,
+  Task,
 };
