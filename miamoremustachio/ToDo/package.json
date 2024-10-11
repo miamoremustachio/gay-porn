@@ -1,0 +1,16 @@
+{
+  "name": "todo_server",
+  "version": "1.0.0",
+  "description": "Server version of ToDo app written in Express.js",
+  "main": "main.js",
+  "scripts": {
+    "test": "node main.js"
+  },
+  "author": "miamoremustachio",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "mongodb": "^6.2.0"
+  }
+}
