@@ -1,0 +1,17 @@
+{
+  "name": "weather_server",
+  "version": "1.0.0",
+  "description": "a simple server that allows you to get current weather conditions for a specific city",
+  "main": "main.js",
+  "scripts": {
+    "test": "node main.js"
+  },
+  "author": "miamoremustachio",
+  "license": "ISC",
+  "dependencies": {
+    "date-fns": "^2.30.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.51.0"
+  }
+}
