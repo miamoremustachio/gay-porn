@@ -1,0 +1,9 @@
+{
+  "tasks": [
+    { "title": "eat", "status": "To do", "priority": "low" },
+    { "title": "sleep", "status": "In progress", "priority": "medium" },
+    { "title": "code", "status": "Done", "priority": "high" },
+    { "title": "another task", "status": "To do", "priority": "low" },
+    { "title": "yet another task", "status": "To do", "priority": "high" }
+  ]
+}
