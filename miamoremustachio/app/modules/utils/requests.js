@@ -1,8 +1,7 @@
 const { PARAM_NAME, API_KEY, UNIT_USED } = require('../config');
+const { INFO } = require('./messages');
 const { getResponseErrorMessage } = require('./helpers');
-const { getGMTOffsetString } = require('./time');
-const { format, fromUnixTime, secondsToMinutes, addMinutes } = require('date-fns');
-const { UTCDate } = require('@date-fns/utc');
+const { getFormattedData } = require('./time_formatting');
 
 function setParams(url, cityName) {
   url.searchParams.set(PARAM_NAME.CITY_NAME, cityName);
@@ -22,27 +21,9 @@ function weatherRequest(url, cityName) {
       return response.json();
     })
     .then(data => {
-      const name = data.name;
-      const countryCode = data.sys.country;
-      const weather = data.weather[0].main;
-      const weatherDescription = data.weather[0].description;
-      const temp = data.main.temp.toFixed(1);
-      const tempFeelsLike = data.main.feels_like.toFixed(1);
-      const unitSymbol = UNIT_USED.symbol;
-      const sunriseLocal = fromUnixTime(data.sys.sunrise);
-      const sunriseUTC = new UTCDate(sunriseLocal);
-      const sunsetLocal = fromUnixTime(data.sys.sunset);
-      const sunsetUTC = new UTCDate(sunsetLocal);
-      const timezone = secondsToMinutes(data.timezone);
-      const sunrise = addMinutes(sunriseUTC, timezone);
-      const sunset = addMinutes(sunsetUTC, timezone);
-      const GMTOffset = getGMTOffsetString(timezone);
+      const formattedData = getFormattedData(data);
 
-      return `The weather condition for ${name} (${countryCode}) is ${weather} (${weatherDescription}).`
-        + `<br/>Temperature: ${temp} &deg;${unitSymbol}, feels like ${tempFeelsLike} &deg;${unitSymbol}.`
-        + `<br/>Sunrise: ${format(sunrise, 'p')},`
-        + `<br/>Sunset: ${format(sunset, 'p')}`
-        + `<br/><i>(${GMTOffset}).</i>`;
+      return INFO.WEATHER_CONDITION(formattedData);
     });
 }
 

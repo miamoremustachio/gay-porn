@@ -12,6 +12,26 @@ const ERROR = {
 
 const INFO = {
   WELCOME: `Welcome to Weather Server, ver. ${appVersion}.\nTo get current weather condition for your city, send URL request to this address:\n${urlExample}`,
+  WEATHER_CONDITION: (data) => {
+    const {
+      name, 
+      countryCode,
+      weather, 
+      weatherDescription, 
+      temp, 
+      tempFeelsLike, 
+      unitSymbol, 
+      sunrise,
+      sunset,
+      GMTOffset,
+    } = data;
+
+    return `The weather condition for ${name} (${countryCode}) is ${weather} (${weatherDescription}).`
+    + `<br/>Temperature: ${temp} &deg;${unitSymbol}, feels like ${tempFeelsLike} &deg;${unitSymbol}.`
+    + `<br/>Sunrise: ${sunrise},`
+    + `<br/>Sunset: ${sunset}`
+    + `<br/><i>(${GMTOffset}).</i>`;
+  }
 };
 
 module.exports = {
