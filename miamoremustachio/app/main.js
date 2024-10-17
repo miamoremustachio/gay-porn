@@ -1,4 +1,4 @@
-const { PORT, SERVER_URL, API_KEY, UNIT_USED, PARAM_NAME } = require('./modules/config');
+const { PORT, SERVER_URL } = require('./modules/config');
 const { ERROR, INFO } = require('./modules/utils/messages');
 const { weatherRequest } = require('./modules/utils/requests');
 const {
@@ -38,14 +38,10 @@ server.on('request', (req, res) => {
     return;
   }
 
-  const weatherRequestUrl = new URL(SERVER_URL);
-  weatherRequestUrl.searchParams.set(PARAM_NAME.CITY_NAME, cityName);
-  weatherRequestUrl.searchParams.set(PARAM_NAME.API_KEY, API_KEY);
-  weatherRequestUrl.searchParams.set(PARAM_NAME.UNITS, UNIT_USED.param);
-
+  const requestUrl = new URL(SERVER_URL);
   const sendData = res.end.bind(res);
 
-  weatherRequest(weatherRequestUrl)
+  weatherRequest(requestUrl, cityName)
     .then(sendData)
     .catch(err => res.end(err.message));
 });

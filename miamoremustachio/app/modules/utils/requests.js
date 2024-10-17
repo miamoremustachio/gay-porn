@@ -1,11 +1,18 @@
-const { UNIT_USED } = require('../config');
-
+const { PARAM_NAME, API_KEY, UNIT_USED } = require('../config');
 const { getResponseErrorMessage } = require('./helpers');
 const { getGMTOffsetString } = require('./time');
 const { format, fromUnixTime, secondsToMinutes, addMinutes } = require('date-fns');
 const { UTCDate } = require('@date-fns/utc');
 
-function weatherRequest(url) {
+function setParams(url, cityName) {
+  url.searchParams.set(PARAM_NAME.CITY_NAME, cityName);
+  url.searchParams.set(PARAM_NAME.API_KEY, API_KEY);
+  url.searchParams.set(PARAM_NAME.UNITS, UNIT_USED.param);
+}
+
+function weatherRequest(url, cityName) {
+  setParams(url, cityName);
+
   return fetch(url)
     .then(response => {
       if (!response.ok) {

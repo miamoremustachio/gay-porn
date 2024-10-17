@@ -8,7 +8,6 @@ const urlExample = new URL(`${HOST}:${PORT}/?${CITY_NAME}=%your_city_name%`);
 
 const ERROR = {
   MISSING_CITY_NAME: `URL must contain a "${CITY_NAME}" param with city name provided.`,
-  
 };
 
 const INFO = {
