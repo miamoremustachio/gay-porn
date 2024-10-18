@@ -1,6 +1,12 @@
-const { TIME_FORMAT, UNIT_USED } = require('../config');
-const { format, fromUnixTime, secondsToMinutes, addMinutes } = require('date-fns');
+const {
+  format,
+  fromUnixTime,
+  secondsToMinutes,
+  addMinutes,
+} = require('date-fns');
 const { UTCDate } = require('@date-fns/utc');
+
+const { TIME_FORMAT, UNIT_USED } = require('../config');
 
 function getGMTOffsetString(timezone) {
   const offsetDate = addMinutes(new UTCDate(0), Math.abs(timezone));

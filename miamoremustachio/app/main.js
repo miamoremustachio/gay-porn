@@ -1,3 +1,5 @@
+const http = require('http');
+
 const { PORT, SERVER_URL } = require('./modules/config');
 const { ERROR, INFO } = require('./modules/utils/messages');
 const { weatherRequest } = require('./modules/utils/requests');
@@ -8,8 +10,6 @@ const {
   getAppUrl,
   setHeaders,
 } = require('./modules/utils/helpers');
-
-const http = require('http');
 
 const server = http.createServer().listen(PORT);
 

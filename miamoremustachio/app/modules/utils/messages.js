@@ -1,7 +1,7 @@
 const { HOST, PORT, PARAM_NAME } = require('../config');
-const { CITY_NAME } = PARAM_NAME;
-
 const packageInfo = require('../../../package.json');
+
+const { CITY_NAME } = PARAM_NAME;
 const appVersion = packageInfo.version;
 
 const urlExample = new URL(`${HOST}:${PORT}/?${CITY_NAME}=%your_city_name%`);
@@ -12,15 +12,15 @@ const ERROR = {
 
 const INFO = {
   WELCOME: `Welcome to Weather Server, ver. ${appVersion}.\nTo get current weather condition for your city, send URL request to this address:\n${urlExample}`,
-  WEATHER_CONDITION: (data) => {
+  WEATHER_CONDITION: data => {
     const {
-      name, 
+      name,
       countryCode,
-      weather, 
-      weatherDescription, 
-      temp, 
-      tempFeelsLike, 
-      unitSymbol, 
+      weather,
+      weatherDescription,
+      temp,
+      tempFeelsLike,
+      unitSymbol,
       sunrise,
       sunset,
       GMTOffset,
@@ -31,7 +31,7 @@ const INFO = {
     + `<br/>Sunrise: ${sunrise},`
     + `<br/>Sunset: ${sunset}`
     + `<br/><i>(${GMTOffset}).</i>`;
-  }
+  },
 };
 
 module.exports = {

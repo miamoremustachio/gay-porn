@@ -23,7 +23,8 @@ export default [
   {
     rules: {
       // Define any custom rules if necessary
-      'linebreak-style': ['error', 'windows'],  
+      'linebreak-style': ['error', 'windows'],
+      'arrow-parens': ['error', 'as-needed'],  
     },
   }
 ];
