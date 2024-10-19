@@ -9,22 +9,19 @@ function setParams(url, cityName) {
   url.searchParams.set(PARAM_NAME.UNITS, UNIT_USED.param);
 }
 
-function weatherRequest(url, cityName) {
+async function weatherRequest(url, cityName) {
   setParams(url, cityName);
 
-  return fetch(url)
-    .then(response => {
-      if (!response.ok) {
-        throw new Error(getResponseErrorMessage(response));
-      }
+  const response = await fetch(url);
 
-      return response.json();
-    })
-    .then(data => {
-      const formattedData = getFormattedData(data);
+  if (!response.ok) {
+    throw new Error(getResponseErrorMessage(response));
+  }
 
-      return INFO.WEATHER_CONDITION(formattedData);
-    });
+  const data = await response.json();
+  const formattedData = getFormattedData(data);
+
+  return INFO.WEATHER_CONDITION(formattedData);
 }
 
 module.exports = { weatherRequest };

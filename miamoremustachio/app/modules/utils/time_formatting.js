@@ -26,14 +26,14 @@ function getFormattedData(data) {
     tempFeelsLike: data.main.feels_like.toFixed(1),
     unitSymbol: UNIT_USED.symbol,
     sunriseLocal: fromUnixTime(data.sys.sunrise),
+    sunsetLocal: fromUnixTime(data.sys.sunset),
+    timezone: secondsToMinutes(data.timezone),
     get sunriseUTC() {
       return new UTCDate(this.sunriseLocal);
     },
-    sunsetLocal: fromUnixTime(data.sys.sunset),
     get sunsetUTC() {
       return new UTCDate(this.sunsetLocal);
     },
-    timezone: secondsToMinutes(data.timezone),
     get sunriseOffset() {
       return addMinutes(this.sunriseUTC, this.timezone);
     },

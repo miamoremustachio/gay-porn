@@ -1,6 +1,6 @@
 const http = require('http');
 
-const { PORT, SERVER_URL } = require('./modules/config');
+const { PORT, API_URL } = require('./modules/config');
 const { ERROR, INFO } = require('./modules/utils/messages');
 const { weatherRequest } = require('./modules/utils/requests');
 const {
@@ -13,7 +13,7 @@ const {
 
 const server = http.createServer().listen(PORT);
 
-server.on('request', (req, res) => {
+server.on('request', async (req, res) => {
   setHeaders(res);
 
   const url = getAppUrl(req.url);
@@ -38,10 +38,13 @@ server.on('request', (req, res) => {
     return;
   }
 
-  const requestUrl = new URL(SERVER_URL);
-  const sendData = res.end.bind(res);
+  const requestUrl = new URL(API_URL);
 
-  weatherRequest(requestUrl, cityName)
-    .then(sendData)
-    .catch(err => res.end(err.message));
+  try {
+    const data = await weatherRequest(requestUrl, cityName);
+
+    res.end(data);
+  } catch (err) {
+    res.end(err.message);
+  }
 });
