@@ -1,13 +1,32 @@
-const { getTodoList } = require('./modules/helpers');
-const { requestTaskList } = require('./modules/requests');
+require('dotenv').config();
 
-function showTodo(taskCount) {
-  requestTaskList(taskCount)
-    .then(data => {
-      const todoList = getTodoList(data);
+const http = require('http');
 
-      console.log(`Excretus ex fortuna: ${todoList}`);
-    });
-}
+const { HOST, PORT, URL_PARAMS, ERROR } = require('./modules/config');
+const { isFavicon, getServerUrl, getFilteredTodo } = require('./modules/helpers');
+const { requestTodo } = require('./modules/requests');
 
-showTodo(42);
+const server = http.createServer().listen(PORT);
+
+server.on('request', (req, res) => {
+  if (isFavicon(req.url)) {
+    res.writeHead(204).end();
+    return;
+  }
+
+  const url = getServerUrl(HOST, PORT, req.url);
+  const taskCount = url.searchParams.get(URL_PARAMS.TASK_COUNT);
+
+  if (!taskCount) {
+    res.end(ERROR.MISSING_PARAM.TASK_COUNT);
+    return;
+  }
+
+  const sendResponse = res.end.bind(res);
+
+  requestTodo(taskCount)
+    .then(getFilteredTodo)
+    .then(JSON.stringify)
+    .then(sendResponse)
+    .catch(err => res.end(err.message));
+});

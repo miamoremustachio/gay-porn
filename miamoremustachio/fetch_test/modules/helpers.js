@@ -1,11 +1,4 @@
-module.exports.ERROR = {
-  OOPS: 'Oops! Some shit happened!',
-};
-
-module.exports.getTodoList = function (tasksArray) {
-  return tasksArray.map(task => {
-    const checkMark = task.completed ? '☑' : '☐';
-
-    return `\n\t ${checkMark} ${task.title}`;
-  });
-}
+module.exports.isFavicon = url => url === '/favicon.ico';
+module.exports.getServerUrl = (host, port, path) => new URL(`${host}:${port}${path}`);
+module.exports.getResponseErrorMessage = res => `${res.status}: ${res.statusText}`;
+module.exports.getFilteredTodo = tasksArray => tasksArray.map(({ userId, ...task }) => task);
