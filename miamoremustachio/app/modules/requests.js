@@ -1,7 +1,7 @@
 const { SERVER_URL } = require('./constants');
 const { getResponseErrorMessage: getErrorMessage } = require('./helpers');
 
-module.exports.requestName = function(name) {
+module.exports.requestGender = function (name) {
   return fetch(`${SERVER_URL}?name=${name}`)
     .then(response => {
       if (!response.ok) {

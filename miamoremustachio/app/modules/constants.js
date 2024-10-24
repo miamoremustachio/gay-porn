@@ -1,5 +1,5 @@
 module.exports.SERVER_URL = 'https://api.genderize.io';
-module.exports.HOST = process.env.HOST || 'localhost'
+module.exports.HOST = process.env.HOST || 'localhost';
 module.exports.PORT = process.env.PORT || 3000;
 module.exports.FAVICON = '/favicon.ico';
 
