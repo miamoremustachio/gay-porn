@@ -4,6 +4,7 @@ const http = require('http');
 
 const { HOST, PORT, URL_PARAMS, ERROR } = require('./modules/config');
 const { isFavicon, getServerUrl, getFilteredTodo } = require('./modules/helpers');
+const { isTaskCountParamValid } = require('./modules/validation');
 const { requestTodo } = require('./modules/requests');
 
 const server = http.createServer().listen(PORT);
@@ -18,7 +19,12 @@ server.on('request', (req, res) => {
   const taskCount = url.searchParams.get(URL_PARAMS.TASK_COUNT);
 
   if (!taskCount) {
-    res.end(ERROR.MISSING_PARAM.TASK_COUNT);
+    res.end(ERROR.TASK_COUNT_PARAM.MISSING);
+    return;
+  }
+
+  if (!isTaskCountParamValid(taskCount)) {
+    res.end(ERROR.TASK_COUNT_PARAM.INVALID);
     return;
   }
 
