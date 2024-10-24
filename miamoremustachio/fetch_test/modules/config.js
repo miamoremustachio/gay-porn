@@ -9,6 +9,6 @@ module.exports.URL_PARAMS = {
 module.exports.ERROR = {
   TASK_COUNT_PARAM: {
     MISSING: `Missing URL param: "${this.URL_PARAMS.TASK_COUNT}".`,
-    INVALID: `Invalid URL param "${this.URL_PARAMS.TASK_COUNT}": a finite number expected.`,
+    INVALID: `Invalid URL param "${this.URL_PARAMS.TASK_COUNT}": a natural number expected.`,
   },
 };

@@ -4,7 +4,7 @@ const { TASK_COUNT } = URL_PARAMS;
 
 const validationLayer = {
   [TASK_COUNT]: {
-    fn: taskCount => isFinite(Number(taskCount)),
+    fn: taskCount => isFinite(Number(taskCount)) && Number(taskCount) > 0,
     errorMessage: ERROR.TASK_COUNT_PARAM.INVALID,
   },
 };

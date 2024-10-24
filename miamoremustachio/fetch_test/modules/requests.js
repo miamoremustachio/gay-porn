@@ -11,15 +11,17 @@ const requestTask = function (taskNum) {
       }
   
       return response.json();
-    });  
+    });
 }
 
-module.exports.requestTodo = function (taskCount) {
-  const promises = [];
-  
-  for (let i = 1; i <= taskCount; i++) {
-    promises.push(requestTask(i));
-  }
+module.exports.requestTodo = (taskCount, promises = []) => {
+  const taskNum = promises.length + 1;
 
-  return Promise.all(promises);
+  promises.push(requestTask(taskNum));
+
+  if (taskNum === taskCount) {
+    return Promise.all(promises);
+  }
+  
+  return this.requestTodo(taskCount, promises);
 }

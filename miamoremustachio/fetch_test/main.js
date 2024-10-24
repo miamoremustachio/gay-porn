@@ -30,7 +30,7 @@ server.on('request', (req, res) => {
 
   const sendResponse = res.end.bind(res);
 
-  requestTodo(taskCount)
+  requestTodo(Number(taskCount))
     .then(getFilteredTodo)
     .then(JSON.stringify)
     .then(sendResponse)
