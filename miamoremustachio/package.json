@@ -13,6 +13,11 @@
   "license": "ISC",
   "description": ":3",
   "devDependencies": {
-    "@types/node": "^22.7.5"
+    "@eslint/eslintrc": "^3.1.0",
+    "@eslint/js": "^9.14.0",
+    "@types/node": "^22.7.5",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.31.0",
+    "globals": "^15.11.0"
   }
 }

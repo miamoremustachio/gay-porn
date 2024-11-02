@@ -45,7 +45,7 @@ const toDo = {
 
     if (!task) {
       throw new Error(TASK_NOT_FOUND);
-    };
+    }
 
     this.list.splice(taskIndex, 1);
   },

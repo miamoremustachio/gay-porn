@@ -1,4 +1,4 @@
-const { 
+const {
   TASK_PROPERTIES,
   MIN_TITLE_LENGTH,
   MAX_TITLE_LENGTH,
@@ -29,7 +29,7 @@ function isPriorityValid(priority) {
 const validationLayer = {
   [TITLE]: {
     fn: isTitleValid,
-    errorMessage: INVALID_TITLE, 
+    errorMessage: INVALID_TITLE,
   },
   [STATUS]: {
     fn: isStatusValid,
@@ -37,7 +37,7 @@ const validationLayer = {
   },
   [PRIORITY]: {
     fn: isPriorityValid,
-    errorMessage: INVALID_PRIORITY, 
+    errorMessage: INVALID_PRIORITY,
   },
 };
 
