@@ -1,4 +1,4 @@
-const { DEFAULT_STATUS, DEFAULT_PRIORITY } = require('./config');
+const { DEFAULT_STATUS, DEFAULT_PRIORITY } = require('../../config/app.config');
 
 function* generateIds() {
   let id = 1;

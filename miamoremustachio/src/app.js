@@ -3,10 +3,10 @@ const {
   STATUSES,
   PRIORITIES,
   ERRORS,
-} = require('./modules/config');
+} = require('./config/app.config');
 
-const { Task } = require('./modules/helpers');
-const { validationLayer } = require('./modules/validation');
+const { Task } = require('./modules/helpers/tasks.helper');
+const { validationLayer } = require('./modules/helpers/validation');
 
 const { TITLE, STATUS, PRIORITY } = TASK_PROPERTIES;
 const { TO_DO, IN_PROGRESS, DONE } = STATUSES;
@@ -67,4 +67,4 @@ const toDo = {
   },
 };
 
-module.exports = { toDo };
+module.exports = toDo;
