@@ -5,7 +5,7 @@ const {
   STATUSES,
   PRIORITIES,
   ERRORS,
-} = require('./constants');
+} = require('./config');
 
 const { TITLE, STATUS, PRIORITY } = TASK_PROPERTIES;
 const { INVALID_TITLE, INVALID_STATUS, INVALID_PRIORITY } = ERRORS;

@@ -1,17 +1,4 @@
-const { DEFAULT_STATUS, DEFAULT_PRIORITY } = require('./constants');
-
-function showTasksByStatus(status, list) {
-  let hasTasksWithThisStatus;
-
-  const filteredList = list.filter((task) => task.status === status);
-
-  filteredList.forEach(task => {
-    console.log(`\t ${task.id}. "${task.title}"`);
-    hasTasksWithThisStatus = true;
-  })
-
-  if (!hasTasksWithThisStatus) console.log('\t -');
-}
+const { DEFAULT_STATUS, DEFAULT_PRIORITY } = require('./config');
 
 function* generateIds() {
   let id = 1;
@@ -31,7 +18,4 @@ function Task(title, status, priority) {
   this.priority = priority || DEFAULT_PRIORITY;
 }
 
-module.exports = {
-  showTasksByStatus,
-  Task,
-};
+module.exports = { Task };

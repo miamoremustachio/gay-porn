@@ -3,13 +3,9 @@ const {
   STATUSES,
   PRIORITIES,
   ERRORS,
-} = require('./modules/constants');
+} = require('./modules/config');
 
-const {
-  showTasksByStatus,
-  Task,
-} = require('./modules/helpers');
-
+const { Task } = require('./modules/helpers');
 const { validationLayer } = require('./modules/validation');
 
 const { TITLE, STATUS, PRIORITY } = TASK_PROPERTIES;
@@ -41,10 +37,9 @@ const toDo = {
     }
 
     const newTask = this.list.push(new Task(title, status, priority));
-    console.log(this.list);
     return newTask;
   },
-  deleteById(taskId) {
+  delete(taskId) {
     const taskIndex = this.list.findIndex(task => task.id === taskId);
     const task = this.list[taskIndex] || null;
 
@@ -52,21 +47,9 @@ const toDo = {
       throw new Error(TASK_NOT_FOUND);
     };
 
-    const deleted = this.list.splice(taskIndex, 1);
-    return deleted;
+    this.list.splice(taskIndex, 1);
   },
-  deleteByTitle(title) {
-    const taskIndex = this.list.findIndex(task => task.title === title);
-    const task = this.list[taskIndex] || null;
-
-    if (!task) {
-      throw new Error(TASK_NOT_FOUND);
-    };
-
-    const deleted = this.list.splice(taskIndex, 1);
-    return deleted;
-  },
-  changeTask(taskId, propertyKey, propertyValue) {
+  modify(taskId, propertyKey, propertyValue) {
     const task = this.list.find(task => task.id === taskId);
 
     if (!task) {
@@ -81,14 +64,6 @@ const toDo = {
 
     task[propertyKey] = propertyValue;
     return task;
-  },
-  showTaskList() {
-    for (let status in STATUSES) {
-      const statusValue = STATUSES[status];
-
-      console.log(`${statusValue}:`);
-      showTasksByStatus(statusValue, this.list);
-    }
   },
 };
 
