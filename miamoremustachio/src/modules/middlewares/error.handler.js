@@ -3,7 +3,7 @@ function errorHandler(err, req, res, next) {
     return next(err);
   }
 
-  res.status(err.status || 500).send(err.message);
+  res.status(err.statusCode || 500).json(err.response);
 }
 
 module.exports = errorHandler;

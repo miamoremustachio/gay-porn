@@ -1,4 +1,6 @@
-const { DEFAULT_STATUS, DEFAULT_PRIORITY } = require('../../config/app.config');
+const { TASK_PROPERTIES, DEFAULT_STATUS, DEFAULT_PRIORITY } = require('../../config/app.config');
+
+const { TITLE, STATUS, PRIORITY } = TASK_PROPERTIES;
 
 function* generateIds() {
   let id = 1;
@@ -13,9 +15,15 @@ const getId = () => idGenerator.next().value;
 
 function Task(title, status, priority) {
   this.id = getId();
-  this.title = title;
-  this.status = status || DEFAULT_STATUS;
-  this.priority = priority || DEFAULT_PRIORITY;
+  this[TITLE] = title;
+  this[STATUS] = status || DEFAULT_STATUS;
+  this[PRIORITY] = priority || DEFAULT_PRIORITY;
 }
 
-module.exports = { Task };
+function FilteredTask(body) {
+  const taskProperties = Object.values(TASK_PROPERTIES);
+
+  taskProperties.forEach(property => this[property] = body[property]);
+}
+
+module.exports = { Task, FilteredTask };

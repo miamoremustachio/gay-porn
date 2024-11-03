@@ -1,5 +1,6 @@
 const express = require('express');
 const toDo = require('../todo');
+const { FilteredTask: Task } = require('../helpers/tasks.helper');
 
 const router = express.Router();
 
@@ -9,10 +10,8 @@ router.route('/')
   })
     
   .post((req, res, next) => {
-    const task = req.body;
-    
     try {
-      toDo.add(task);
+      toDo.add(new Task(req.body));
   
       res.sendStatus(201);
       

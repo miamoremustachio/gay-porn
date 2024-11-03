@@ -5,6 +5,7 @@ const {
   ERRORS,
 } = require('../config/app.config');
 
+const { BadRequestException, NotFoundException } = require('./exceptions');
 const { Task } = require('./helpers/tasks.helper');
 const validationLayer = require('./helpers/validation');
 
@@ -25,15 +26,15 @@ const toDo = {
   ],
   add({ title, status, priority }) {
     if (!isTitleValid(title)) {
-      throw new Error(INVALID_TITLE);
+      throw new BadRequestException(INVALID_TITLE);
     }
 
     if (status && !isStatusValid(status)) {
-      throw new Error(INVALID_STATUS);
+      throw new BadRequestException(INVALID_STATUS);
     }
 
     if (priority && !isPriorityValid(priority)) {
-      throw new Error(INVALID_PRIORITY);
+      throw new BadRequestException(INVALID_PRIORITY);
     }
 
     const newTask = this.list.push(new Task(title, status, priority));
@@ -44,7 +45,7 @@ const toDo = {
     const task = this.list[taskIndex] || null;
 
     if (!task) {
-      throw new Error(TASK_NOT_FOUND);
+      throw new NotFoundException(TASK_NOT_FOUND);
     }
 
     this.list.splice(taskIndex, 1);
@@ -53,13 +54,13 @@ const toDo = {
     const task = this.list.find(task => task.id === taskId);
 
     if (!task) {
-      throw new Error(TASK_NOT_FOUND);
+      throw new NotFoundException(TASK_NOT_FOUND);
     }
 
     const { fn: validateProperty, errorMessage } = validationLayer[propertyKey];
 
     if (!validateProperty(propertyValue)) {
-      throw new Error(errorMessage);
+      throw new BadRequestException(errorMessage);
     }
 
     task[propertyKey] = propertyValue;
