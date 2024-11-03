@@ -8,12 +8,17 @@ router.route('/')
     res.send(toDo.list);
   })
     
-  .post((req, res) => {
+  .post((req, res, next) => {
     const task = req.body;
     
-    toDo.add(task);
-
-    res.sendStatus(201);
+    try {
+      toDo.add(task);
+  
+      res.sendStatus(201);
+      
+    } catch (err) {
+      next(err);
+    }
   });
 
 module.exports = router;

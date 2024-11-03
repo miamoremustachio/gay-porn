@@ -21,10 +21,11 @@ export default [
   ...compat.extends('airbnb-base'),
   {
     rules: {
-      'linebreak-style': ['error', 'windows'],
-      'no-trailing-spaces': ['error', { "skipBlankLines": true }],
-      'no-plusplus': ["error", { "allowForLoopAfterthoughts": true }],
+      'no-trailing-spaces': ['error', { 'skipBlankLines': true }],
+      'no-plusplus': ['error', { 'allowForLoopAfterthoughts': true }],
       'arrow-parens': ['error', 'as-needed'],
+      'linebreak-style': 'off',
+      'padded-blocks': 'off',
     },
   }
 ];
