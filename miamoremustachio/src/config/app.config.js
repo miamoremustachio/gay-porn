@@ -1,3 +1,10 @@
+const { version } = require('../../package.json');
+
+const APP_NAME = 'ToDo app';
+const APP_VERSION = version;
+
+const WELCOME_MESSAGE = `Welcome to the ${APP_NAME} version ${APP_VERSION}.`;
+
 const TASK_PROPERTIES = {
   TITLE: 'title',
   STATUS: 'status',
@@ -31,6 +38,8 @@ const ERRORS = {
 };
 
 module.exports = {
+  APP_NAME,
+  WELCOME_MESSAGE,
   TASK_PROPERTIES,
   MIN_TITLE_LENGTH,
   MAX_TITLE_LENGTH,

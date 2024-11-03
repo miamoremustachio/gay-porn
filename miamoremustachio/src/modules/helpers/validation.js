@@ -41,4 +41,4 @@ const validationLayer = {
   },
 };
 
-module.exports = { validationLayer };
+module.exports = validationLayer;
