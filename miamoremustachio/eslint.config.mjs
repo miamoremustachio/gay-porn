@@ -25,6 +25,9 @@ export default [
       'no-plusplus': ['error', { 'allowForLoopAfterthoughts': true }],
       'arrow-parens': ['error', 'as-needed'],
       'linebreak-style': 'off',
+      'consistent-return': 'off',
+      'no-restricted-syntax': 'off',
+      'guard-for-in': 'off',
       'padded-blocks': 'off',
     },
   }

@@ -34,5 +34,17 @@ router.route('/:id')
       next(err);
     }
   })
+  .delete((req, res, next) => {
+    const taskId = Number(req.params.id);
+
+    try {
+      toDo.delete(taskId);
+
+      res.sendStatus(204);
+
+    } catch (err) {
+      next(err);
+    }
+  });
 
 module.exports = router;

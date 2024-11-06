@@ -34,17 +34,17 @@ const toDo = {
 
     this.list.splice(taskIndex, 1);
   },
-  change(taskId, newTask) {
+  change(taskId, newTaskFields) {
     const task = this.list.find(task => task.id === taskId);
   
     if (!task) {
       throw new NotFoundException(TASK_NOT_FOUND);
     }
 
-    validateAllFields(newTask, validationLayer);
+    validateAllFields(newTaskFields, validationLayer);
 
     const taskIndex = this.list.indexOf(task);
-    newTask.id = task.id;
+    const newTask = { id: task.id, ...newTaskFields };
 
     this.list[taskIndex] = newTask;
   },
