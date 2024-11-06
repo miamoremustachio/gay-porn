@@ -13,7 +13,7 @@ function* generateIds() {
 const idGenerator = generateIds();
 const getId = () => idGenerator.next().value;
 
-function Task(title, status, priority) {
+function Task({ title, status, priority }) {
   this.id = getId();
   this[TITLE] = title;
   this[STATUS] = status || DEFAULT_STATUS;

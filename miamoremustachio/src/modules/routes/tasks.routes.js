@@ -20,4 +20,19 @@ router.route('/')
     }
   });
 
+router.route('/:id')
+  .put((req, res, next) => {
+    const taskId = Number(req.params.id);
+    const newTask = new Task(req.body);
+
+    try {
+      toDo.change(taskId, newTask);
+
+      res.send(newTask);
+
+    } catch (err) {
+      next(err);
+    }
+  })
+
 module.exports = router;

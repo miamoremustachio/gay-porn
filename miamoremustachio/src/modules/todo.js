@@ -1,44 +1,28 @@
 const {
-  TASK_PROPERTIES,
   STATUSES,
   PRIORITIES,
   ERRORS,
 } = require('../config/app.config');
 
-const { BadRequestException, NotFoundException } = require('./exceptions');
+const { NotFoundException } = require('./exceptions');
 const { Task } = require('./helpers/tasks.helper');
-const validationLayer = require('./helpers/validation');
+const { validateAllFields } = require('./validation/entity.validation');
+const validationLayer = require('./validation/tasks.validation');
 
-const { TITLE, STATUS, PRIORITY } = TASK_PROPERTIES;
 const { TO_DO, IN_PROGRESS, DONE } = STATUSES;
 const { LOW, MEDIUM, HIGH } = PRIORITIES;
-const { TASK_NOT_FOUND, INVALID_TITLE, INVALID_STATUS, INVALID_PRIORITY } = ERRORS;
-
-const { fn: isTitleValid } = validationLayer[TITLE];
-const { fn: isStatusValid } = validationLayer[STATUS];
-const { fn: isPriorityValid } = validationLayer[PRIORITY];
+const { TASK_NOT_FOUND } = ERRORS;
 
 const toDo = {
   list: [
-    new Task('eat', TO_DO, LOW),
-    new Task('sleep', IN_PROGRESS, MEDIUM),
-    new Task('code', DONE, HIGH),
+    new Task({ title: 'eat', status: TO_DO, priority: LOW }),
+    new Task({ title: 'sleep', status: IN_PROGRESS, priority: MEDIUM }),
+    new Task({ title: 'code', status: DONE, priority: HIGH }),
   ],
-  add({ title, status, priority }) {
-    if (!isTitleValid(title)) {
-      throw new BadRequestException(INVALID_TITLE);
-    }
+  add(task) {
+    validateAllFields(task, validationLayer);
 
-    if (status && !isStatusValid(status)) {
-      throw new BadRequestException(INVALID_STATUS);
-    }
-
-    if (priority && !isPriorityValid(priority)) {
-      throw new BadRequestException(INVALID_PRIORITY);
-    }
-
-    const newTask = this.list.push(new Task(title, status, priority));
-    return newTask;
+    this.list.push(new Task(task));
   },
   delete(taskId) {
     const taskIndex = this.list.findIndex(task => task.id === taskId);
@@ -50,21 +34,19 @@ const toDo = {
 
     this.list.splice(taskIndex, 1);
   },
-  modify(taskId, propertyKey, propertyValue) {
+  change(taskId, newTask) {
     const task = this.list.find(task => task.id === taskId);
-
+  
     if (!task) {
       throw new NotFoundException(TASK_NOT_FOUND);
     }
 
-    const { fn: validateProperty, errorMessage } = validationLayer[propertyKey];
+    validateAllFields(newTask, validationLayer);
 
-    if (!validateProperty(propertyValue)) {
-      throw new BadRequestException(errorMessage);
-    }
+    const taskIndex = this.list.indexOf(task);
+    newTask.id = task.id;
 
-    task[propertyKey] = propertyValue;
-    return task;
+    this.list[taskIndex] = newTask;
   },
 };
 

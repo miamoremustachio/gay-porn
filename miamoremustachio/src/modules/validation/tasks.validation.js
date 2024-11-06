@@ -26,19 +26,19 @@ function isPriorityValid(priority) {
   return validPrioritiesList.includes(priority);
 }
 
-const validationLayer = {
+const tasksValidationLayer = {
   [TITLE]: {
     fn: isTitleValid,
-    errorMessage: INVALID_TITLE,
+    message: INVALID_TITLE,
   },
   [STATUS]: {
     fn: isStatusValid,
-    errorMessage: INVALID_STATUS,
+    message: INVALID_STATUS,
   },
   [PRIORITY]: {
     fn: isPriorityValid,
-    errorMessage: INVALID_PRIORITY,
+    message: INVALID_PRIORITY,
   },
 };
 
-module.exports = validationLayer;
+module.exports = tasksValidationLayer;
