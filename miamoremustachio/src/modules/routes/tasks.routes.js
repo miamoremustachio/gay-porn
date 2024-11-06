@@ -1,0 +1,50 @@
+const express = require('express');
+const toDo = require('../todo');
+const { FilteredTask: Task } = require('../helpers/tasks.helper');
+
+const router = express.Router();
+
+router.route('/')
+  .get((req, res) => {
+    res.send(toDo.list);
+  })
+    
+  .post((req, res, next) => {
+    try {
+      toDo.add(new Task(req.body));
+  
+      res.sendStatus(201);
+      
+    } catch (err) {
+      next(err);
+    }
+  });
+
+router.route('/:id')
+  .put((req, res, next) => {
+    const taskId = Number(req.params.id);
+    const newTask = new Task(req.body);
+
+    try {
+      toDo.change(taskId, newTask);
+
+      res.send(newTask);
+
+    } catch (err) {
+      next(err);
+    }
+  })
+  .delete((req, res, next) => {
+    const taskId = Number(req.params.id);
+
+    try {
+      toDo.delete(taskId);
+
+      res.sendStatus(204);
+
+    } catch (err) {
+      next(err);
+    }
+  });
+
+module.exports = router;
