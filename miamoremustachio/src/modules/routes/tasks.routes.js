@@ -1,6 +1,10 @@
 const express = require('express');
-const taskService = require('../services/tasks.service');
+
+const { HTTP_HEADERS } = require('../../config/server.config');
+const { taskService } = require('../services');
 const { FilteredTask: Task } = require('../helpers/tasks.helper');
+
+const { LOCATION } = HTTP_HEADERS;
 
 const router = express.Router();
 
@@ -13,8 +17,9 @@ router.route('/')
     const task = new Task(req.body);
 
     try {
-      await taskService.add(task);
+      const taskPath = await taskService.add(task);
 
+      res.setHeader(LOCATION, taskPath);
       res.sendStatus(201);
       
     } catch (err) {

@@ -1,3 +1,7 @@
+const { HOST } = require('../server.config');
+
+const RESOURCE_PATH = `${HOST}/tasks`;
+
 const FIELDS = {
   TITLE: 'title',
   STATUS: 'status',
@@ -31,6 +35,7 @@ const ERRORS = {
 };
 
 module.exports = {
+  RESOURCE_PATH,
   FIELDS,
   MIN_TITLE_LENGTH,
   MAX_TITLE_LENGTH,

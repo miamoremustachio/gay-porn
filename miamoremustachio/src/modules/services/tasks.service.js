@@ -1,8 +1,9 @@
-const { ERRORS } = require('../../config/entities/tasks.config');
+const { RESOURCE_PATH, ERRORS } = require('../../config/entities/tasks.config');
 
 const tasksCollection = require('../../db/collections/tasks.collection');
 const { NotFoundException } = require('../exceptions');
-const { Task } = require('../helpers/tasks.helper');
+const { getTaskPath, Task } = require('../helpers/tasks.helper');
+const { getId } = require('../helpers/entity.helper');
 const { validateAllFields } = require('../validation/entity.validation');
 const validationLayer = require('../validation/tasks.validation');
 
@@ -12,7 +13,12 @@ const taskService = {
   async add(task) {
     validateAllFields(task, validationLayer);
 
-    await tasksCollection.insertOne(new Task(task));
+    const result = await tasksCollection.insertOne(new Task(task));
+    
+    const taskId = getId(result);
+    const taskPath = getTaskPath(taskId);
+
+    return taskPath;
   },
 
   delete(taskId) {
