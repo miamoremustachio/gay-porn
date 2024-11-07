@@ -1,17 +1,19 @@
 const express = require('express');
-const toDo = require('../todo');
+const taskService = require('../services/tasks.service');
 const { FilteredTask: Task } = require('../helpers/tasks.helper');
 
 const router = express.Router();
 
 router.route('/')
   .get((req, res) => {
-    res.send(toDo.list);
+    res.send(taskService.list);
   })
     
   .post((req, res, next) => {
+    const task = new Task(req.body);
+
     try {
-      toDo.add(new Task(req.body));
+      taskService.add(task);
   
       res.sendStatus(201);
       
@@ -26,7 +28,7 @@ router.route('/:id')
     const newTask = new Task(req.body);
 
     try {
-      toDo.change(taskId, newTask);
+      taskService.change(taskId, newTask);
 
       res.send(newTask);
 
@@ -38,7 +40,7 @@ router.route('/:id')
     const taskId = Number(req.params.id);
 
     try {
-      toDo.delete(taskId);
+      taskService.delete(taskId);
 
       res.sendStatus(204);
 

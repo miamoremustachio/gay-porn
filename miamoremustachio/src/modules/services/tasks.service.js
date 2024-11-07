@@ -1,24 +1,13 @@
-const {
-  STATUSES,
-  PRIORITIES,
-  ERRORS,
-} = require('../config/entities/tasks.config');
+const { ERRORS } = require('../../config/entities/tasks.config');
 
-const { NotFoundException } = require('./exceptions');
-const { Task } = require('./helpers/tasks.helper');
-const { validateAllFields } = require('./validation/entity.validation');
-const validationLayer = require('./validation/tasks.validation');
+const { NotFoundException } = require('../exceptions');
+const { Task } = require('../helpers/tasks.helper');
+const { validateAllFields } = require('../validation/entity.validation');
+const validationLayer = require('../validation/tasks.validation');
 
-const { TO_DO, IN_PROGRESS, DONE } = STATUSES;
-const { LOW, MEDIUM, HIGH } = PRIORITIES;
 const { TASK_NOT_FOUND } = ERRORS;
 
-const toDo = {
-  list: [
-    new Task({ title: 'eat', status: TO_DO, priority: LOW }),
-    new Task({ title: 'sleep', status: IN_PROGRESS, priority: MEDIUM }),
-    new Task({ title: 'code', status: DONE, priority: HIGH }),
-  ],
+const taskService = {
   add(task) {
     validateAllFields(task, validationLayer);
 
@@ -50,4 +39,4 @@ const toDo = {
   },
 };
 
-module.exports = toDo;
+module.exports = taskService;
