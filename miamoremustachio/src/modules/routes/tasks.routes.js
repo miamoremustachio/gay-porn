@@ -9,12 +9,12 @@ router.route('/')
     res.send(taskService.list);
   })
     
-  .post((req, res, next) => {
+  .post(async (req, res, next) => {
     const task = new Task(req.body);
 
     try {
-      taskService.add(task);
-  
+      await taskService.add(task);
+
       res.sendStatus(201);
       
     } catch (err) {

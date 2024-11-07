@@ -1,8 +1,24 @@
 const { PORT } = require('./config/server.config');
+const client = require('./db/client');
 const app = require('./app');
 
-const appName = app.get('name');
+async function run() {
+  try {
+    await client.connect()
+      .then(console.log('☀️  Database has successfully connected.'));
+    
+    const appName = app.get('name');
+    
+    app.listen(PORT, () => {
+      console.log(`🐎💨 The ${appName} is running on port ${PORT}.`);
+    });
+      
+  } catch (err) {
+    console.error(err);
+      
+    await client.close()
+      .then(console.log('🌙 Database disconnected.'));
+  }
+}
 
-app.listen(PORT, () => {
-  console.log(`🐎💨 The ${appName} is running on port ${PORT}.`);
-});
+run();
