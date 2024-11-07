@@ -2,7 +2,7 @@ const {
   STATUSES,
   PRIORITIES,
   ERRORS,
-} = require('../config/app.config');
+} = require('../config/entities/tasks.config');
 
 const { NotFoundException } = require('./exceptions');
 const { Task } = require('./helpers/tasks.helper');

@@ -1,0 +1,42 @@
+const FIELDS = {
+  TITLE: 'title',
+  STATUS: 'status',
+  PRIORITY: 'priority',
+};
+
+const MIN_TITLE_LENGTH = 3;
+const MAX_TITLE_LENGTH = 30;
+
+const STATUSES = {
+  TO_DO: 'To do',
+  IN_PROGRESS: 'In progress',
+  DONE: 'Done',
+};
+
+const DEFAULT_STATUS = STATUSES.TO_DO;
+
+const PRIORITIES = {
+  LOW: 'Low',
+  MEDIUM: 'Medium',
+  HIGH: 'High',
+};
+
+const DEFAULT_PRIORITY = PRIORITIES.MEDIUM;
+
+const ERRORS = {
+  TASK_NOT_FOUND: 'Task not found.',
+  INVALID_TITLE: `Invalid title: it must be a string more than ${MIN_TITLE_LENGTH} and less than ${MAX_TITLE_LENGTH} characters long.`,
+  INVALID_STATUS: `Invalid status: it must be one of the following: ${Object.values(STATUSES).join(', ')}.`,
+  INVALID_PRIORITY: `Invalid priority: it must be one of the following: ${Object.values(PRIORITIES).join(', ')}.`,
+};
+
+module.exports = {
+  FIELDS,
+  MIN_TITLE_LENGTH,
+  MAX_TITLE_LENGTH,
+  STATUSES,
+  DEFAULT_STATUS,
+  PRIORITIES,
+  DEFAULT_PRIORITY,
+  ERRORS,
+};

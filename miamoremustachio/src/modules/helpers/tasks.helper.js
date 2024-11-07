@@ -1,6 +1,6 @@
-const { TASK_PROPERTIES, DEFAULT_STATUS, DEFAULT_PRIORITY } = require('../../config/app.config');
+const { FIELDS, DEFAULT_STATUS, DEFAULT_PRIORITY } = require('../../config/entities/tasks.config');
 
-const { TITLE, STATUS, PRIORITY } = TASK_PROPERTIES;
+const { TITLE, STATUS, PRIORITY } = FIELDS;
 
 function* generateIds() {
   let id = 1;
@@ -21,7 +21,7 @@ function Task({ title, status, priority }) {
 }
 
 function FilteredTask(body) {
-  const taskProperties = Object.values(TASK_PROPERTIES);
+  const taskProperties = Object.values(FIELDS);
 
   taskProperties.forEach(property => this[property] = body[property]);
 }

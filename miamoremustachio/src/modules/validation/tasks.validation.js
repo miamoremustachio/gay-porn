@@ -1,13 +1,13 @@
 const {
-  TASK_PROPERTIES,
+  FIELDS,
   MIN_TITLE_LENGTH,
   MAX_TITLE_LENGTH,
   STATUSES,
   PRIORITIES,
   ERRORS,
-} = require('../../config/app.config');
+} = require('../../config/entities/tasks.config');
 
-const { TITLE, STATUS, PRIORITY } = TASK_PROPERTIES;
+const { TITLE, STATUS, PRIORITY } = FIELDS;
 const { INVALID_TITLE, INVALID_STATUS, INVALID_PRIORITY } = ERRORS;
 
 function isTitleValid(title) {
