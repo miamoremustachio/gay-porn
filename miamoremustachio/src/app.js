@@ -1,7 +1,13 @@
 const express = require('express');
 
 const { APP_NAME } = require('./config/app.config');
-const { cors, errorHandler, errorLogger } = require('./modules/middlewares');
+const {
+  cors,
+  exceptionHandler,
+  errorHandler,
+  errorLogger,
+} = require('./modules/middlewares');
+
 const routes = require('./modules/routes');
 const { isDevelopment } = require('./modules/helpers/server.helper');
 
@@ -17,6 +23,7 @@ if (isDevelopment(app)) {
   app.use(errorLogger);
 }
 
+app.use(exceptionHandler);
 app.use(errorHandler);
 
 module.exports = app;
