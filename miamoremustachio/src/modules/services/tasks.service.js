@@ -1,4 +1,6 @@
-const { RESOURCE_PATH, ERRORS } = require('../../config/entities/tasks.config');
+const { ObjectId } = require('mongodb');
+
+const { ERRORS } = require('../../config/entities/tasks.config');
 
 const tasksCollection = require('../../db/collections/tasks.collection');
 const { NotFoundException } = require('../exceptions');
@@ -10,6 +12,22 @@ const validationLayer = require('../validation/tasks.validation');
 const { TASK_NOT_FOUND } = ERRORS;
 
 const taskService = {
+  async get(taskId) {
+    const task = await tasksCollection.findOne({ _id: new ObjectId(taskId) });
+    
+    if (!task) {
+      throw new NotFoundException(TASK_NOT_FOUND);
+    }
+
+    return task;
+  },
+
+  async getAll() {
+    const tasksList = await tasksCollection.find().toArray();
+
+    return tasksList;
+  },
+
   async add(task) {
     validateAllFields(task, validationLayer);
 
@@ -21,16 +39,12 @@ const taskService = {
     return taskPath;
   },
 
-  delete(taskId) {
-    const taskIndex = this.list.findIndex(task => task.id === taskId);
-    const task = this.list[taskIndex] || null;
+  async delete(taskId) {
+    const task = await tasksCollection.findOneAndDelete({ _id: new ObjectId(taskId) });
 
     if (!task) {
       throw new NotFoundException(TASK_NOT_FOUND);
     }
-
-    // TODO: add database deletion
-    this.list.splice(taskIndex, 1);
   },
 
   change(taskId, newTaskFields) {

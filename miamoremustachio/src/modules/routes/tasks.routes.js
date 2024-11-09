@@ -9,8 +9,15 @@ const { LOCATION } = HTTP_HEADERS;
 const router = express.Router();
 
 router.route('/')
-  .get((req, res) => {
-    res.send(taskService.list);
+  .get(async (req, res, next) => {
+    try {
+      const tasksList = await taskService.getAll();
+
+      res.json(tasksList);
+    
+    } catch (err) {
+      next(err);
+    }
   })
     
   .post(async (req, res, next) => {
@@ -28,6 +35,18 @@ router.route('/')
   });
 
 router.route('/:id')
+  .get(async (req, res, next) => {
+    const taskId = req.params.id;
+
+    try {
+      const task = await taskService.get(taskId);
+
+      res.json(task);
+
+    } catch (err) {
+      next(err);
+    }
+  })
   .put((req, res, next) => {
     const taskId = Number(req.params.id);
     const newTask = new Task(req.body);
@@ -41,11 +60,11 @@ router.route('/:id')
       next(err);
     }
   })
-  .delete((req, res, next) => {
-    const taskId = Number(req.params.id);
+  .delete(async (req, res, next) => {
+    const taskId = req.params.id;
 
     try {
-      taskService.delete(taskId);
+      await taskService.delete(taskId);
 
       res.sendStatus(204);
 
