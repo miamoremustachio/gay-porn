@@ -1,6 +1,6 @@
 const { ObjectId } = require('mongodb');
 
-const { ERRORS } = require('../../config/entities/tasks.config');
+const { FILTERS, OPTIONS, ERRORS } = require('../../config/entities/tasks.config');
 
 const tasksCollection = require('../../db/collections/tasks.collection');
 const { NotFoundException } = require('../exceptions');
@@ -9,6 +9,8 @@ const { getId } = require('../helpers/entity.helper');
 const { validateAllFields } = require('../validation/entity.validation');
 const validationLayer = require('../validation/tasks.validation');
 
+const { DELETION_FILTER, CHANGING_FILTER } = FILTERS;
+const { RETURN_DOCUMENT_OPTION } = OPTIONS;
 const { TASK_NOT_FOUND } = ERRORS;
 
 const taskService = {
@@ -40,27 +42,26 @@ const taskService = {
   },
 
   async delete(taskId) {
-    const task = await tasksCollection.findOneAndDelete({ _id: new ObjectId(taskId) });
+    const filter = DELETION_FILTER(taskId);
+    const task = await tasksCollection.findOneAndDelete(filter);
 
     if (!task) {
       throw new NotFoundException(TASK_NOT_FOUND);
     }
   },
 
-  change(taskId, newTaskFields) {
-    const task = this.list.find(task => task.id === taskId);
-  
+  async change(taskId, newTaskFields) {
+    const filter = CHANGING_FILTER(taskId);
+    const options = RETURN_DOCUMENT_OPTION();
+    const task = await tasksCollection.findOneAndReplace(filter, newTaskFields, options);
+    
     if (!task) {
       throw new NotFoundException(TASK_NOT_FOUND);
     }
 
     validateAllFields(newTaskFields, validationLayer);
 
-    // TODO: add database changing
-    const taskIndex = this.list.indexOf(task);
-    const newTask = { id: task.id, ...newTaskFields };
-
-    this.list[taskIndex] = newTask;
+    return task;
   },
 };
 

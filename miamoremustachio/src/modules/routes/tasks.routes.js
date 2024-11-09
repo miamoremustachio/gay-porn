@@ -47,19 +47,21 @@ router.route('/:id')
       next(err);
     }
   })
-  .put((req, res, next) => {
-    const taskId = Number(req.params.id);
-    const newTask = new Task(req.body);
+
+  .put(async (req, res, next) => {
+    const taskId = req.params.id;
+    const newTaskFields = new Task(req.body);
 
     try {
-      taskService.change(taskId, newTask);
+      const task = await taskService.change(taskId, newTaskFields);
 
-      res.send(newTask);
+      res.send(task);
 
     } catch (err) {
       next(err);
     }
   })
+
   .delete(async (req, res, next) => {
     const taskId = req.params.id;
 

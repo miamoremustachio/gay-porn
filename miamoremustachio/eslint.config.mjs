@@ -23,6 +23,7 @@ export default [
     rules: {
       'no-trailing-spaces': ['error', { 'skipBlankLines': true }],
       'no-plusplus': ['error', { 'allowForLoopAfterthoughts': true }],
+      'no-underscore-dangle': [ 'error', { 'allowAfterThis': true }],
       'arrow-parens': ['error', 'as-needed'],
       'linebreak-style': 'off',
       'consistent-return': 'off',
