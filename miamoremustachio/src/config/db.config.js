@@ -6,12 +6,7 @@ const DATABASES = {
   TODO: 'todo',
 };
 
-const COLLECTIONS = {
-  TASKS: 'tasks',
-};
-
 module.exports = {
   DATABASE_URI,
   DATABASES,
-  COLLECTIONS,
 };

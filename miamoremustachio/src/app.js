@@ -6,10 +6,10 @@ const {
   exceptionHandler,
   errorHandler,
   errorLogger,
-} = require('./modules/middlewares');
+} = require('./shared/middlewares');
 
-const routes = require('./modules/routes');
-const { isDevelopment } = require('./modules/helpers/server.helper');
+const routes = require('./routes');
+const { isDevelopment } = require('./shared/helpers/app.helper');
 
 const app = express();
 
@@ -17,7 +17,7 @@ app.set('name', APP_NAME);
 
 app.use(cors);
 app.use(express.json());
-app.use('/', routes);
+app.use(routes);
 
 if (isDevelopment(app)) {
   app.use(errorLogger);
