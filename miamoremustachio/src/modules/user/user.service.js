@@ -21,6 +21,34 @@ class UserService {
 
     return user;
   }
+
+  async getAllUsers() {
+    const users = await this.userRepository.find();
+
+    return users;
+  }
+
+  async updateUser(userId, fieldsToUpdate) {
+    const user = await this.userRepository.findByIdAndUpdate(
+      userId,
+      fieldsToUpdate,
+      { runValidators: true },
+    );
+
+    if (!user) {
+      throw new NotFoundException(`User #${userId} not found.`);
+    }
+
+    return this.getUser(userId);
+  }
+
+  async deleteUser(userId) {
+    const user = await this.userRepository.findByIdAndDelete(userId);
+
+    if (!user) {
+      throw new NotFoundException(`User #${userId} not found.`);
+    }
+  }
 }
 
 module.exports = UserService;

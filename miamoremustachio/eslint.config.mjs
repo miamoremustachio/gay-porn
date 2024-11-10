@@ -26,6 +26,7 @@ export default [
       'no-underscore-dangle': [ 'error', { 'allowAfterThis': true }],
       'arrow-parens': ['error', 'as-needed'],
       'linebreak-style': 'off',
+      'prefer-destructuring': 'off',
       'consistent-return': 'off',
       'no-restricted-syntax': 'off',
       'guard-for-in': 'off',

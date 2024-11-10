@@ -32,8 +32,10 @@ class TaskController {
   }
 
   async getAllTasks(req, res, next) {
+    const userId = req.get('Authorization');
+    
     try {
-      const tasks = await this.taskService.getAllTasks();
+      const tasks = await this.taskService.getAllTasks(userId);
 
       res.json(tasks);
     

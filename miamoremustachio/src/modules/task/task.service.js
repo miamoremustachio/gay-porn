@@ -28,8 +28,8 @@ class TaskService {
     return taskObj;
   }
 
-  async getAllTasks() {
-    const tasks = await this.taskRepository.find();
+  async getAllTasks(userId) {
+    const tasks = await this.taskRepository.find({ userId });
 
     return tasks;
   }
@@ -41,7 +41,7 @@ class TaskService {
       throw new NotFoundException(`Task #${taskId} not found.`);
     }
 
-    return task;
+    return this.getTask(taskId);
   }
 
   async deleteTask(taskId) {

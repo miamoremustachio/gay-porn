@@ -5,7 +5,7 @@ const app = require('./app');
 async function run() {
   try {
     await db.connect()
-      .then(console.log('☀️  Database has successfully connected.'))
+      .then(console.log('☀️  Database has successfully connected.'));
 
     const appName = app.get('name');
     
