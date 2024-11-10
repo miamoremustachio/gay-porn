@@ -19,7 +19,13 @@ class TaskService {
       throw new NotFoundException(`Task #${taskId} not found.`);
     }
 
-    return task;
+    await task.populate('userId');
+    
+    const taskObj = task.toObject();
+    taskObj['user'] = task.userId;
+    delete taskObj.userId;
+
+    return taskObj;
   }
 
   async getAllTasks() {

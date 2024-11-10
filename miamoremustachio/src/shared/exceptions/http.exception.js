@@ -5,7 +5,7 @@ class HttpException extends Error {
     this.statusCode = statusCode;
   }
 
-  get response() {
+  get body() {
     return {
       statusCode: this.statusCode,
       message: this.message,
