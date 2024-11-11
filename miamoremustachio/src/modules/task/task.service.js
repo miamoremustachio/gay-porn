@@ -6,8 +6,8 @@ class TaskService {
     this.taskRepository = taskRepository;
   }
   
-  async addTask(taskBody) {
-    const task = await new this.taskRepository(taskBody).save();
+  async addTask(taskBody, userId) {
+    const task = await new this.taskRepository({ ...taskBody, userId }).save();
 
     return task;
   }

@@ -27,6 +27,9 @@ const taskSchema = new mongoose.Schema({
     get: value => NUMERIC_TO_PROPERTIES[value],
     default: DEFAULT_PRIORITY,
   },
+  deadline: {
+    type: Date,
+  },
   userId: {
     type: 'ObjectId',
     ref: 'User',

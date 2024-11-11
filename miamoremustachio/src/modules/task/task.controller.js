@@ -7,9 +7,10 @@ class TaskController {
   
   async addTask(req, res, next) {
     const body = req.body;
+    const userId = req.get('Authorization');
   
     try {
-      const task = await this.taskService.addTask(body);
+      const task = await this.taskService.addTask(body, userId);
       
       res.status(201).send(task);
   

@@ -9,7 +9,11 @@
   "scripts": {
     "dev": "nodemon ./main.js",
     "test": "jest",
-    "lint": "npx eslint ."
+    "migrateCreate": "migrate-mongo create",
+    "migrateUp": "migrate-mongo up",
+    "migrateDown": "migrate-mongo down",
+    "migrateStatus": "migrate-mongo status",
+    "lint": "eslint ."
   },
   "author": "miamoremustachio",
   "license": "ISC",
@@ -29,6 +33,7 @@
     "dotenv": "^16.4.5",
     "express": "^4.21.1",
     "http-status-codes": "^2.3.0",
+    "migrate-mongo": "^11.0.0",
     "mongodb": "^6.10.0",
     "mongoose": "^8.8.1"
   }

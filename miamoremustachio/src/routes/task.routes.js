@@ -9,7 +9,7 @@ const taskController = new TaskController();
 router.route('/')
   .get(authGuard, taskController.getAllTasks.bind(taskController))
     
-  .post(taskController.addTask.bind(taskController));
+  .post(authGuard, taskController.addTask.bind(taskController));
 
 router.route('/:id')
   .get(authGuard, taskController.getTask.bind(taskController))

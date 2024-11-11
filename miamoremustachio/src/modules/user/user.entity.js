@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 
+const { VALID_EMAIL, ROLE } = require('./user.const');
+
 const userSchema = new mongoose.Schema({
   username: {
     type: String,
@@ -14,11 +16,17 @@ const userSchema = new mongoose.Schema({
     unique: true,
     validate: {
       validator: function(v) {
-        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+        return VALID_EMAIL.test(v);
       },
       message: props => `${props.value} is not a valid email address.`,
     },
-  }
+  },
+  roles: {
+    type: [String],
+    required: true,
+    enum: Object.values(ROLE),
+    default: ROLE.USER,
+  },
 });
 
 const UserEntity = mongoose.model('User', userSchema);
