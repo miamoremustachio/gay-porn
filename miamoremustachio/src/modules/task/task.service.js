@@ -1,5 +1,5 @@
 const TaskEntity = require('./task.entity');
-const { NotFoundException } = require('../../shared/exceptions');
+const { checkTaskExistence, checkAccess } = require('./task.validation');
 
 class TaskService {
   constructor(taskRepository = TaskEntity) {
@@ -12,12 +12,11 @@ class TaskService {
     return task;
   }
 
-  async getTask(taskId) {
+  async getTask(taskId, userId) {
     const task = await this.taskRepository.findById(taskId);
 
-    if (!task) {
-      throw new NotFoundException(`Task #${taskId} not found.`);
-    }
+    checkTaskExistence(task, taskId);
+    checkAccess(task, userId);
 
     await task.populate('userId');
     
@@ -34,22 +33,23 @@ class TaskService {
     return tasks;
   }
 
-  async updateTask(taskId, fieldsToUpdate) {
-    const task = await this.taskRepository.findByIdAndUpdate(taskId, fieldsToUpdate, { runValidators: true });
+  async updateTask(taskId, userId, fieldsToUpdate) {
+    const query = { _id: taskId, userId };
+    const options = { runValidators: true };
 
-    if (!task) {
-      throw new NotFoundException(`Task #${taskId} not found.`);
-    }
+    const task = await this.taskRepository.findOneAndUpdate(query, fieldsToUpdate, options);
 
-    return this.getTask(taskId);
+    checkTaskExistence(task, taskId);
+
+    return this.getTask(taskId, userId);
   }
 
-  async deleteTask(taskId) {
-    const task = await this.taskRepository.findByIdAndDelete(taskId);
+  async deleteTask(taskId, userId) {
+    const query = { _id: taskId, userId };
 
-    if (!task) {
-      throw new NotFoundException(`Task #${taskId} not found.`);
-    }
+    const task = await this.taskRepository.findOneAndDelete(query);
+
+    checkTaskExistence(task, taskId);
   }
 }
 

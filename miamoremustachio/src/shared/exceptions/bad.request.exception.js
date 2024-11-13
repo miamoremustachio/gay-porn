@@ -1,7 +1,10 @@
 const HttpException = require('./http.exception');
+const { DefaultResponse } = require('./exception.helper');
+
+const response = new DefaultResponse(400);
 
 class BadRequestException extends HttpException {
-  constructor(message, statusCode = 400) {
+  constructor(message = response.message, statusCode = response.statusCode) {
     super(message, statusCode);
   }
 }

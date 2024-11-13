@@ -21,9 +21,10 @@ class TaskController {
 
   async getTask(req, res, next) {
     const taskId = req.params.id;
+    const userId = req.get('Authorization');
 
     try {
-      const task = await this.taskService.getTask(taskId);
+      const task = await this.taskService.getTask(taskId, userId);
 
       res.json(task);
 
@@ -47,10 +48,11 @@ class TaskController {
 
   async updateTask(req, res, next) {
     const taskId = req.params.id;
+    const userId = req.get('Authorization');
     const body = req.body;
 
     try {
-      const task = await this.taskService.updateTask(taskId, body);
+      const task = await this.taskService.updateTask(taskId, userId, body);
 
       res.send(task);
 
@@ -61,9 +63,10 @@ class TaskController {
 
   async deleteTask(req, res, next) {
     const taskId = req.params.id;
+    const userId = req.get('Authorization');
 
     try {
-      await this.taskService.deleteTask(taskId);
+      await this.taskService.deleteTask(taskId, userId);
 
       res.sendStatus(204);
     

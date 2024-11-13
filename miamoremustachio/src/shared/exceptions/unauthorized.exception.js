@@ -1,9 +1,10 @@
-const { ReasonPhrases } = require('http-status-codes');
-
 const HttpException = require('./http.exception');
+const { DefaultResponse } = require('./exception.helper');
+
+const response = new DefaultResponse(401);
 
 class UnauthorizedException extends HttpException {
-  constructor(message = ReasonPhrases.UNAUTHORIZED, statusCode = 401) {
+  constructor(message = response.message, statusCode = response.statusCode) {
     super(message, statusCode);
   }
 }
