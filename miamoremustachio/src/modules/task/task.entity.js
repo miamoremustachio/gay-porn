@@ -1,5 +1,8 @@
 const mongoose = require('mongoose');
 
+const SubtaskEntity = require('../subtask/subtask.entity');
+const subtaskSchema = SubtaskEntity.schema;
+
 const {
   STATUS,
   DEFAULT_STATUS,
@@ -30,6 +33,7 @@ const taskSchema = new mongoose.Schema({
   deadline: {
     type: Date,
   },
+  subtasks: [ subtaskSchema ],
   userId: {
     type: 'ObjectId',
     ref: 'User',

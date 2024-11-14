@@ -6,11 +6,11 @@ class TaskController {
   }
   
   async addTask(req, res, next) {
-    const body = req.body;
     const userId = req.get('Authorization');
+    const body = req.body;
   
     try {
-      const task = await this.taskService.addTask(body, userId);
+      const task = await this.taskService.addTask(userId, body);
       
       res.status(201).send(task);
   
@@ -20,7 +20,7 @@ class TaskController {
   }
 
   async getTask(req, res, next) {
-    const taskId = req.params.id;
+    const taskId = req.params.taskId;
     const userId = req.get('Authorization');
 
     try {
@@ -47,7 +47,7 @@ class TaskController {
   }
 
   async updateTask(req, res, next) {
-    const taskId = req.params.id;
+    const taskId = req.params.taskId;
     const userId = req.get('Authorization');
     const body = req.body;
 
@@ -62,7 +62,7 @@ class TaskController {
   }
 
   async deleteTask(req, res, next) {
-    const taskId = req.params.id;
+    const taskId = req.params.taskId;
     const userId = req.get('Authorization');
 
     try {

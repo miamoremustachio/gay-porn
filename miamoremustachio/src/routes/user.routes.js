@@ -9,7 +9,7 @@ router.route('/')
   .get(userController.getAllUsers.bind(userController))
   .post(userController.registerUser.bind(userController));
 
-router.route('/:id')
+router.route('/:subtaskId')
   .get(userController.getUser.bind(userController))
   .put(userController.updateUser.bind(userController))
   .delete(userController.deleteUser.bind(userController));

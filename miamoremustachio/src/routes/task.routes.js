@@ -8,14 +8,11 @@ const taskController = new TaskController();
 
 router.route('/')
   .get(authGuard, taskController.getAllTasks.bind(taskController))
-    
   .post(authGuard, taskController.addTask.bind(taskController));
 
-router.route('/:id')
+router.route('/:taskId')
   .get(authGuard, taskController.getTask.bind(taskController))
-
   .put(authGuard, taskController.updateTask.bind(taskController))
-
   .delete(authGuard, taskController.deleteTask.bind(taskController));
 
 module.exports = router;
