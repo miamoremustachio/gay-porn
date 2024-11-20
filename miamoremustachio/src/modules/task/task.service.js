@@ -13,7 +13,7 @@ class TaskService {
     return task;
   }
 
-  async getTask(taskId, userId) {
+  async getTask(userId, taskId) {
     const task = await this.taskRepository.findById(taskId);
 
     this.validator.checkExistence(task, taskId);
@@ -34,7 +34,7 @@ class TaskService {
     return tasks;
   }
 
-  async updateTask(taskId, userId, fieldsToUpdate) {
+  async updateTask(userId, taskId, fieldsToUpdate) {
     const queryParams = { _id: taskId, userId };
     const options = { runValidators: true };
 
@@ -42,10 +42,10 @@ class TaskService {
 
     this.validator.checkExistence(task, taskId);
 
-    return this.getTask(taskId, userId);
+    return task;
   }
 
-  async deleteTask(taskId, userId) {
+  async deleteTask(userId, taskId) {
     const queryParams = { _id: taskId, userId };
 
     const task = await this.taskRepository.findOneAndDelete(queryParams);

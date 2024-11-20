@@ -1,6 +1,5 @@
 const UserEntity = require('./user.entity');
 const UserValidator = require('./user.validator');
-const { NotFoundException } = require('../../shared/exceptions');
 
 class UserService {
   constructor(userRepository = UserEntity) {

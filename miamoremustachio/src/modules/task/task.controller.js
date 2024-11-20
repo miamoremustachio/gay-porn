@@ -21,11 +21,11 @@ class TaskController {
   }
 
   async getTask(req, res, next) {
-    const taskId = req.params.taskId;
     const userId = getAuthHeader(req);
+    const taskId = req.params.taskId;
 
     try {
-      const task = await this.taskService.getTask(taskId, userId);
+      const task = await this.taskService.getTask(userId, taskId);
 
       res.json(task);
 
@@ -48,12 +48,12 @@ class TaskController {
   }
 
   async updateTask(req, res, next) {
-    const taskId = req.params.taskId;
     const userId = getAuthHeader(req);
+    const taskId = req.params.taskId;
     const body = req.body;
 
     try {
-      const task = await this.taskService.updateTask(taskId, userId, body);
+      const task = await this.taskService.updateTask(userId, taskId, body);
 
       res.json(task);
 
@@ -63,11 +63,11 @@ class TaskController {
   }
 
   async deleteTask(req, res, next) {
-    const taskId = req.params.taskId;
     const userId = getAuthHeader(req);
+    const taskId = req.params.taskId;
 
     try {
-      await this.taskService.deleteTask(taskId, userId);
+      await this.taskService.deleteTask(userId, taskId);
 
       res.sendStatus(204);
     

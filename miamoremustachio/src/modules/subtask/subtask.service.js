@@ -7,7 +7,7 @@ class SubtaskService {
     this.validator = new SubtaskValidator();
   }
 
-  async getParent(parentId, userId) {
+  async getParent(userId, parentId) {
     const parent = await this.parentRepository.findById(parentId);
     
     this.validator.checkExistence(parent, parentId);

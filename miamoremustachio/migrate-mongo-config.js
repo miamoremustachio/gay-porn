@@ -12,9 +12,9 @@ const config = {
     }
   },
 
-  migrationsDir: "migrations",
-  changelogCollectionName: "changelog",
-  migrationFileExtension: ".js",
+  migrationsDir: 'migrations',
+  changelogCollectionName: 'changelog',
+  migrationFileExtension: '.js',
   useFileHash: false,
   moduleSystem: 'commonjs',
 };

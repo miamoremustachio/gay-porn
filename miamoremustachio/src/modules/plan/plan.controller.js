@@ -38,11 +38,11 @@ class PlanController {
   }
 
   async getPlan(req, res, next) {
-    const planId = req.params.planId;
     const userId = getAuthHeader(req);
+    const planId = req.params.planId;
 
     try {
-      const plan = await this.planService.getPlan(planId, userId);
+      const plan = await this.planService.getPlan(userId, planId);
 
       res.json(plan);
 
@@ -65,12 +65,12 @@ class PlanController {
   }
 
   async updatePlan(req, res, next) {
-    const planId = req.params.planId;
     const userId = getAuthHeader(req);
+    const planId = req.params.planId;
     const body = req.body;
 
     try {
-      const plan = await this.planService.updatePlan(planId, userId, body);
+      const plan = await this.planService.updatePlan(userId, planId, body);
 
       res.json(plan);
 
@@ -80,11 +80,11 @@ class PlanController {
   }
 
   async deletePlan(req, res, next) {
-    const planId = req.params.planId;
     const userId = getAuthHeader(req);
+    const planId = req.params.planId;
 
     try {
-      await this.planService.deletePlan(planId, userId);
+      await this.planService.deletePlan(userId, planId);
 
       res.sendStatus(204);
     

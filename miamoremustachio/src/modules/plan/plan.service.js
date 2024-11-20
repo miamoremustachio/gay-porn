@@ -24,7 +24,7 @@ class PlanService {
     return result;
   }
 
-  async getPlan(planId, userId) {
+  async getPlan(userId, planId) {
     const plan = await this.planRepository.findOne({ _id: planId, userId });
 
     this.validator.checkExistence(plan, planId);
@@ -40,16 +40,16 @@ class PlanService {
     return plans;
   }
 
-  async updatePlan(planId, userId, fieldsToUpdate) {
+  async updatePlan(userId, planId, fieldsToUpdate) {
     const queryParams = { _id: planId, userId };
     const options = { runValidators: true };
 
     await this.planRepository.findOneAndUpdate(queryParams, fieldsToUpdate, options);
 
-    return this.getPlan(planId, userId);
+    return this.getPlan(userId, planId);
   }
 
-  async deletePlan(planId, userId) {
+  async deletePlan(userId, planId) {
     const queryParams = { _id: planId, userId };
 
     const plan = await this.planRepository.findOneAndDelete(queryParams);

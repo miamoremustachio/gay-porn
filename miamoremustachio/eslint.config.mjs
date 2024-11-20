@@ -29,6 +29,8 @@ export default [
       'prefer-destructuring': 'off',
       'consistent-return': 'off',
       'no-restricted-syntax': 'off',
+      'no-underscore-dangle': 'off',
+      'class-methods-use-this': 'off',
       'guard-for-in': 'off',
       'padded-blocks': 'off',
     },

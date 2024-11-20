@@ -7,11 +7,11 @@ class SubtaskController {
   }
 
   async getParent(req, res, next) {
-    const parentId = req.params.taskId;
     const userId = getAuthHeader(req);
+    const parentId = req.params.taskId;
 
     try {
-      const parent = await this.subtaskService.getParent(parentId, userId);
+      const parent = await this.subtaskService.getParent(userId, parentId);
       
       res.locals.parent = parent;
       next();

@@ -33,7 +33,7 @@ const taskSchema = new mongoose.Schema({
   deadline: {
     type: Date,
   },
-  subtasks: [ subtaskSchema ],
+  subtasks: [subtaskSchema],
   planId: {
     type: 'ObjectId',
     ref: 'Plan',
