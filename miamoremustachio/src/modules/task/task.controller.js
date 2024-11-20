@@ -6,14 +6,14 @@ class TaskController {
     this.taskService = taskService;
   }
   
-  async addTask(req, res, next) {
+  async createTask(req, res, next) {
     const userId = getAuthHeader(req);
     const body = req.body;
   
     try {
-      const task = await this.taskService.addTask(userId, body);
+      const task = await this.taskService.createTask(userId, body);
       
-      res.status(201).send(task);
+      res.status(201).json(task);
   
     } catch (err) {
       next(err);
@@ -55,7 +55,7 @@ class TaskController {
     try {
       const task = await this.taskService.updateTask(taskId, userId, body);
 
-      res.send(task);
+      res.json(task);
 
     } catch (err) {
       next(err);

@@ -6,13 +6,15 @@ const { TaskController } = require('../modules/task');
 const router = express.Router();
 const taskController = new TaskController();
 
+router.use(authGuard);
+
 router.route('/')
-  .get(authGuard, taskController.getAllTasks.bind(taskController))
-  .post(authGuard, taskController.addTask.bind(taskController));
+  .get(taskController.getAllTasks.bind(taskController))
+  .post(taskController.createTask.bind(taskController));
 
 router.route('/:taskId')
-  .get(authGuard, taskController.getTask.bind(taskController))
-  .put(authGuard, taskController.updateTask.bind(taskController))
-  .delete(authGuard, taskController.deleteTask.bind(taskController));
+  .get(taskController.getTask.bind(taskController))
+  .put(taskController.updateTask.bind(taskController))
+  .delete(taskController.deleteTask.bind(taskController));
 
 module.exports = router;

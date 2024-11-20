@@ -7,8 +7,8 @@ class TaskService {
     this.validator = new TaskValidator();
   }
   
-  async addTask(userId, taskBody) {
-    const task = await new this.taskRepository({ userId, ...taskBody }).save();
+  async createTask(userId, taskBody) {
+    const task = await new this.taskRepository({ ...taskBody, userId }).save();
 
     return task;
   }
@@ -35,10 +35,10 @@ class TaskService {
   }
 
   async updateTask(taskId, userId, fieldsToUpdate) {
-    const query = { _id: taskId, userId };
+    const queryParams = { _id: taskId, userId };
     const options = { runValidators: true };
 
-    const task = await this.taskRepository.findOneAndUpdate(query, fieldsToUpdate, options);
+    const task = await this.taskRepository.findOneAndUpdate(queryParams, fieldsToUpdate, options);
 
     this.validator.checkExistence(task, taskId);
 
@@ -46,9 +46,9 @@ class TaskService {
   }
 
   async deleteTask(taskId, userId) {
-    const query = { _id: taskId, userId };
+    const queryParams = { _id: taskId, userId };
 
-    const task = await this.taskRepository.findOneAndDelete(query);
+    const task = await this.taskRepository.findOneAndDelete(queryParams);
 
     this.validator.checkExistence(task, taskId);
   }

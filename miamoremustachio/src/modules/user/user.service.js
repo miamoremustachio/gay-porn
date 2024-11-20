@@ -1,9 +1,11 @@
 const UserEntity = require('./user.entity');
+const UserValidator = require('./user.validator');
 const { NotFoundException } = require('../../shared/exceptions');
 
 class UserService {
   constructor(userRepository = UserEntity) {
     this.userRepository = userRepository;
+    this.validator = new UserValidator();
   }
   
   async registerUser(userBody) {
@@ -15,9 +17,7 @@ class UserService {
   async getUser(userId) {
     const user = await this.userRepository.findById(userId);
 
-    if (!user) {
-      throw new NotFoundException(`User #${userId} not found.`);
-    }
+    this.validator.checkExistence(user, userId);
 
     return user;
   }
@@ -29,25 +29,18 @@ class UserService {
   }
 
   async updateUser(userId, fieldsToUpdate) {
-    const user = await this.userRepository.findByIdAndUpdate(
-      userId,
-      fieldsToUpdate,
-      { runValidators: true },
-    );
+    const options = { runValidators: true };
+    const user = await this.userRepository.findByIdAndUpdate(userId, fieldsToUpdate, options);
 
-    if (!user) {
-      throw new NotFoundException(`User #${userId} not found.`);
-    }
+    this.validator.checkExistence(user, userId);
 
-    return this.getUser(userId);
+    return user;
   }
 
   async deleteUser(userId) {
     const user = await this.userRepository.findByIdAndDelete(userId);
 
-    if (!user) {
-      throw new NotFoundException(`User #${userId} not found.`);
-    }
+    this.validator.checkExistence(user, userId);
   }
 }
 

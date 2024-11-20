@@ -11,7 +11,7 @@ class UserController {
     try {
       const user = await this.userService.registerUser(body);
       
-      res.status(201).send(user);
+      res.status(201).json(user);
   
     } catch (err) {
       next(err);
@@ -19,7 +19,7 @@ class UserController {
   }
 
   async getUser(req, res, next) {
-    const userId = req.params.id;
+    const userId = req.params.userId;
 
     try {
       const user = await this.userService.getUser(userId);
@@ -43,13 +43,13 @@ class UserController {
   }
 
   async updateUser(req, res, next) {
-    const userId = req.params.id;
+    const userId = req.params.userId;
     const body = req.body;
 
     try {
       const user = await this.userService.updateUser(userId, body);
 
-      res.send(user);
+      res.json(user);
 
     } catch (err) {
       next(err);
@@ -57,7 +57,7 @@ class UserController {
   }
 
   async deleteUser(req, res, next) {
-    const userId = req.params.id;
+    const userId = req.params.userId;
 
     try {
       await this.userService.deleteUser(userId);

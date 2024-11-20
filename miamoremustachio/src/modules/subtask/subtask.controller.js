@@ -28,19 +28,19 @@ class SubtaskController {
     try {
       const subtask = await this.subtaskService.addSubtask(task, body);
       
-      res.status(201).send(subtask);
+      res.status(201).json(subtask);
   
     } catch (err) {
       next(err);
     }
   }
 
-  async getSubtask(req, res, next) {
+  getSubtask(req, res, next) {
     const task = res.locals.parent;
     const subtaskId = req.params.subtaskId;
 
     try {
-      const subtask = await this.subtaskService.getSubtask(task, subtaskId);
+      const subtask = this.subtaskService.getSubtask(task, subtaskId);
 
       res.json(subtask);
 
@@ -49,11 +49,11 @@ class SubtaskController {
     }
   }
 
-  async getAllSubtasks(req, res, next) {
+  getAllSubtasks(req, res, next) {
     const task = res.locals.parent;
 
     try {
-      const subtasks = await this.subtaskService.getAllSubtasks(task);
+      const subtasks = this.subtaskService.getAllSubtasks(task);
 
       res.json(subtasks);
     
@@ -70,7 +70,7 @@ class SubtaskController {
     try {
       const subtask = await this.subtaskService.updateSubtask(task, subtaskId, body);
 
-      res.send(subtask);
+      res.json(subtask);
 
     } catch (err) {
       next(err);

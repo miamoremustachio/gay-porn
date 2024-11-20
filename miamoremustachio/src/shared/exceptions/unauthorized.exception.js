@@ -1,5 +1,5 @@
 const HttpException = require('./http.exception');
-const { DefaultResponse } = require('./exception.helper');
+const { DefaultResponse } = require('../helpers/exception.helper');
 
 const response = new DefaultResponse(401);
 

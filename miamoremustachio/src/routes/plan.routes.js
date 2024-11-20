@@ -6,16 +6,18 @@ const { PlanController } = require('../modules/plan');
 const router = express.Router();
 const planController = new PlanController();
 
+router.use(authGuard);
+
 router.route('/')
-  .get(authGuard, planController.getAllPlans.bind(planController))
-  .post(authGuard, planController.addPlan.bind(planController));
+  .get(planController.getAllPlans.bind(planController))
+  .post(planController.createPlan.bind(planController));
 
 router.route('/:planId')
-  .get(authGuard, planController.getPlan.bind(planController))
-  .put(authGuard, planController.updatePlan.bind(planController))
-  .delete(authGuard, planController.deletePlan.bind(planController));
+  .get(planController.getPlan.bind(planController))
+  .put(planController.updatePlan.bind(planController))
+  .delete(planController.deletePlan.bind(planController));
 
 router.route('/:planId/addTask/:taskId')
-  .post(authGuard, planController.addTaskToPlan.bind(planController));
+  .post(planController.addTaskToPlan.bind(planController));
 
 module.exports = router;

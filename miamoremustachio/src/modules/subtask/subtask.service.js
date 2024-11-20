@@ -27,44 +27,36 @@ class SubtaskService {
     return subtask;
   }
 
-  async getSubtask(parent, subtaskId) {
-    const task = parent;
-    const subtask = task.subtasks.id(subtaskId);
+  getSubtask(parent, subtaskId) {
+    const subtask = parent.subtasks.id(subtaskId);
 
     this.validator.checkSubtaskExistence(subtask, subtaskId);
 
     return subtask;
   }
 
-  async getAllSubtasks(parent) {
-    const task = parent;
-    const subtasks = task.subtasks;
+  getAllSubtasks(parent) {
+    const subtasks = parent.subtasks;
 
     return subtasks;
   }
 
   async updateSubtask(parent, subtaskId, fieldsToUpdate) {
-    const task = parent;
-    const subtask = task.subtasks.find(subtask => subtask.id === subtaskId);
-
-    this.validator.checkSubtaskExistence(subtask, subtaskId);
+    const subtask = this.getSubtask(parent, subtaskId);
 
     subtask.set(fieldsToUpdate);
 
-    await task.save();
+    await parent.save();
 
     return subtask;
   }
 
   async deleteSubtask(parent, subtaskId) {
-    const task = parent;
-    const subtask = task.subtasks.find(subtask => subtask.id === subtaskId);
-
-    this.validator.checkSubtaskExistence(subtask, subtaskId);
+    const subtask = this.getSubtask(parent, subtaskId);
 
     subtask.deleteOne();
 
-    await task.save();
+    await parent.save();
   }
 }
 

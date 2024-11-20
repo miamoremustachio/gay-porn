@@ -6,7 +6,7 @@ class PlanController {
     this.planService = planService;
   }
   
-  async addPlan(req, res, next) {
+  async createPlan(req, res, next) {
     const userId = getAuthHeader(req);
     const body = req.body;
   
