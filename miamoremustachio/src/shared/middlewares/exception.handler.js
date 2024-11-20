@@ -1,7 +1,7 @@
 const ValidationError = require('mongoose/lib/error/validation');
 
 const HttpException = require('../exceptions/http.exception');
-const BadRequestException = require('../exceptions/bad.request.exception');
+const BadRequestException = require('../exceptions/bad-request.exception');
 
 function exceptionHandler(err, req, res, next) {
   if (err instanceof HttpException) {
