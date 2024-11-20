@@ -1,13 +1,9 @@
-const { BSONError } = require('bson');
-
 const ErrorResponse = require('../helpers/error.helper');
 
 function errorHandler(err, req, res, next) {
-  if (err instanceof BSONError) {
-    return res.status(400).json(new ErrorResponse(err, 400));
-  }
+  const response = new ErrorResponse(err);
 
-  res.status(err.statusCode || 500).json(new ErrorResponse(err));
+  res.status(response.statusCode).json(response);
 }
 
 module.exports = errorHandler;

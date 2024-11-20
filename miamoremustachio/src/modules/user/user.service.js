@@ -28,7 +28,7 @@ class UserService {
   }
 
   async updateUser(userId, fieldsToUpdate) {
-    const options = { runValidators: true };
+    const options = { new: true, runValidators: true };
     const user = await this.userRepository.findByIdAndUpdate(userId, fieldsToUpdate, options);
 
     this.validator.checkExistence(user, userId);

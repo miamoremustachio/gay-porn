@@ -16,16 +16,23 @@ class PlanService {
   }
 
   async addTaskToPlan(userId, planId, taskId) {
-    const task = await this.taskService.getTask(taskId, userId);
+    const task = await this.taskService.getTask(userId, taskId);
 
-    const result = await this.planRepository.updateOne({ _id: planId }, { $addToSet: { tasks: task._id } });
-    await this.taskService.updateTask(taskId, userId, { planId });
+    const queryParams = { _id: planId, userId };
+    const fieldsToUpdate = { $addToSet: { tasks: task._id } };
+
+    const result = await this.planRepository.updateOne(queryParams, fieldsToUpdate);
+
+    if (result.modifiedCount) {
+      await this.taskService.updateTask(userId, taskId, { planId });
+    }
 
     return result;
   }
 
   async getPlan(userId, planId) {
-    const plan = await this.planRepository.findOne({ _id: planId, userId });
+    const queryParams = { _id: planId, userId };
+    const plan = await this.planRepository.findOne(queryParams);
 
     this.validator.checkExistence(plan, planId);
 

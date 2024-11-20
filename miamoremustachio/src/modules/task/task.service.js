@@ -36,7 +36,7 @@ class TaskService {
 
   async updateTask(userId, taskId, fieldsToUpdate) {
     const queryParams = { _id: taskId, userId };
-    const options = { runValidators: true };
+    const options = { new: true, runValidators: true };
 
     const task = await this.taskRepository.findOneAndUpdate(queryParams, fieldsToUpdate, options);
 

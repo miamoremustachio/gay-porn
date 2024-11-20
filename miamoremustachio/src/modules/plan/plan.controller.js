@@ -30,7 +30,7 @@ class PlanController {
 
       const status = result.modifiedCount ? 200 : 204;
 
-      res.sendStatus(status);
+      res.status(status).send();
 
     } catch (err) {
       next(err);
