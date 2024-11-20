@@ -26,10 +26,12 @@ class PlanController {
     const taskId = req.params.taskId;
     
     try {
-      await this.planService.addTaskToPlan(userId, planId, taskId);
+      const result = await this.planService.addTaskToPlan(userId, planId, taskId);
 
-      res.send();
-      
+      const status = result.modifiedCount ? 200 : 204;
+
+      res.sendStatus(status);
+
     } catch (err) {
       next(err);
     }

@@ -17,8 +17,10 @@ class PlanService {
   async addTaskToPlan(userId, planId, taskId) {
     const task = await this.taskService.getTask(taskId, userId);
 
-    await this.planRepository.updateOne({ _id: planId }, { $push: { tasks: task._id } });
+    const result = await this.planRepository.updateOne({ _id: planId }, { $addToSet: { tasks: task._id } });
     await this.taskService.updateTask(taskId, userId, { planId });
+
+    return result;
   }
 
   async getPlan(planId, userId) {
