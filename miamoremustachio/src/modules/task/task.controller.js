@@ -1,4 +1,5 @@
 const TaskService = require('./task.service');
+const { getAuthHeader } = require('../../shared/helpers/get-auth-header.helper');
 
 class TaskController {
   constructor(taskService = new TaskService()) {
@@ -6,7 +7,7 @@ class TaskController {
   }
   
   async addTask(req, res, next) {
-    const userId = req.get('Authorization');
+    const userId = getAuthHeader(req);
     const body = req.body;
   
     try {
@@ -21,7 +22,7 @@ class TaskController {
 
   async getTask(req, res, next) {
     const taskId = req.params.taskId;
-    const userId = req.get('Authorization');
+    const userId = getAuthHeader(req);
 
     try {
       const task = await this.taskService.getTask(taskId, userId);
@@ -34,7 +35,7 @@ class TaskController {
   }
 
   async getAllTasks(req, res, next) {
-    const userId = req.get('Authorization');
+    const userId = getAuthHeader(req);
     
     try {
       const tasks = await this.taskService.getAllTasks(userId);
@@ -48,7 +49,7 @@ class TaskController {
 
   async updateTask(req, res, next) {
     const taskId = req.params.taskId;
-    const userId = req.get('Authorization');
+    const userId = getAuthHeader(req);
     const body = req.body;
 
     try {
@@ -63,7 +64,7 @@ class TaskController {
 
   async deleteTask(req, res, next) {
     const taskId = req.params.taskId;
-    const userId = req.get('Authorization');
+    const userId = getAuthHeader(req);
 
     try {
       await this.taskService.deleteTask(taskId, userId);

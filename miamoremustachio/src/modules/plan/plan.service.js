@@ -1,11 +1,12 @@
 const PlanEntity = require('./plan.entity');
+const PlanValidator = require('./plan.validator');
 const TaskService = require('../task/task.service');
-const NotFoundException = require('../../shared/exceptions/not-found.exception');
 
 class PlanService {
   constructor(planRepository = PlanEntity, taskService = new TaskService()) {
     this.planRepository = planRepository;
     this.taskService = taskService;
+    this.validator = new PlanValidator();
   }
   
   async createPlan(userId, planBody) {
@@ -26,9 +27,7 @@ class PlanService {
   async getPlan(planId, userId) {
     const plan = await this.planRepository.findOne({ _id: planId, userId });
 
-    if (!plan) {
-      throw new NotFoundException(`Plan #${planId} not found.`);
-    }
+    this.validator.checkExistence(plan, planId);
 
     await plan.populate('tasks');
     
@@ -55,9 +54,7 @@ class PlanService {
 
     const plan = await this.planRepository.findOneAndDelete(queryParams);
 
-    if (!plan) {
-      throw new NotFoundException(`Plan #${planId} not found.`);
-    }
+    this.validator.checkExistence(plan, planId);
   }
 }
 

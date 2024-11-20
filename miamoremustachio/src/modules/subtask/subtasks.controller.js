@@ -1,4 +1,5 @@
 const SubtaskService = require('./subtask.service');
+const { getAuthHeader } = require('../../shared/helpers/get-auth-header.helper');
 
 class SubtaskController {
   constructor(subtaskService = new SubtaskService()) {
@@ -7,7 +8,7 @@ class SubtaskController {
 
   async getParent(req, res, next) {
     const parentId = req.params.taskId;
-    const userId = req.get('Authorization');
+    const userId = getAuthHeader(req);
 
     try {
       const parent = await this.subtaskService.getParent(parentId, userId);
