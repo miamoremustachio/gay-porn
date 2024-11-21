@@ -20,13 +20,13 @@ class PlanController {
     }
   }
 
-  async addTaskToPlan(req, res, next) {
+  async addTask(req, res, next) {
     const userId = getAuthHeader(req);
     const planId = req.params.planId;
     const taskId = req.params.taskId;
     
     try {
-      const result = await this.planService.addTaskToPlan(userId, planId, taskId);
+      const result = await this.planService.addTask(userId, planId, taskId);
 
       const status = result.modifiedCount ? 200 : 204;
 
@@ -58,6 +58,20 @@ class PlanController {
       const plans = await this.planService.getAllPlans(userId);
 
       res.json(plans);
+    
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  async getNumberOfTasks(req, res, next) {
+    const userId = getAuthHeader(req);
+    const planId = req.params.planId;
+
+    try {
+      const numberOfTasks = await this.planService.getNumberOfTasks(userId, planId);
+
+      res.json(numberOfTasks);
     
     } catch (err) {
       next(err);

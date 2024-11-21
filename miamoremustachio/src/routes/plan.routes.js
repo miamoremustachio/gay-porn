@@ -18,6 +18,9 @@ router.route('/:planId')
   .delete(planController.deletePlan.bind(planController));
 
 router.route('/:planId/addTask/:taskId')
-  .post(planController.addTaskToPlan.bind(planController));
+  .post(planController.addTask.bind(planController));
+
+router.route('/:planId/numberOfTasks')
+  .get(planController.getNumberOfTasks.bind(planController));
 
 module.exports = router;

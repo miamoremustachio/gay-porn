@@ -1,3 +1,5 @@
+const { ObjectId } = require('mongoose').Types;
+
 const PlanEntity = require('./plan.entity');
 const PlanValidator = require('./plan.validator');
 const TaskService = require('../task/task.service');
@@ -15,7 +17,7 @@ class PlanService {
     return plan;
   }
 
-  async addTaskToPlan(userId, planId, taskId) {
+  async addTask(userId, planId, taskId) {
     const task = await this.taskService.getTask(userId, taskId);
 
     const queryParams = { _id: planId, userId };
@@ -45,6 +47,25 @@ class PlanService {
     const plans = await this.planRepository.find({ userId });
 
     return plans;
+  }
+
+  async getNumberOfTasks(userId, planId) {
+    const matchFilter = {
+      _id: ObjectId.createFromHexString(planId),
+      userId: ObjectId.createFromHexString(userId),
+    };
+
+    const projection = {
+      title: '$title',
+      numberOfTasks: { $size: '$tasks' },
+    };
+
+    const plan = await this.planRepository.aggregate()
+      .match(matchFilter)
+      .project(projection)
+      .exec();
+
+      return plan;
   }
 
   async updatePlan(userId, planId, fieldsToUpdate) {
