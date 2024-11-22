@@ -1,16 +1,31 @@
-const { ForbiddenException, NotFoundException } = require('../../shared/exceptions');
+const { body, validationResult } = require('express-validator');
+
+const Binder = require('../../shared/helpers/bind.helper');
+const BadRequestException = require('../../shared/exceptions/bad-request.exception');
+const { TEXT_TO_NUMERIC } = require('./task.const');
 
 class TaskValidator {
-  checkExistence(task, taskId) {
-    if (!task) {
-      throw new NotFoundException(`Task #${taskId} not found.`);
-    }
+  constructor() {
+    new Binder().bind(this);
   }
-  
-  checkAccess(task, userId) {
-    if (!task.userId.equals(userId)) {
-      throw new ForbiddenException();
+
+  validateBody() {
+    return [
+      body('title').isAscii(),
+      body('priority').customSanitizer(TEXT_TO_NUMERIC),
+      this.processValidationResult,
+    ];
+  }
+
+  processValidationResult(req, res, next) {
+    const result = validationResult(req);
+    
+    if (result.isEmpty()) {
+      next();
+      return;
     }
+
+    throw new BadRequestException(...Array(2), result.array());
   }
 }
 

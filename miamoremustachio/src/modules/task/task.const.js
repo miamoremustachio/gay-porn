@@ -20,18 +20,22 @@ const PRIORITY = {
 
 const DEFAULT_PRIORITY = PRIORITY.MEDIUM;
 
-const NUMERIC_TO_PROPERTIES = Object.entries(PRIORITY).reduce((acc, entry) => {
+const TEXT_TO_NUMERIC = priority => typeof priority === 'string' ? PRIORITY[priority.toUpperCase()] : priority;
+
+const NUMERIC_TO_TEXT = Object.entries(PRIORITY).reduce((acc, entry) => {
   const [key, value] = entry;
-  acc[value] = key;
+  acc[value] = key[0] + key.slice(1).toLowerCase();
   
   return acc;
 }, {});
+
 
 module.exports = {
   FIELDS,
   STATUS,
   DEFAULT_STATUS,
   PRIORITY,
-  NUMERIC_TO_PROPERTIES,
+  TEXT_TO_NUMERIC,
+  NUMERIC_TO_TEXT,
   DEFAULT_PRIORITY,
 };

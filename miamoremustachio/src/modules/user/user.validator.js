@@ -1,13 +1,10 @@
 const { body, validationResult } = require('express-validator');
 
-const UserEntity = require('./user.entity');
 const Binder = require('../../shared/helpers/bind.helper');
 const BadRequestException = require('../../shared/exceptions/bad-request.exception');
 
 class UserValidator {
-  constructor(userPaths = Object.keys(UserEntity.schema.paths)) {
-    this.paths = userPaths;
-
+  constructor() {
     new Binder().bind(this);
   }
 

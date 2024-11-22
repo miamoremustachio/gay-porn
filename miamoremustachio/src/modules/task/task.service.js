@@ -1,10 +1,10 @@
 const TaskEntity = require('./task.entity');
-const TaskValidator = require('./task.validator');
+const TaskChecker = require('./task.checker');
 
 class TaskService {
   constructor(taskRepository = TaskEntity) {
     this.taskRepository = taskRepository;
-    this.validator = new TaskValidator();
+    this.checker = new TaskChecker();
   }
   
   async createTask(userId, taskBody) {
@@ -16,8 +16,8 @@ class TaskService {
   async getTask(userId, taskId) {
     const task = await this.taskRepository.findById(taskId);
 
-    this.validator.checkExistence(task, taskId);
-    this.validator.checkAccess(task, userId);
+    this.checker.checkExistence(task, taskId);
+    this.checker.checkAccess(task, userId);
 
     await task.populate('userId');
     
@@ -40,7 +40,7 @@ class TaskService {
 
     const task = await this.taskRepository.findOneAndUpdate(queryParams, fieldsToUpdate, options);
 
-    this.validator.checkExistence(task, taskId);
+    this.checker.checkExistence(task, taskId);
 
     return task;
   }
@@ -50,7 +50,7 @@ class TaskService {
 
     const task = await this.taskRepository.findOneAndDelete(queryParams);
 
-    this.validator.checkExistence(task, taskId);
+    this.checker.checkExistence(task, taskId);
   }
 }
 

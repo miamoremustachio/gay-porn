@@ -8,7 +8,7 @@ const {
   DEFAULT_STATUS,
   PRIORITY,
   DEFAULT_PRIORITY,
-  NUMERIC_TO_PROPERTIES,
+  NUMERIC_TO_TEXT,
 } = require('./task.const');
 
 const taskSchema = new mongoose.Schema({
@@ -27,7 +27,7 @@ const taskSchema = new mongoose.Schema({
   priority: {
     type: Number,
     enum: Object.values(PRIORITY),
-    get: value => NUMERIC_TO_PROPERTIES[value],
+    get: value => NUMERIC_TO_TEXT[value],
     default: DEFAULT_PRIORITY,
   },
   deadline: {
