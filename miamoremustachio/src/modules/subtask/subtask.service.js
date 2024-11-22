@@ -1,17 +1,17 @@
 const { TaskEntity } = require('../task/index');
-const SubtaskValidator = require('./subtask.validator');
+const SubtaskChecker = require('./subtask.checker');
 
 class SubtaskService {
   constructor(taskRepository = TaskEntity) {
     this.parentRepository = taskRepository;
-    this.validator = new SubtaskValidator();
+    this.checker = new SubtaskChecker();
   }
 
   async getParent(userId, parentId) {
     const parent = await this.parentRepository.findById(parentId);
     
-    this.validator.checkExistence(parent, parentId);
-    this.validator.checkAccess(parent, userId);
+    this.checker.checkExistence(parent, parentId);
+    this.checker.checkAccess(parent, userId);
 
     return parent;
   }
@@ -30,7 +30,7 @@ class SubtaskService {
   getSubtask(parent, subtaskId) {
     const subtask = parent.subtasks.id(subtaskId);
 
-    this.validator.checkSubtaskExistence(subtask, subtaskId);
+    this.checker.checkSubtaskExistence(subtask, subtaskId);
 
     return subtask;
   }

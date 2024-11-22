@@ -1,6 +1,6 @@
 const { NotFoundException } = require('../../shared/exceptions');
 
-class PlanValidator {
+class PlanChecker {
   checkExistence(plan, planId) {
     if (!plan) {
       throw new NotFoundException(`Plan #${planId} not found.`);
@@ -8,4 +8,4 @@ class PlanValidator {
   }
 }
 
-module.exports = PlanValidator;
+module.exports = PlanChecker;

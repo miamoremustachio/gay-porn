@@ -1,11 +1,29 @@
-const { NotFoundException } = require('../../shared/exceptions');
-const { TaskChecker } = require('../task');
+const { body, validationResult } = require('express-validator');
 
-class SubtaskValidator extends TaskChecker {
-  checkSubtaskExistence(subtask, subtaskId) {
-    if (!subtask) {
-      throw new NotFoundException(`Subtask #${subtaskId} not found.`);
+const Binder = require('../../shared/helpers/bind.helper');
+const BadRequestException = require('../../shared/exceptions/bad-request.exception');
+
+class SubtaskValidator {
+  constructor() {
+    new Binder().bind(this);
+  }
+
+  validateBody() {
+    return [
+      body('title').isAscii(),
+      this.processValidationResult,
+    ];
+  }
+
+  processValidationResult(req, res, next) {
+    const result = validationResult(req);
+    
+    if (result.isEmpty()) {
+      next();
+      return;
     }
+
+    throw new BadRequestException(...Array(2), result.array());
   }
 }
 

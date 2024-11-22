@@ -1,14 +1,14 @@
 const { ObjectId } = require('mongoose').Types;
 
 const PlanEntity = require('./plan.entity');
-const PlanValidator = require('./plan.validator');
+const PlanChecker = require('./plan.checker');
 const TaskService = require('../task/task.service');
 
 class PlanService {
   constructor(planRepository = PlanEntity, taskService = new TaskService()) {
     this.planRepository = planRepository;
     this.taskService = taskService;
-    this.validator = new PlanValidator();
+    this.checker = new PlanChecker();
   }
   
   async createPlan(userId, planBody) {
@@ -36,7 +36,7 @@ class PlanService {
     const queryParams = { _id: planId, userId };
     const plan = await this.planRepository.findOne(queryParams);
 
-    this.validator.checkExistence(plan, planId);
+    this.checker.checkExistence(plan, planId);
 
     await plan.populate('tasks');
     
@@ -82,7 +82,7 @@ class PlanService {
 
     const plan = await this.planRepository.findOneAndDelete(queryParams);
 
-    this.validator.checkExistence(plan, planId);
+    this.checker.checkExistence(plan, planId);
   }
 }
 
