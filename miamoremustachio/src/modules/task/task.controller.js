@@ -1,9 +1,12 @@
 const TaskService = require('./task.service');
+const Binder = require('../../shared/helpers/bind.helper');
 const { getAuthHeader } = require('../../shared/helpers/get-auth-header.helper');
 
 class TaskController {
   constructor(taskService = new TaskService()) {
     this.taskService = taskService;
+
+    new Binder().bind(this);
   }
   
   async createTask(req, res, next) {

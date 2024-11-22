@@ -9,6 +9,7 @@ class HttpException extends Error {
     return {
       statusCode: this.statusCode,
       message: this.message,
+      details: this.details,
     };
   }
 }

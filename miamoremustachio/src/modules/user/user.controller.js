@@ -1,8 +1,11 @@
 const UserService = require('./user.service');
+const Binder = require('../../shared/helpers/bind.helper');
 
 class UserController {
   constructor(userService = new UserService()) {
     this.userService = userService;
+    
+    new Binder().bind(this);
   }
   
   async registerUser(req, res, next) {

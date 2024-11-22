@@ -1,7 +1,8 @@
 const { UnauthorizedException } = require('../exceptions');
+const { getAuthHeader } = require('../../shared/helpers/get-auth-header.helper');
 
 function authGuard(req, res, next) {
-  const userId = req.get('Authorization');
+  const userId = getAuthHeader(req);
     
   try {
     if (!userId) {

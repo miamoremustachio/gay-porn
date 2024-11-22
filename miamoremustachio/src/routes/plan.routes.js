@@ -9,18 +9,18 @@ const planController = new PlanController();
 router.use(authGuard);
 
 router.route('/')
-  .get(planController.getAllPlans.bind(planController))
-  .post(planController.createPlan.bind(planController));
+  .get(planController.getAllPlans)
+  .post(planController.createPlan);
 
 router.route('/:planId')
-  .get(planController.getPlan.bind(planController))
-  .put(planController.updatePlan.bind(planController))
-  .delete(planController.deletePlan.bind(planController));
+  .get(planController.getPlan)
+  .put(planController.updatePlan)
+  .delete(planController.deletePlan);
 
 router.route('/:planId/addTask/:taskId')
-  .post(planController.addTask.bind(planController));
+  .post(planController.addTask);
 
 router.route('/:planId/numberOfTasks')
-  .get(planController.getNumberOfTasks.bind(planController));
+  .get(planController.getNumberOfTasks);
 
 module.exports = router;

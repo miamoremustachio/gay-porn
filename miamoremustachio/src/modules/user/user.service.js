@@ -1,10 +1,10 @@
 const UserEntity = require('./user.entity');
-const UserValidator = require('./user.validator');
+const UserChecker = require('./user.checker');
 
 class UserService {
   constructor(userRepository = UserEntity) {
     this.userRepository = userRepository;
-    this.validator = new UserValidator();
+    this.checker = new UserChecker();
   }
   
   async registerUser(userBody) {
@@ -16,7 +16,7 @@ class UserService {
   async getUser(userId) {
     const user = await this.userRepository.findById(userId);
 
-    this.validator.checkExistence(user, userId);
+    this.checker.checkExistence(user, userId);
 
     return user;
   }
@@ -31,7 +31,7 @@ class UserService {
     const options = { new: true, runValidators: true };
     const user = await this.userRepository.findByIdAndUpdate(userId, fieldsToUpdate, options);
 
-    this.validator.checkExistence(user, userId);
+    this.checker.checkExistence(user, userId);
 
     return user;
   }
@@ -39,7 +39,7 @@ class UserService {
   async deleteUser(userId) {
     const user = await this.userRepository.findByIdAndDelete(userId);
 
-    this.validator.checkExistence(user, userId);
+    this.checker.checkExistence(user, userId);
   }
 }
 

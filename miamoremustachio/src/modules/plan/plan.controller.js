@@ -1,9 +1,12 @@
 const PlanService = require('./plan.service');
+const Binder = require('../../shared/helpers/bind.helper');
 const { getAuthHeader } = require('../../shared/helpers/get-auth-header.helper');
 
 class PlanController {
   constructor(planService = new PlanService()) {
     this.planService = planService;
+
+    new Binder().bind(this);
   }
   
   async createPlan(req, res, next) {

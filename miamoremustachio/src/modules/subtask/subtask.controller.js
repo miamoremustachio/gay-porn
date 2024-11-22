@@ -1,9 +1,12 @@
 const SubtaskService = require('./subtask.service');
+const Binder = require('../../shared/helpers/bind.helper');
 const { getAuthHeader } = require('../../shared/helpers/get-auth-header.helper');
 
 class SubtaskController {
   constructor(subtaskService = new SubtaskService()) {
     this.subtaskService = subtaskService;
+
+    new Binder().bind(this);
   }
 
   async getParent(req, res, next) {

@@ -1,17 +1,19 @@
 const express = require('express');
 
-const { UserController } = require('../modules/user');
+const { UserController, UserValidator } = require('../modules/user');
 
 const router = express.Router();
 const userController = new UserController();
+const userValidator = new UserValidator();
+const { validateBody } = userValidator;
 
 router.route('/')
-  .get(userController.getAllUsers.bind(userController))
-  .post(userController.registerUser.bind(userController));
+  .get(userController.getAllUsers)
+  .post(validateBody(), userController.registerUser);
 
 router.route('/:userId')
-  .get(userController.getUser.bind(userController))
-  .put(userController.updateUser.bind(userController))
-  .delete(userController.deleteUser.bind(userController));
+  .get(userController.getUser)
+  .put(userController.updateUser)
+  .delete(userController.deleteUser);
 
 module.exports = router;

@@ -9,15 +9,14 @@ const subtaskController = new SubtaskController();
 router.use(authGuard);
 
 router.route('/:taskId/subtask')
-  .all(subtaskController.getParent.bind(subtaskController))
-  .get(subtaskController.getAllSubtasks.bind(subtaskController))
-
-  .post(subtaskController.addSubtask.bind(subtaskController));
+  .all(subtaskController.getParent)
+  .get(subtaskController.getAllSubtasks)
+  .post(subtaskController.addSubtask);
 
 router.route('/:taskId/subtask/:subtaskId')
-  .all(subtaskController.getParent.bind(subtaskController))
-  .get(subtaskController.getSubtask.bind(subtaskController))
-  .put(subtaskController.updateSubtask.bind(subtaskController))
-  .delete(subtaskController.deleteSubtask.bind(subtaskController));
+  .all(subtaskController.getParent)
+  .get(subtaskController.getSubtask)
+  .put(subtaskController.updateSubtask)
+  .delete(subtaskController.deleteSubtask);
 
 module.exports = router;
