@@ -1,0 +1,54 @@
+const {
+  STATUSES,
+  PRIORITIES,
+  TITLE_LENGTH,
+  ERROR_MESSAGES,
+} = require('./constants.js');
+
+const {
+  isTaskExists,
+} = require('./predicates.js');
+
+const { MIN, MAX } = TITLE_LENGTH;
+const {
+  INVALID_TITLE,
+  INVALID_STATUS,
+  INVALID_PRIORITY,
+  INCORRECT_TITLE_LENGTH,
+  TASK_EXISTS,
+} = ERROR_MESSAGES;
+
+function checkTitle(title, toDoList) {
+  if (typeof title !== 'string') {
+    throw new Error(INVALID_TITLE);
+  
+  } else if (title.length < MIN || title.length > MAX) {
+    throw new Error(INCORRECT_TITLE_LENGTH);
+  
+  } else if (isTaskExists(title, toDoList)) {
+    throw new Error(TASK_EXISTS);
+
+  } else return;
+}
+
+function checkStatus(status) {
+  const statuses = Object.values(STATUSES);
+
+  if (!statuses.includes(status)) {
+    throw new Error(INVALID_STATUS);
+  }
+}
+
+function checkPriority(priority) {
+  const priorities = Object.values(PRIORITIES);
+    
+  if (!priorities.includes(priority)) {
+    throw new Error(INVALID_PRIORITY);
+  }
+}
+
+module.exports = {
+  checkTitle,
+  checkStatus,
+  checkPriority,
+};
